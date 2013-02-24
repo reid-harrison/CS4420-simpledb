@@ -34,4 +34,12 @@ public class StorageData {
         return tables.get(tableId);
     }
 
+    public void addTable(final Table table) {
+        tables.put(table.getId(), table);
+    }
+
+    public void removeTable(final Integer tableId) {
+        tables.remove(tableId);
+    }
+
 }

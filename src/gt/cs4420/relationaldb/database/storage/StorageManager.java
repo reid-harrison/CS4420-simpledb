@@ -1,6 +1,5 @@
 package gt.cs4420.relationaldb.database.storage;
 
-import gt.cs4420.relationaldb.database.storage.file.FileManager;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
 import gt.cs4420.relationaldb.domain.validator.TableValidator;
@@ -12,25 +11,23 @@ public class StorageManager {
     private TableValidator tableValidator;
 
     public StorageManager() {
-        initStorageData();
+        storageData = new StorageData();
 
         tableValidator = new TableValidator();
-    }
-
-    private void initStorageData() {
-        storageData = new StorageData();
-        
-        //TODO initStorageData
     }
 
     public void createTable(final Table table) throws ValidationException {
         tableValidator.validate(table);
 
-        //TODO createTable
+        storageData.addTable(table);
     }
 
     public void dropTable(final Integer tableId) throws ValidationException {
-        //TODO Implement dropTable
+        if (!storageData.tableExists(tableId)) {
+            throw new ValidationException("Table does not exist with ID: " + tableId);
+        }
+
+        storageData.removeTable(tableId);
     }
 
     public void insert(final Integer tableId, final Integer attributeId, final Object record) throws ValidationException {
