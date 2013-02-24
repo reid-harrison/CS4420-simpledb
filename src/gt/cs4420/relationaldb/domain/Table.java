@@ -5,7 +5,7 @@ public class Table {
     private Integer id;
     private String name;
 
-    private String[] attributes;
+    private Attribute[] attributes;
 
     public Table() {
         this(-1);
@@ -31,11 +31,11 @@ public class Table {
         this.name = name;
     }
 
-    public String[] getAttributes() {
+    public Attribute[] getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(final String[] attributes) {
+    public void setAttributes(final Attribute[] attributes) {
         this.attributes = attributes;
     }
 }

@@ -2,6 +2,7 @@ package gt.cs4420.relationaldb.database.storage.file;
 
 import com.google.common.collect.Sets;
 import gt.cs4420.relationaldb.domain.Table;
+import gt.cs4420.relationaldb.domain.json.DescriptionSerializer;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,8 +14,15 @@ public class FileManager {
 
     private File descriptionFile;
 
+    private JsonFileWriter fileWriter;
+
+    private DescriptionSerializer descriptionSerializer;
 
     public FileManager() {
+        fileWriter = new JsonFileWriter();
+
+        descriptionSerializer = new DescriptionSerializer();
+
         initDescription();
     }
 
@@ -33,5 +41,9 @@ public class FileManager {
         Set<Table> tables = Sets.newHashSet();
 
         return tables;
+    }
+
+    public void exportDescriptions(final Set<Table> tables) {
+        fileWriter.write(descriptionFile, descriptionSerializer.serialize(tables));
     }
 }
