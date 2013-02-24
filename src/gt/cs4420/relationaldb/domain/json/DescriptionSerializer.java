@@ -23,6 +23,7 @@ public class DescriptionSerializer implements JsonSerializer<Table> {
 
     @Override
     public Table deserialize(JSONObject json) {
+        //TODO deserialize
         return null;
     }
 
