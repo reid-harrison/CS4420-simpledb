@@ -1,9 +1,16 @@
 package gt.cs4420.relationaldb.database.storage;
 
+import gt.cs4420.relationaldb.domain.Attribute;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
 import gt.cs4420.relationaldb.domain.validator.TableValidator;
 
+import java.util.Map;
+
+/**
+ * TODO:
+ * -Implement more management functionality
+ */
 public class StorageManager {
 
     private StorageData storageData;
@@ -11,7 +18,7 @@ public class StorageManager {
     private TableValidator tableValidator;
 
     public StorageManager() {
-        storageData = new StorageData();
+        storageData = StorageData.getInstance();
 
         tableValidator = new TableValidator();
     }
@@ -30,8 +37,10 @@ public class StorageManager {
         storageData.removeTable(tableId);
     }
 
-    public void insert(final Integer tableId, final Integer attributeId, final Object record) throws ValidationException {
-        //TODO Implement insert
+    public void insert(final Integer tableId, Map<Attribute, Object> attributes) throws ValidationException {
+        //TODO Implement insert validation
+
+        storageData.insert(tableId, attributes);
     }
 
 

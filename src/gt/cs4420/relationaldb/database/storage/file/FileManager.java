@@ -1,13 +1,19 @@
 package gt.cs4420.relationaldb.database.storage.file;
 
 import com.google.common.collect.Sets;
+import gt.cs4420.relationaldb.domain.Description;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.json.DescriptionSerializer;
+import gt.cs4420.relationaldb.domain.json.TableSerializer;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 
+/**
+ * TODO:
+ * -Lots of file access stuff
+ */
 public class FileManager {
 
     private String dbRootDirectory = "database/";
@@ -16,12 +22,12 @@ public class FileManager {
 
     private JsonFileWriter fileWriter;
 
-    private DescriptionSerializer descriptionSerializer;
+    private TableSerializer tableSerializer;
 
     public FileManager() {
         fileWriter = new JsonFileWriter();
 
-        descriptionSerializer = new DescriptionSerializer();
+        tableSerializer = new TableSerializer();
 
         initDescription();
     }
@@ -44,6 +50,6 @@ public class FileManager {
     }
 
     public void exportDescriptions(final Set<Table> tables) {
-        fileWriter.write(descriptionFile, descriptionSerializer.serialize(tables));
+        fileWriter.write(descriptionFile, tableSerializer.serialize(tables));
     }
 }

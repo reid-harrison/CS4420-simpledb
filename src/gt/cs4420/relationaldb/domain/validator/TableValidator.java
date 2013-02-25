@@ -10,6 +10,12 @@ import java.util.List;
 
 public class TableValidator implements Validator<Table> {
 
+    private DescriptionValidator descValidator;
+
+    public TableValidator() {
+        descValidator = new DescriptionValidator();
+    }
+
     @Override
     public void validate(Table table) throws ValidationException {
         ValidationException ve = new ValidationException();
@@ -20,7 +26,12 @@ public class TableValidator implements Validator<Table> {
 
         ve.addMessages(validateId(table));
         ve.addMessages(validateName(table));
-        ve.addMessages(validateAttributes(table));
+
+        try {
+            descValidator.validate(table.getDescription());
+        } catch (final ValidationException ve2) {
+            ve.addException(ve2);
+        }
 
         if (ve.hasMessages()) {
             throw ve;
@@ -44,35 +55,6 @@ public class TableValidator implements Validator<Table> {
 
         if (Strings.isNullOrEmpty(name)) {
             errors.add("Name required for table");
-        }
-
-        return errors;
-    }
-
-    private List<String> validateAttributes(final Table table) {
-        List<String> errors = Lists.newArrayList();
-        Attribute[] attributes = table.getAttributes();
-
-        if (attributes == null || attributes.length == 0) {
-            errors.add("At least one attribute required for table");
-        }
-
-        for (Attribute attr : attributes) {
-            errors.addAll(validateAttribute(attr));
-        }
-
-        return errors;
-    }
-
-    private List<String> validateAttribute(final Attribute attribute) {
-        List<String> errors = Lists.newArrayList();
-
-        if (Strings.isNullOrEmpty(attribute.getName())) {
-            errors.add("Name required for attribute");
-        }
-
-        if (attribute.getType() == null) {
-            errors.add("Type required for attribute");
         }
 
         return errors;
