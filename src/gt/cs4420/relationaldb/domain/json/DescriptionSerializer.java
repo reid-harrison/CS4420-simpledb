@@ -1,11 +1,7 @@
 package gt.cs4420.relationaldb.domain.json;
 
 import gt.cs4420.relationaldb.domain.Description;
-import gt.cs4420.relationaldb.domain.Table;
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.Set;
 
 public class DescriptionSerializer implements JsonSerializer<Description> {
 

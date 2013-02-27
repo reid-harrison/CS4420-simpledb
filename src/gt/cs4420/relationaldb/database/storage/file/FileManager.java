@@ -1,9 +1,7 @@
 package gt.cs4420.relationaldb.database.storage.file;
 
 import com.google.common.collect.Sets;
-import gt.cs4420.relationaldb.domain.Description;
 import gt.cs4420.relationaldb.domain.Table;
-import gt.cs4420.relationaldb.domain.json.DescriptionSerializer;
 import gt.cs4420.relationaldb.domain.json.TableSerializer;
 
 import java.io.File;

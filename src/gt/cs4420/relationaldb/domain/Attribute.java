@@ -25,4 +25,18 @@ public class Attribute {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Attribute)) {
+            return false;
+        }
+
+        return this.name.equals(((Attribute) other).getName());
+    }
 }

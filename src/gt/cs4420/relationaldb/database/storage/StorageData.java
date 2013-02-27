@@ -2,6 +2,7 @@ package gt.cs4420.relationaldb.database.storage;
 
 import com.google.common.collect.Maps;
 import gt.cs4420.relationaldb.database.storage.file.FileManager;
+import gt.cs4420.relationaldb.database.storage.index.IndexManager;
 import gt.cs4420.relationaldb.domain.Attribute;
 import gt.cs4420.relationaldb.domain.Table;
 
@@ -30,10 +31,15 @@ public class StorageData {
     private Map<Integer, Table> tables;
     private Map<Integer, Map<Integer, Map<Attribute, Object>>> tableData;
 
+    private IndexManager indexManager;
+
     private FileManager fileManager;
 
     private StorageData() {
         tables = Maps.newHashMap();
+        indexManager = new IndexManager();
+        fileManager = new FileManager();
+
         loadTableDescriptions();
     }
 
@@ -62,7 +68,12 @@ public class StorageData {
     }
 
     protected void insert(final Integer tableId, final Map<Attribute, Object> attributes) {
-        tables.get(tableId).addRow(attributes);
+        Integer primaryKey = tables.get(tableId).addRow(attributes);
+
+        //TODO Use a real block index
+        int blockIndex = 0;
+
+        indexManager.getIndex(tables.get(tableId)).setIndex(primaryKey, blockIndex);
     }
 
 }
