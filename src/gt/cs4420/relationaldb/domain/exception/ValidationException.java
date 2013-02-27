@@ -20,6 +20,11 @@ public class ValidationException extends Exception {
         addMessage(message);
     }
 
+    public ValidationException(final Collection<String> messages) {
+        this();
+        addMessages(messages);
+    }
+
     public void addMessage(final String message) {
         messages.add(message);
     }

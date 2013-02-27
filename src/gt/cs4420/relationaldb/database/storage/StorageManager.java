@@ -21,7 +21,6 @@ public class StorageManager {
 
     public StorageManager() {
         storageData = StorageData.getInstance();
-
         tableValidator = new TableValidator();
     }
 
@@ -38,7 +37,6 @@ public class StorageManager {
 
     public void createTable(final Table table) throws ValidationException {
         tableValidator.validate(table);
-
         storageData.addTable(table);
     }
 
