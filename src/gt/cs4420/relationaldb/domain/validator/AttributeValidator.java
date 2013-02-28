@@ -43,12 +43,21 @@ public class AttributeValidator implements Validator<Attribute> {
      */
     public void validate(final Attribute[] attributes, final Description description) throws ValidationException {
         ValidationException ve = new ValidationException();
-        List<Attribute> descAttr = Arrays.asList(description.getAttributes());
+        List<Attribute> descAttributes = Arrays.asList(description.getAttributes());
 
         for (Attribute attr : description.getAttributes()) {
-            if (!descAttr.contains(attr)) {
+            int index = descAttributes.indexOf(attr);
+
+            if (index < 0) {
                 ve.addMessage("The attribute " + attr.getName() + " of type " + attr.getType()
-                        + " does not match the table's description");
+                        + " is not in the table's description");
+            }
+
+            Attribute descAttr = descAttributes.get(index);
+
+            if (attr.getType() != descAttr.getType()) {
+                ve.addMessage("The attribute " + attr.getName() + " of type " + attr.getType()
+                        + " does not match the table's description (" + descAttr.getName() + ": " + descAttr.getType().getTypeString());
             }
         }
 
@@ -73,10 +82,43 @@ public class AttributeValidator implements Validator<Attribute> {
             ve.addException(v);
         }
 
+        for (Attribute attr : attributes.keySet()) {
+            Object obj = attributes.get(attr);
 
+            try {
+                attributeTypeCheck(attr, obj);
+            } catch (final ClassCastException cce) {
+                ve.addMessage(cce.getMessage());
+            }
+        }
 
         if (ve.hasMessages()) {
             throw ve;
+        }
+    }
+
+    private void attributeTypeCheck(final Attribute attribute, final Object object) throws ClassCastException {
+        boolean error = false;
+
+        switch (attribute.getType()) {
+            case INT:
+                if (!(object instanceof Integer)) {
+                    error = true;
+                }
+
+                break;
+
+            case STRING:
+                if (!(object instanceof String)) {
+                    error = true;
+                }
+
+                break;
+        }
+
+        if (error) {
+            throw new ClassCastException("The value given for attribute " + attribute.getName() + " is not the correct " +
+                    "type (" + attribute.getType().getTypeString() + ")");
         }
     }
 

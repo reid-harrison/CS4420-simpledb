@@ -44,4 +44,5 @@ public class ValidationException extends Exception {
     public void addException(final ValidationException ve) {
         addMessages(ve.getMessages());
     }
+
 }
