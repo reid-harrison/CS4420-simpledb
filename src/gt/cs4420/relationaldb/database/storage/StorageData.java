@@ -11,10 +11,11 @@ import java.util.Set;
 
 /**
  * TODO:
+ * -Implement in-memory storage
  * -Mechanism for writing to disk
  * -Indexing
  */
-public class StorageData {
+class StorageData {
 
     private static StorageData instance;
 
@@ -26,8 +27,7 @@ public class StorageData {
         return instance;
     }
 
-
-
+    private Map<String, Integer> tableNames;
     private Map<Integer, Table> tables;
     private Map<Integer, Map<Integer, Map<Attribute, Object>>> tableData;
 
@@ -35,8 +35,14 @@ public class StorageData {
 
     private FileManager fileManager;
 
+    //Random necessary data
+    private Integer nextId;
+
     private StorageData() {
+        tableNames = Maps.newHashMap();
         tables = Maps.newHashMap();
+        tableData = Maps.newHashMap();
+
         indexManager = new IndexManager();
         fileManager = new FileManager();
 
@@ -46,17 +52,34 @@ public class StorageData {
     private void loadTableDescriptions() {
         Set<Table> tableSet = fileManager.importDescriptions();
 
+        Integer highestId = 0;
+
         for (final Table table : tableSet) {
+            tableNames.put(table.getName(), table.getId());
             tables.put(table.getId(), table);
+
+            if (table.getId() > highestId) {
+                highestId = table.getId();
+            }
         }
+
+        nextId = highestId + 1;
     }
 
     protected boolean tableExists(final Integer tableId) {
         return tables.containsKey(tableId);
     }
 
+    protected boolean tableExists(final String tableName) {
+        return tableNames.containsKey(tableName);
+    }
+
     protected Table getTable(final Integer tableId) {
         return tables.get(tableId);
+    }
+
+    protected Table getTable(final String tableName) {
+        return getTable(tableNames.get(tableName));
     }
 
     protected void addTable(final Table table) {
@@ -74,6 +97,12 @@ public class StorageData {
         int blockIndex = 0;
 
         indexManager.getIndex(tables.get(tableId)).setIndex(primaryKey, blockIndex);
+
+        //TODO Insert data into the in-memory tableData map
+    }
+
+    protected Integer getNextTableId() {
+        return nextId;
     }
 
 }
