@@ -1,6 +1,7 @@
 *.iml
 *.bak
 target/
+out/
 .idea/
 .project
 .class
