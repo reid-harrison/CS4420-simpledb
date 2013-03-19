@@ -14,8 +14,6 @@ public class Table {
 
     private Attribute primaryKeyAttribute;
 
-    private Map<Integer, Map<Attribute, Object>> data;
-
     public Table() {
         this(-1);
     }
@@ -25,7 +23,7 @@ public class Table {
 
         name = "";
         desc = new Description();
-        data = Maps.newHashMap();
+        primaryKeyAttribute = null;
     }
 
     public Table(final Integer id, final Description desc, final Attribute primaryKeyAttribute) {
@@ -68,35 +66,16 @@ public class Table {
      * @param primaryKeyAttribute
      */
     public void setPrimaryKeyAttribute(final Attribute primaryKeyAttribute) {
+        //TODO Support primary key data types other than INTs?
         if (!primaryKeyAttribute.getType().equals(DataType.INT)) {
-            throw new IllegalArgumentException("Primary Key attributes must be of the DataType INT");
+            throw new IllegalArgumentException("Primary Key attributes must be of data type INT");
         }
 
         if (!Arrays.asList(desc.getAttributes()).contains(primaryKeyAttribute)) {
-            throw new IllegalArgumentException("Primary Key attributes must exist in a table's description");
+            throw new IllegalArgumentException("Primary Key attribute does not exist in the table's description");
         }
 
         this.primaryKeyAttribute = primaryKeyAttribute;
-    }
-
-    /**
-     * Adds a row to this in-memory representation of a Table. This will not guarantee that the row is actually written
-     * to disk.
-     *
-     * @param attributes Attribute values for the new row
-     * @return
-     */
-    public Integer addRow(final Map<Attribute, Object> attributes) {
-        Object primaryKey = attributes.get(primaryKeyAttribute);
-
-        //TODO Support other types for primary keys?
-        if (!(primaryKey instanceof Integer)) {
-            throw new ClassCastException("Primary Keys may only be Integers at this time");
-        }
-
-        data.put((Integer) primaryKey, attributes);
-
-        return (Integer) primaryKey;
     }
 
     @Override

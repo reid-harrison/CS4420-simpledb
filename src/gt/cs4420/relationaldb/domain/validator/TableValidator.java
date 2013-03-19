@@ -2,6 +2,7 @@ package gt.cs4420.relationaldb.domain.validator;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import gt.cs4420.relationaldb.domain.Attribute;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
 
@@ -25,6 +26,7 @@ public class TableValidator implements Validator<Table> {
 
         ve.addMessages(validateId(table));
         ve.addMessages(validateName(table));
+        ve.addMessages(validatePrimaryKeyAttribute(table));
 
         try {
             descValidator.validate(table.getDescription());
@@ -54,6 +56,17 @@ public class TableValidator implements Validator<Table> {
 
         if (Strings.isNullOrEmpty(name)) {
             errors.add("Name required for table");
+        }
+
+        return errors;
+    }
+
+    private List<String> validatePrimaryKeyAttribute(final Table table) {
+        List<String> errors = Lists.newArrayList();
+        Attribute primaryKeyAttr = table.getPrimaryKeyAttribute();
+
+        if (primaryKeyAttr == null) {
+            errors.add("A primary key attribute is required");
         }
 
         return errors;

@@ -53,9 +53,12 @@ public class StorageManager {
      * need to be set and will be populated in the passed Table.
      *
      * @param table Table with valid name and Description
-     * @throws ValidationException if the given Table does not have sufficient meta-data to be created
+     * @throws ValidationException if the given Table doesn't have a unique name or doesn't have sufficient meta-data to be created
      */
     public void createTable(final Table table) throws ValidationException {
+        if (storageData.tableExists(table.getName())) {
+            throw new ValidationException("A table with the name " + table.getName() + " already exists");
+        }
         Integer id = storageData.getNextTableId();
         table.setId(id);
 
@@ -80,7 +83,7 @@ public class StorageManager {
      *
      * @param tableId the ID of the table
      * @param attributes the mapping of the data to insert
-     * @throws ValidationException if the data is not valid for the table's description
+     * @throws ValidationException if a row already exists with the private key or the data is not valid for the table's description
      */
     public void insert(final Integer tableId, Map<Attribute, Object> attributes) throws ValidationException {
         validateTableExists(tableId);

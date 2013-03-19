@@ -4,7 +4,9 @@ import com.google.common.collect.Maps;
 import gt.cs4420.relationaldb.database.storage.file.FileManager;
 import gt.cs4420.relationaldb.database.storage.index.IndexManager;
 import gt.cs4420.relationaldb.domain.Attribute;
+import gt.cs4420.relationaldb.domain.DataType;
 import gt.cs4420.relationaldb.domain.Table;
+import gt.cs4420.relationaldb.domain.exception.ValidationException;
 
 import java.util.Map;
 import java.util.Set;
@@ -90,8 +92,8 @@ class StorageData {
         tables.remove(tableId);
     }
 
-    protected void insert(final Integer tableId, final Map<Attribute, Object> attributes) {
-        Integer primaryKey = tables.get(tableId).addRow(attributes);
+    protected void insert(final Integer tableId, final Map<Attribute, Object> attributes) throws ValidationException {
+        Integer primaryKey = addRow(getTable(tableId), attributes);
 
         //TODO Use a real block index
         int blockIndex = 0;
@@ -103,6 +105,27 @@ class StorageData {
 
     protected Integer getNextTableId() {
         return nextId;
+    }
+
+    /**
+     * Adds a row to this in-memory representation of a Table. This will not guarantee that the row is actually written
+     * to disk.
+     *
+     * @param attributes Attribute values for the new row
+     * @return
+     */
+    private Integer addRow(final Table table, final Map<Attribute, Object> attributes) throws ValidationException {
+        Object primaryKey = attributes.get(table.getPrimaryKeyAttribute());
+
+        if (tableData.get(table.getId()).containsKey(primaryKey)) {
+            throw new ValidationException("A row already exists with the provided primary key attribute; primary keys must be unique");
+        }
+
+        if (table.getPrimaryKeyAttribute().getType() == DataType.INT) {
+            tableData.get(table.getId()).put((Integer) primaryKey, attributes);
+        }
+
+        return (Integer) primaryKey;
     }
 
 }
