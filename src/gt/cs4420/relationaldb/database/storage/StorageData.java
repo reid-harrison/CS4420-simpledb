@@ -99,8 +99,6 @@ class StorageData {
         int blockIndex = 0;
 
         indexManager.getIndex(tables.get(tableId)).setIndex(primaryKey, blockIndex);
-
-        //TODO Insert data into the in-memory tableData map
     }
 
     protected Integer getNextTableId() {
