@@ -4,6 +4,7 @@ public class Attribute {
 
     private DataType type;
     private String name;
+    private Integer attributeId;
 
     public Attribute(final DataType type, final String name) {
         this.type = type;
@@ -37,6 +38,16 @@ public class Attribute {
             return false;
         }
 
-        return this.name.equals(((Attribute) other).getName());
+        String otherName = ((Attribute) other).getName();
+
+        if (name == null) {
+            if (otherName == null) {
+                return true;
+            }
+
+            return false;
+        }
+
+        return name.equals(otherName);
     }
 }

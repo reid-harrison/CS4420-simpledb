@@ -1,10 +1,7 @@
 package gt.cs4420.relationaldb.domain;
 
 
-import com.google.common.collect.Maps;
-
 import java.util.Arrays;
-import java.util.Map;
 
 public class Table {
 

@@ -37,8 +37,13 @@ public class AttributeSerializer implements JsonSerializer<Attribute> {
     }
 
     public JSONArray serialize(final Map<Attribute, Object> attributes) {
-        //TODO Implement attr serialization
-        return null;
+        JSONArray json = new JSONArray();
+
+        for (Attribute attr : attributes.keySet()) {
+            json.put(serialize(attr, attributes.get(attr)));
+        }
+
+        return json;
     }
 
     public JSONObject serialize(final Attribute attribute, final Object value) {

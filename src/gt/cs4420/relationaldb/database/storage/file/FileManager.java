@@ -55,7 +55,7 @@ public class FileManager {
         fileWriter.write(descriptionFile, tableSerializer.serialize(tables));
     }
 
-    public void exportTableBlock(final Integer tableId, final Integer blockId, final List<Map<Integer, Map<Attribute, Object>>> blockData) {
+    public void exportTableBlock(final Integer tableId, final Integer blockId, final List<Map<Attribute, Object>> blockData) {
         File blockFile = new File(dbRootDirectory + tableId + "/" + blockId);
 
         try {
