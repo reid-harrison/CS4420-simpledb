@@ -29,6 +29,9 @@ class StorageData {
         return instance;
     }
 
+    private final int dirtyCountLimit = 10;
+    private int dirtyCount = 0;
+
     private Map<String, Integer> tableNames;
     private Map<Integer, Table> tables;
     private Map<Integer, Map<Integer, Map<Attribute, Object>>> tableData;
@@ -49,6 +52,7 @@ class StorageData {
         fileManager = new FileManager();
 
         loadTableDescriptions();
+        createIndex();
     }
 
     private void loadTableDescriptions() {
@@ -66,6 +70,10 @@ class StorageData {
         }
 
         nextId = highestId + 1;
+    }
+
+    private void createIndex() {
+        //TODO Implement createIndex
     }
 
     protected boolean tableExists(final Integer tableId) {
@@ -86,10 +94,12 @@ class StorageData {
 
     protected void addTable(final Table table) {
         tables.put(table.getId(), table);
+        dirtyCheck();
     }
 
     protected void removeTable(final Integer tableId) {
         tables.remove(tableId);
+        dirtyCheck();
     }
 
     protected void insert(final Integer tableId, final Map<Attribute, Object> attributes) throws ValidationException {
@@ -98,7 +108,9 @@ class StorageData {
         //TODO Use a real block index
         int blockIndex = 0;
 
-        indexManager.getIndex(tables.get(tableId)).setIndex(primaryKey, blockIndex);
+        indexManager.getIndex(tables.get(tableId)).addIndexEntry(primaryKey, blockIndex);
+
+        dirtyCheck();
     }
 
     protected Integer getNextTableId() {
@@ -124,6 +136,17 @@ class StorageData {
         }
 
         return (Integer) primaryKey;
+    }
+
+    private void dirtyCheck() {
+        dirtyCount++;
+
+        if (dirtyCount < dirtyCountLimit) {
+            return;
+        }
+
+        //TODO Implement write to disk if dirty limit is reached
+        dirtyCount = 0;
     }
 
 }
