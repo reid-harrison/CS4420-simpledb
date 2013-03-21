@@ -31,4 +31,15 @@ class BlockSerializer implements JsonSerializer<List<Map<Attribute, Object>>> {
         //TODO Implement deserialize
         return null;
     }
+
+    /**
+     * Serializes the block data in the standard block format but also appends the size for easy reference later.
+     *
+     * @param blockData
+     * @param blockSize
+     * @return JSONObject
+     */
+    public JSONObject serializeWithSize(final List<Map<Attribute, Object>> blockData, final int blockSize) {
+        return serialize(blockData).put("size", blockSize);
+    }
 }

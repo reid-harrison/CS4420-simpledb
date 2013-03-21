@@ -2,6 +2,7 @@ package gt.cs4420.relationaldb.database.storage;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import gt.cs4420.relationaldb.database.storage.block.BlockManager;
 import gt.cs4420.relationaldb.database.storage.file.FileManager;
 import gt.cs4420.relationaldb.database.storage.index.IndexManager;
 import gt.cs4420.relationaldb.domain.Attribute;
@@ -17,6 +18,7 @@ import java.util.Set;
  * TODO:
  * -Implement in-memory storage
  * -Mechanism for writing to disk
+ * -Importing data from disk
  * -Indexing
  */
 class StorageData {
@@ -31,7 +33,7 @@ class StorageData {
         return instance;
     }
 
-    private final int dirtyCountLimit = 10;
+    private final int DIRTY_COUNT_LIMIT = 10;
     private boolean ignoreDirty = false;
     private int dirtyCount = 0;
 
@@ -40,8 +42,8 @@ class StorageData {
     private Map<Integer, Map<Integer, Map<Attribute, Object>>> tableData;
 
     private IndexManager indexManager;
-
     private FileManager fileManager;
+    private BlockManager blockManager;
 
     //Random necessary data
     private Integer nextId;
@@ -53,6 +55,7 @@ class StorageData {
 
         indexManager = new IndexManager();
         fileManager = new FileManager();
+        blockManager = new BlockManager();
 
         loadTableDescriptions();
         createIndex();
@@ -81,6 +84,8 @@ class StorageData {
         }
 
         fileManager.importIndexes(indexManager);
+
+        //TODO Set up block manager
     }
 
     protected boolean tableExists(final Integer tableId) {
@@ -112,8 +117,8 @@ class StorageData {
     protected void insert(final Integer tableId, final Map<Attribute, Object> attributes) throws ValidationException {
         Integer primaryKey = addRow(getTable(tableId), attributes);
 
-        //TODO Use a real block index
-        int blockIndex = 0;
+        //TODO Make use of spanning blocks and figure out what to do about long ass Strings
+        Integer blockIndex = blockManager.allocateBlockSpace(tableId, attributes.size());
 
         indexManager.addIndexEntry(tableId, primaryKey, blockIndex);
 
@@ -150,7 +155,7 @@ class StorageData {
 
         dirtyCount++;
 
-        if (dirtyCount < dirtyCountLimit) {
+        if (dirtyCount < DIRTY_COUNT_LIMIT) {
             return;
         }
 
@@ -172,7 +177,8 @@ class StorageData {
                     blockData.add(tableData.get(tableId).get(primaryKey));
                 }
 
-                fileManager.exportTableBlock(tableId, blockId, blockData);
+                int blockSize = blockManager.getBlockSize(tableId, blockId);
+                fileManager.exportTableBlock(tableId, blockId, blockSize, blockData);
             }
         }
     }

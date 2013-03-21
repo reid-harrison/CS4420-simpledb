@@ -63,7 +63,11 @@ public class FileManager {
         fileWriter.write(descriptionFile, tableSerializer.serialize(tables));
     }
 
-    public void exportTableBlock(final Integer tableId, final Integer blockId, final List<Map<Attribute, Object>> blockData) {
+    public void importTableBlock() {
+        //TODO Implement importTableBlock
+    }
+
+    public void exportTableBlock(final Integer tableId, final Integer blockId, final int blockSize, final List<Map<Attribute, Object>> blockData) {
         File blockFile = new File(dbRootDirectory + tableId + "/blocks/" + blockId + ".json");
 
         try {
@@ -72,7 +76,7 @@ public class FileManager {
             e.printStackTrace();
         }
 
-        fileWriter.write(blockFile, blockSerializer.serialize(blockData));
+        fileWriter.write(blockFile, blockSerializer.serializeWithSize(blockData, blockSize));
     }
 
     /**
