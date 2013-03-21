@@ -1,5 +1,6 @@
 package gt.cs4420.relationaldb.database.storage;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import gt.cs4420.relationaldb.database.storage.file.FileManager;
 import gt.cs4420.relationaldb.database.storage.index.IndexManager;
@@ -8,6 +9,7 @@ import gt.cs4420.relationaldb.domain.DataType;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -79,8 +81,6 @@ class StorageData {
         }
 
         fileManager.importIndexes(indexManager);
-
-        //TODO Implement createIndex
     }
 
     protected boolean tableExists(final Integer tableId) {
@@ -154,8 +154,27 @@ class StorageData {
             return;
         }
 
-        //TODO Implement write to disk if dirty limit is reached
+        exportBlocks();
+
         dirtyCount = 0;
+    }
+
+    private void exportBlocks() {
+        for (Integer tableId : indexManager.getTableIdSet()) {
+            Map<Integer, List<Integer>> blockIndex = indexManager.getIndex(tableId).getBlockIndex();
+
+            for (Integer blockId : blockIndex.keySet()) {
+                List<Integer> primaryKeys = blockIndex.get(blockId);
+
+                List<Map<Attribute, Object>> blockData = Lists.newArrayList();
+
+                for (Integer primaryKey : primaryKeys) {
+                    blockData.add(tableData.get(tableId).get(primaryKey));
+                }
+
+                fileManager.exportTableBlock(tableId, blockId, blockData);
+            }
+        }
     }
 
 }
