@@ -1,9 +1,13 @@
 package gt.cs4420.relationaldb.database.storage.file;
 
 import com.google.common.collect.Sets;
+import gt.cs4420.relationaldb.database.storage.index.Index;
+import gt.cs4420.relationaldb.database.storage.index.IndexManager;
+import gt.cs4420.relationaldb.database.storage.index.IndexSerializer;
 import gt.cs4420.relationaldb.domain.Attribute;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.json.TableSerializer;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,12 +26,15 @@ public class FileManager {
     private File descriptionFile;
 
     private JsonFileWriter fileWriter;
+    private JsonFileReader fileReader;
 
     private TableSerializer tableSerializer;
     private BlockSerializer blockSerializer;
+    private IndexSerializer indexSerializer;
 
     public FileManager() {
         fileWriter = new JsonFileWriter();
+        fileReader = new JsonFileReader();
 
         tableSerializer = new TableSerializer();
 
@@ -35,7 +42,7 @@ public class FileManager {
     }
 
     private void initDescription() {
-        descriptionFile = new File(dbRootDirectory + "description");
+        descriptionFile = new File(dbRootDirectory + "description.json");
         //descriptionFile.mkdirs();
 
         try {
@@ -48,6 +55,7 @@ public class FileManager {
     public Set<Table> importDescriptions() {
         Set<Table> tables = Sets.newHashSet();
 
+        //TODO Implement importDescriptions
         return tables;
     }
 
@@ -56,7 +64,7 @@ public class FileManager {
     }
 
     public void exportTableBlock(final Integer tableId, final Integer blockId, final List<Map<Attribute, Object>> blockData) {
-        File blockFile = new File(dbRootDirectory + tableId + "/" + blockId);
+        File blockFile = new File(dbRootDirectory + tableId + "/blocks/" + blockId + ".json");
 
         try {
             blockFile.createNewFile();
@@ -65,5 +73,25 @@ public class FileManager {
         }
 
         fileWriter.write(blockFile, blockSerializer.serialize(blockData));
+    }
+
+    /**
+     * Imports the indexes for the Indexes kept by the provided IndexManager from disk and populates the IndexManager.
+     *
+     * @param indexManager IndexManager with the desired indexes already instantiated
+     */
+    public void importIndexes(final IndexManager indexManager) {
+        for (Integer tableId : indexManager.getTableIdSet()) {
+            File indexFile = new File(dbRootDirectory + tableId + "/index.json");
+
+            if (!indexFile.exists()) {
+                continue;
+            }
+
+            JSONObject indexJson = fileReader.read(indexFile);
+            Index index = indexSerializer.deserialize(indexJson);
+
+            indexManager.addIndex(tableId, index);
+        }
     }
 }

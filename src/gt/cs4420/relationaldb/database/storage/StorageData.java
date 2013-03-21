@@ -30,6 +30,7 @@ class StorageData {
     }
 
     private final int dirtyCountLimit = 10;
+    private boolean ignoreDirty = false;
     private int dirtyCount = 0;
 
     private Map<String, Integer> tableNames;
@@ -60,7 +61,7 @@ class StorageData {
 
         Integer highestId = 0;
 
-        for (final Table table : tableSet) {
+        for (Table table : tableSet) {
             tableNames.put(table.getName(), table.getId());
             tables.put(table.getId(), table);
 
@@ -73,6 +74,12 @@ class StorageData {
     }
 
     private void createIndex() {
+        for (Integer tableId : tables.keySet()) {
+            indexManager.createIndex(tableId);
+        }
+
+        fileManager.importIndexes(indexManager);
+
         //TODO Implement createIndex
     }
 
@@ -108,7 +115,7 @@ class StorageData {
         //TODO Use a real block index
         int blockIndex = 0;
 
-        indexManager.getIndex(tables.get(tableId)).addIndexEntry(primaryKey, blockIndex);
+        indexManager.addIndexEntry(tableId, primaryKey, blockIndex);
 
         dirtyCheck();
     }
@@ -139,6 +146,8 @@ class StorageData {
     }
 
     private void dirtyCheck() {
+        if (ignoreDirty) { return; }
+
         dirtyCount++;
 
         if (dirtyCount < dirtyCountLimit) {
