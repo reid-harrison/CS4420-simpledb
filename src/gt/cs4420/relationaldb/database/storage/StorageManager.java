@@ -13,6 +13,11 @@ import java.util.Map;
  *
  * TODO:
  * -Implement more database operations and management functionality
+ * * * SELECT
+ * * * UPDATE
+ * * * DELETE
+ * * * JOIN
+ * * * ORDER BY
  */
 public class StorageManager {
 

@@ -137,13 +137,14 @@ class StorageData {
      * @return
      */
     private Integer addRow(final Table table, final Map<Attribute, Object> attributes) throws ValidationException {
-        Object primaryKey = attributes.get(table.getPrimaryKeyAttribute());
+        Attribute primaryKeyAttr = table.getDescription().getPrimaryKeyAttribute();
+        Object primaryKey = attributes.get(primaryKeyAttr);
 
         if (tableData.get(table.getId()).containsKey(primaryKey)) {
             throw new ValidationException("A row already exists with the provided primary key attribute; primary keys must be unique");
         }
 
-        if (table.getPrimaryKeyAttribute().getType() == DataType.INT) {
+        if (primaryKeyAttr.getType() == DataType.INT) {
             tableData.get(table.getId()).put((Integer) primaryKey, attributes);
         }
 

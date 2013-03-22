@@ -1,7 +1,6 @@
 package gt.cs4420.relationaldb.database.storage.index;
 
 import com.google.common.collect.Maps;
-import gt.cs4420.relationaldb.domain.Table;
 
 import java.util.Map;
 import java.util.Set;
