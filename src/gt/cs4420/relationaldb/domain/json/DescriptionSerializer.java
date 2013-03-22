@@ -1,5 +1,6 @@
 package gt.cs4420.relationaldb.domain.json;
 
+import gt.cs4420.relationaldb.domain.Attribute;
 import gt.cs4420.relationaldb.domain.Description;
 import org.json.JSONObject;
 
@@ -15,6 +16,7 @@ public class DescriptionSerializer implements JsonSerializer<Description> {
     public JSONObject serialize(Description description) {
         JSONObject json = new JSONObject();
 
+        json.put("primaryKeyAttribute", description.getPrimaryKeyAttribute().getName());
         json.put("attributes", attributeSerializer.serialize(description.getAttributes()));
 
         return json;
@@ -22,8 +24,12 @@ public class DescriptionSerializer implements JsonSerializer<Description> {
 
     @Override
     public Description deserialize(JSONObject json) {
-        //TODO deserialize
-        return null;
+        Description description = new Description();
+
+        description.setAttributes(attributeSerializer.deserialize(json.getJSONArray("attributes")));
+        description.setPrimaryKeyAttribute(new Attribute(json.getString("primaryKeyAttribute")));
+
+        return description;
     }
 
 }

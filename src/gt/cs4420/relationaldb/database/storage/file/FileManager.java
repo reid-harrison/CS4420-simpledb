@@ -44,7 +44,6 @@ public class FileManager {
     }
 
     private void initDescription() {
-        //TODO Fix how the file gets created, currently it creates a directory called "description.json"
         descriptionFile = new File(DB_ROOT_DIRECTORY + "description.json");
 
         try {
@@ -56,10 +55,9 @@ public class FileManager {
     }
 
     public Set<Table> importDescriptions() {
-        Set<Table> tables = Sets.newHashSet();
+        descriptionFile = new File(DB_ROOT_DIRECTORY + "description.json");
 
-        //TODO Implement importDescriptions
-        return tables;
+        return tableSerializer.deserializeTableSet(fileReader.read(descriptionFile));
     }
 
     public void exportDescriptions(final Set<Table> tables) {

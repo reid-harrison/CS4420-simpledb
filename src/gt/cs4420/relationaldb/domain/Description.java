@@ -1,5 +1,7 @@
 package gt.cs4420.relationaldb.domain;
 
+import com.google.common.base.Strings;
+
 import java.util.Arrays;
 
 public class Description {
@@ -40,15 +42,31 @@ public class Description {
      * @param primaryKeyAttribute
      */
     public void setPrimaryKeyAttribute(final Attribute primaryKeyAttribute) {
-        //TODO Support primary key data types other than INTs?
-        if (!primaryKeyAttribute.getType().equals(DataType.INT)) {
-            throw new IllegalArgumentException("Primary Key attributes must be of data type INT");
+        if (Strings.isNullOrEmpty(primaryKeyAttribute.getName())) {
+            throw new IllegalArgumentException("Primary key attributes must at least be populated with a name");
         }
 
-        if (!Arrays.asList(getAttributes()).contains(primaryKeyAttribute)) {
-            throw new IllegalArgumentException("Primary Key attribute does not exist in the table's description");
+        for (Attribute attr : attributes) {
+            if (attr.getName().equals(primaryKeyAttribute.getName())) {
+
+                //Resolve type if need-be
+                if (primaryKeyAttribute.getType() == null) {
+                    primaryKeyAttribute.setType(attr.getType());
+                }
+
+                //TODO Support primary key data types other than INTs?
+                if (!primaryKeyAttribute.getType().equals(DataType.INT)) {
+                    throw new IllegalArgumentException("Primary Key attributes must be of data type INT");
+                }
+
+                //All validation passes
+                this.primaryKeyAttribute = primaryKeyAttribute;
+                return;
+            }
         }
 
-        this.primaryKeyAttribute = primaryKeyAttribute;
+        //If it gets here, there hasn't been a match between the primaryKey's name and any attribute in the description
+        throw new IllegalArgumentException("Primary Key attribute does not exist in the table's description");
+
     }
 }

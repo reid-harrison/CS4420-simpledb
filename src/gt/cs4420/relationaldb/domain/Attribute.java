@@ -6,9 +6,19 @@ public class Attribute {
     private String name;
     private Integer attributeId;
 
+    public Attribute() {
+        type = null;
+        name = null;
+        attributeId = null;
+    }
+
+    public Attribute(final String name) {
+        setName(name);
+    }
+
     public Attribute(final DataType type, final String name) {
-        this.type = type;
-        this.name = name;
+        this(name);
+        setType(type);
     }
 
     public DataType getType() {

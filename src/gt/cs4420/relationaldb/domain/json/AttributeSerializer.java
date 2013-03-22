@@ -20,12 +20,6 @@ public class AttributeSerializer implements JsonSerializer<Attribute> {
         return json;
     }
 
-    @Override
-    public Attribute deserialize(JSONObject json) {
-        //TODO deserialize
-        return null;
-    }
-
     public JSONArray serialize(final Attribute[] attributes) {
         JSONArray array = new JSONArray();
 
@@ -70,5 +64,25 @@ public class AttributeSerializer implements JsonSerializer<Attribute> {
         }
 
         return json;
+    }
+
+    @Override
+    public Attribute deserialize(JSONObject json) {
+        Attribute attribute = new Attribute();
+
+        attribute.setName(json.getString("name"));
+        attribute.setType(DataType.valueOf(json.getString("type")));
+
+        return attribute;
+    }
+
+    public Attribute[] deserialize(JSONArray jsonArray) {
+        Attribute[] attributes = new Attribute[jsonArray.length()];
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            attributes[i] = deserialize(jsonArray.getJSONObject(i));
+        }
+
+        return attributes;
     }
 }
