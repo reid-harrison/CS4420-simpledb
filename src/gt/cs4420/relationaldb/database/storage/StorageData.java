@@ -34,8 +34,10 @@ class StorageData {
     }
 
     private final int DIRTY_COUNT_LIMIT = 10;
-    private boolean ignoreDirty = false;
     private int dirtyCount = 0;
+
+    protected static boolean ignoreDirty = false;
+    protected static boolean exportDisabled = false;
 
     private Map<String, Integer> tableNames;
     private Map<Integer, Table> tables;
@@ -106,6 +108,7 @@ class StorageData {
 
     protected void addTable(final Table table) {
         tables.put(table.getId(), table);
+        tableNames.put(table.getName(), table.getId());
         dirtyCheck();
     }
 
@@ -160,11 +163,18 @@ class StorageData {
             return;
         }
 
-        //TODO Make a smart export (only export modified data)
-        exportBlocks();
-        exportIndexes();
+        export();
 
         dirtyCount = 0;
+    }
+
+    private void export() {
+        //TODO Make a smart export (only export modified data)
+
+        if (!exportDisabled) {
+            exportBlocks();
+            exportIndexes();
+        }
     }
 
     private void exportBlocks() {

@@ -25,6 +25,10 @@ public class StorageManagerTest {
 
     private StorageManagerTest() {
         manager = new StorageManager();
+
+        //Currently disable exporting as only in-memory db is currently being tested
+        StorageData.exportDisabled = true;
+        StorageData.ignoreDirty = true;
     }
 
     private void run() {
@@ -68,8 +72,13 @@ public class StorageManagerTest {
     }
 
     private void testGetTable(final String tableName, final Table expectedTable) {
-        if (!expectedTable.equals(manager.getTable(tableName))) {
-            throw new TestFailedException("Test failed: Get table");
+        Table receivedTable = manager.getTable(tableName);
+
+        if (receivedTable == null) {
+            throw new TestFailedException("Test Failed: Get table (table retrieved was null)");
+        }
+        if (!expectedTable.equals(receivedTable)) {
+            throw new TestFailedException("Test failed: Get table (table retrieved did not equal expected)");
         }
     }
 
