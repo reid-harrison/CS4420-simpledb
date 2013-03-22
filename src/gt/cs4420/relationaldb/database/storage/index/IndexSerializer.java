@@ -9,9 +9,18 @@ import java.text.ParseException;
 public class IndexSerializer implements JsonSerializer<Index> {
 
     @Override
-    public JSONObject serialize(Index object) {
-        //TODO Implement serialize
-        return null;
+    public JSONObject serialize(Index index) {
+        JSONObject indexJson = new JSONObject();
+        JSONArray indexArray = new JSONArray();
+
+        for (Integer primaryKey : index.getPrimaryKeySet()) {
+            JSONObject entryJson = new JSONObject();
+            entryJson.put(primaryKey.toString(), index.getBlockId(primaryKey));
+            indexArray.put(entryJson);
+        }
+
+        indexJson.put("index", indexArray);
+        return indexJson;
     }
 
     @Override

@@ -98,4 +98,19 @@ public class FileManager {
             indexManager.addIndex(tableId, index);
         }
     }
+
+    public void exportIndexes(final IndexManager indexManager) {
+        for (Integer tableId : indexManager.getTableIdSet()) {
+            File indexFile = new File(dbRootDirectory + tableId + "/index.json");
+
+            try {
+                indexFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            JSONObject indexJson = indexSerializer.serialize(indexManager.getIndex(tableId));
+            fileWriter.write(indexFile, indexJson);
+        }
+    }
 }

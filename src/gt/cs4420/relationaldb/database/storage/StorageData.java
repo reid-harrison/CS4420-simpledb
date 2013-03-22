@@ -159,7 +159,9 @@ class StorageData {
             return;
         }
 
+        //TODO Make a smart export (only export modified data)
         exportBlocks();
+        exportIndexes();
 
         dirtyCount = 0;
     }
@@ -181,6 +183,10 @@ class StorageData {
                 fileManager.exportTableBlock(tableId, blockId, blockSize, blockData);
             }
         }
+    }
+
+    private void exportIndexes() {
+        fileManager.exportIndexes(indexManager);
     }
 
 }

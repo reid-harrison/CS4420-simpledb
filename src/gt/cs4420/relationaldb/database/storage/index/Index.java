@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Index {
 
@@ -15,6 +16,10 @@ public class Index {
 
     public Index() {
         index = Maps.newHashMap();
+    }
+
+    public Set<Integer> getPrimaryKeySet() {
+        return index.keySet();
     }
 
     public Integer getBlockId(final Integer primaryKey) {

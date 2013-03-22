@@ -8,6 +8,7 @@ import java.util.Map;
  * TODO:
  * * Spanning blocks
  * * Figure out the best way to handle what determines the "size" of a block (currently an arbitrary unit)
+ * * Keep data in sorted order by primary key
  */
 public class BlockManager {
 
