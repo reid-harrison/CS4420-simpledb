@@ -50,9 +50,6 @@ public class StorageManagerTest {
         //Test getTable
         testGetTable("users", usersTable);
 
-        //Test dropTable
-        testDropTable(usersTable.getId());
-
         //Test insert (This should currently fail since the table was just dropped
         Map<Attribute, Object> attributes = Maps.newHashMap();
         attributes.put(userAttrs[0], 0);
@@ -60,6 +57,10 @@ public class StorageManagerTest {
         attributes.put(userAttrs[2], "rharr90@gmail.com");
         attributes.put(userAttrs[3], "reidpass");
         testInsert(usersTable.getId(), attributes);
+
+        //Test dropTable
+        testDropTable(usersTable.getId());
+
     }
 
     private void testCreateTable(final Table table) {
@@ -67,7 +68,7 @@ public class StorageManagerTest {
             manager.createTable(table);
         } catch (ValidationException e) {
             e.printStackTrace();
-            throw new TestFailedException("Test failed: Create table");
+            throw new TestFailedException("Create table");
         }
     }
 
@@ -75,10 +76,10 @@ public class StorageManagerTest {
         Table receivedTable = manager.getTable(tableName);
 
         if (receivedTable == null) {
-            throw new TestFailedException("Test Failed: Get table (table retrieved was null)");
+            throw new TestFailedException("Get table", "table retrieved was null");
         }
         if (!expectedTable.equals(receivedTable)) {
-            throw new TestFailedException("Test failed: Get table (table retrieved did not equal expected)");
+            throw new TestFailedException("Get table", "table retrieved did not equal expected");
         }
     }
 
@@ -87,7 +88,7 @@ public class StorageManagerTest {
             manager.dropTable(tableId);
         } catch (ValidationException e) {
             e.printStackTrace();
-            throw new TestFailedException("Test failed: Drop table");
+            throw new TestFailedException("Drop table");
         }
 
         boolean dropValidationSuccess = false;
@@ -99,7 +100,7 @@ public class StorageManagerTest {
             dropValidationSuccess = true;
         } finally {
             if (!dropValidationSuccess) {
-                throw new TestFailedException("Test failed: Drop table; Table was not successfully dropped and still believed to exist");
+                throw new TestFailedException("Drop table", "Table was not successfully dropped and still believed to exist");
             }
         }
 
@@ -110,7 +111,7 @@ public class StorageManagerTest {
             manager.insert(tableId, attributes);
         } catch (final ValidationException ve) {
             ve.printStackTrace();
-            throw new TestFailedException("Test failed: Insert");
+            throw new TestFailedException("Insert");
         }
 
         //TODO Implement check that items were inserted

@@ -33,6 +33,8 @@ class StorageData {
         return instance;
     }
 
+    private final String DB_ROOT_DIRECTORY = "database";
+
     private final int DIRTY_COUNT_LIMIT = 10;
     private int dirtyCount = 0;
 
@@ -56,7 +58,7 @@ class StorageData {
         tableData = Maps.newHashMap();
 
         indexManager = new IndexManager();
-        fileManager = new FileManager();
+        fileManager = new FileManager(DB_ROOT_DIRECTORY);
         blockManager = new BlockManager();
 
         loadTableDescriptions();

@@ -13,7 +13,7 @@ import java.util.Map;
  *
  * TODO:
  * -Implement more database operations and management functionality
- * * * SELECT
+ * * * SELECT ( WHERE )
  * * * UPDATE
  * * * DELETE
  * * * JOIN

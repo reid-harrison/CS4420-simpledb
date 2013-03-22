@@ -21,7 +21,7 @@ import java.util.Set;
  */
 public class FileManager {
 
-    private String dbRootDirectory = "database/";
+    private final String DB_ROOT_DIRECTORY;
 
     private File descriptionFile;
 
@@ -32,7 +32,9 @@ public class FileManager {
     private BlockSerializer blockSerializer;
     private IndexSerializer indexSerializer;
 
-    public FileManager() {
+    public FileManager(final String dbRootDirectory) {
+        DB_ROOT_DIRECTORY = dbRootDirectory;
+
         fileWriter = new JsonFileWriter();
         fileReader = new JsonFileReader();
 
@@ -42,8 +44,9 @@ public class FileManager {
     }
 
     private void initDescription() {
-        descriptionFile = new File(dbRootDirectory + "description.json");
-        //descriptionFile.mkdirs();
+        //TODO Fix how the file gets created, currently it creates a directory called "description.json"
+        descriptionFile = new File(DB_ROOT_DIRECTORY, "description.json");
+        descriptionFile.mkdirs();
 
         try {
             descriptionFile.createNewFile();
@@ -68,7 +71,8 @@ public class FileManager {
     }
 
     public void exportTableBlock(final Integer tableId, final Integer blockId, final int blockSize, final List<Map<Attribute, Object>> blockData) {
-        File blockFile = new File(dbRootDirectory + tableId + "/blocks/" + blockId + ".json");
+        File blockFile = new File(DB_ROOT_DIRECTORY + tableId + "/blocks/", blockId + ".json");
+        blockFile.mkdirs();
 
         try {
             blockFile.createNewFile();
@@ -86,7 +90,7 @@ public class FileManager {
      */
     public void importIndexes(final IndexManager indexManager) {
         for (Integer tableId : indexManager.getTableIdSet()) {
-            File indexFile = new File(dbRootDirectory + tableId + "/index.json");
+            File indexFile = new File(DB_ROOT_DIRECTORY + tableId, "index.json");
 
             if (!indexFile.exists()) {
                 continue;
@@ -101,7 +105,8 @@ public class FileManager {
 
     public void exportIndexes(final IndexManager indexManager) {
         for (Integer tableId : indexManager.getTableIdSet()) {
-            File indexFile = new File(dbRootDirectory + tableId + "/index.json");
+            File indexFile = new File(DB_ROOT_DIRECTORY + tableId, "index.json");
+            indexFile.mkdirs();
 
             try {
                 indexFile.createNewFile();
