@@ -76,6 +76,8 @@ public class FileManagerTest {
         testExportDescriptions(testTableSet);
         testImportDescriptions(testTableSet);
 
+        //TODO Lots more tests to do
+
     }
 
     private void testExportDescriptions(final Set<Table> tables) {
@@ -91,8 +93,7 @@ public class FileManagerTest {
 
         for (Table table : expectedTables) {
             if (!receivedTables.contains(table)) {
-                //TODO This will fail because hashCode needs to be overridden to be useful
-                //throw new TestFailedException("Import descriptions", "received set of tables does not equal expected");
+                throw new TestFailedException("Import descriptions", "received set of tables does not equal expected");
             }
         }
 

@@ -1,6 +1,10 @@
 package gt.cs4420.relationaldb.domain;
 
 
+import com.google.common.base.Strings;
+
+import java.util.Objects;
+
 public class Table {
 
     private Integer id;
@@ -52,6 +56,16 @@ public class Table {
         }
 
         return this.id.equals(((Table) other).getId());
+    }
+
+    /**
+     * Returns a composite hashCode of the ID and name. In short, only use comparisons involving
+     * hashCode on sets of Tables that have the same properties set.
+     * @return
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 
 }
