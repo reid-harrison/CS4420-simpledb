@@ -11,11 +11,16 @@ import java.util.Set;
 
 public class FileManagerTest {
 
-    private final String DB_ROOT_DIRECTORY = "test/database";
+    public static void main(String[] args) {
+        FileManagerTest test = new FileManagerTest();
+        test.run();
+    }
+
+    private final String DB_ROOT_DIRECTORY = "database/test/";
 
     private FileManager manager;
 
-    public void run() {
+    private void run() {
         manager = new FileManager(DB_ROOT_DIRECTORY);
 
         /**

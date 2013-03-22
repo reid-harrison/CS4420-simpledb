@@ -45,10 +45,10 @@ public class FileManager {
 
     private void initDescription() {
         //TODO Fix how the file gets created, currently it creates a directory called "description.json"
-        descriptionFile = new File(DB_ROOT_DIRECTORY, "description.json");
-        descriptionFile.mkdirs();
+        descriptionFile = new File(DB_ROOT_DIRECTORY + "description.json");
 
         try {
+            descriptionFile.getParentFile().mkdirs();
             descriptionFile.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
@@ -71,8 +71,8 @@ public class FileManager {
     }
 
     public void exportTableBlock(final Integer tableId, final Integer blockId, final int blockSize, final List<Map<Attribute, Object>> blockData) {
-        File blockFile = new File(DB_ROOT_DIRECTORY + tableId + "/blocks/", blockId + ".json");
-        blockFile.mkdirs();
+        File blockFile = new File(DB_ROOT_DIRECTORY + tableId + "/blocks/" + blockId + ".json");
+        blockFile.getParentFile().mkdirs();
 
         try {
             blockFile.createNewFile();
@@ -90,7 +90,7 @@ public class FileManager {
      */
     public void importIndexes(final IndexManager indexManager) {
         for (Integer tableId : indexManager.getTableIdSet()) {
-            File indexFile = new File(DB_ROOT_DIRECTORY + tableId, "index.json");
+            File indexFile = new File(DB_ROOT_DIRECTORY + tableId + "/" + "index.json");
 
             if (!indexFile.exists()) {
                 continue;
@@ -105,8 +105,8 @@ public class FileManager {
 
     public void exportIndexes(final IndexManager indexManager) {
         for (Integer tableId : indexManager.getTableIdSet()) {
-            File indexFile = new File(DB_ROOT_DIRECTORY + tableId, "index.json");
-            indexFile.mkdirs();
+            File indexFile = new File(DB_ROOT_DIRECTORY + tableId + "/" + "index.json");
+            indexFile.getParentFile().mkdirs();
 
             try {
                 indexFile.createNewFile();

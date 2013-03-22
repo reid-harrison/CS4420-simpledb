@@ -7,11 +7,15 @@ public class DescriptionSerializer implements JsonSerializer<Description> {
 
     private AttributeSerializer attributeSerializer;
 
+    public DescriptionSerializer() {
+        attributeSerializer = new AttributeSerializer();
+    }
+
     @Override
-    public JSONObject serialize(Description object) {
+    public JSONObject serialize(Description description) {
         JSONObject json = new JSONObject();
 
-        json.put("attributes", attributeSerializer.serialize(object.getAttributes()));
+        json.put("attributes", attributeSerializer.serialize(description.getAttributes()));
 
         return json;
     }
