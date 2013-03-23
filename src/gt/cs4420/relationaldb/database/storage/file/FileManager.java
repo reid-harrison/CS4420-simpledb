@@ -40,6 +40,8 @@ public class FileManager {
         fileReader = new JsonFileReader();
 
         tableSerializer = new TableSerializer();
+        blockSerializer = new BlockSerializer();
+        indexSerializer = new IndexSerializer();
 
         initDescription();
     }
@@ -73,8 +75,6 @@ public class FileManager {
         }
 
         return blockSerializer.deserialize(fileReader.read(blockFile));
-
-        //TODO Implement importTableBlock
     }
 
     public void exportTableBlock(final Integer tableId, final Integer blockId, final int blockSize, final List<Map<Attribute, Object>> blockData) {

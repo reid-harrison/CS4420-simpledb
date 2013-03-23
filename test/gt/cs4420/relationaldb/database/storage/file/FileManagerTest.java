@@ -9,11 +9,13 @@ import gt.cs4420.relationaldb.domain.Description;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.test.TestFailedException;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
+/**
+ * TODO:
+ * -Add more tests to cover more functionality
+ * -Add more sophisticated tests
+ */
 public class FileManagerTest {
 
     public static void main(String[] args) {
@@ -112,12 +114,15 @@ public class FileManagerTest {
         block2.add(user3Attrs);
 
         /**
-         * Test exporting table blocks
+         * Test exporting and importing table blocks
          */
         testExportTableBlock(usersTable.getId(), 0, usersBlockSize * 2, block1);
-        testExportTableBlock(usersTable.getId(), 0, usersBlockSize, block2);
+        testImportTableBlock(usersTable.getId(), 0, block1);
 
-        //TODO Lots more tests to do
+        testExportTableBlock(usersTable.getId(), 1, usersBlockSize, block2);
+        testImportTableBlock(usersTable.getId(), 1, block2);
+
+        //TODO Some more tests to do
 
     }
 
@@ -144,8 +149,14 @@ public class FileManagerTest {
         manager.exportTableBlock(tableId, blockId, blockSize, blockData);
     }
 
-    private void testImportTableBlock() {
-        //TODO Implement test
+    private void testImportTableBlock(final Integer tableId, final Integer blockId, final List<Map<Attribute, Object>> expectedBlock) {
+        List<Map<Attribute, Object>> receivedBlock = manager.importTableBlock(tableId, blockId);
+
+        for (Map<Attribute, Object> attributes : receivedBlock) {
+            if (!receivedBlock.contains(attributes)) {
+                throw new TestFailedException("Import table block", "received block does not equal expected");
+            }
+        }
     }
 
 }

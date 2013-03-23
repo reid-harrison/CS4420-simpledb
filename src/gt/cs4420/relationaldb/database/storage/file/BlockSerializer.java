@@ -44,7 +44,7 @@ class BlockSerializer implements JsonSerializer<List<Map<Attribute, Object>>> {
         }
 
         //TODO do something with the block size
-        int blockSize = json.getInt("blockSize");
+        int blockSize = json.getInt("size");
 
         return blockData;
     }
