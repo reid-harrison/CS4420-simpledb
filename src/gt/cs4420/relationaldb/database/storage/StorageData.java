@@ -6,8 +6,7 @@ import gt.cs4420.relationaldb.database.storage.block.Block;
 import gt.cs4420.relationaldb.database.storage.block.BlockManager;
 import gt.cs4420.relationaldb.database.storage.file.FileManager;
 import gt.cs4420.relationaldb.database.storage.index.IndexManager;
-import gt.cs4420.relationaldb.domain.Attribute;
-import gt.cs4420.relationaldb.domain.DataType;
+import gt.cs4420.relationaldb.domain.Row;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
 
@@ -60,8 +59,8 @@ class StorageData {
     //Table ID -> Table
     private Map<Integer, Table> tables;
 
-    //Table ID -> (Primary Key -> Attribute value mapping)
-    private Map<Integer, Map<Integer, Map<Attribute, Object>>> tableData;
+    //Table ID -> (Primary Key -> Row data)
+    private Map<Integer, Map<Integer, Row>> tableData;
 
     //Various assisting Managers
     private IndexManager indexManager;
@@ -150,13 +149,13 @@ class StorageData {
         dirtyCheck();
     }
 
-    protected void insert(final Integer tableId, final Map<Attribute, Object> attributes) throws ValidationException {
-        Integer primaryKey = addRow(getTable(tableId), attributes);
+    protected void insert(final Integer tableId, final Row row) throws ValidationException {
+        addRow(tableId, row);
 
         //TODO Figure out what to do about long ass Strings
-        Integer blockIndex = blockManager.allocateBlockSpace(tableId, attributes.size());
+        Integer blockIndex = blockManager.allocateBlockSpace(tableId, row.getRowData().size());
 
-        indexManager.addIndexEntry(tableId, primaryKey, blockIndex);
+        indexManager.addIndexEntry(tableId, row.getPrimaryKey(), blockIndex);
 
         dirtyCheck();
     }
@@ -169,22 +168,18 @@ class StorageData {
      * Adds a row to this in-memory representation of a Table. This will not guarantee that the row is actually written
      * to disk.
      *
-     * @param attributes Attribute values for the new row
+     * @
+     * @param row Attribute values for the new row
      * @return
      */
-    private Integer addRow(final Table table, final Map<Attribute, Object> attributes) throws ValidationException {
-        Attribute primaryKeyAttr = table.getDescription().getPrimaryKeyAttribute();
-        Object primaryKey = attributes.get(primaryKeyAttr);
+    private void addRow(final Integer tableId, final Row row) throws ValidationException {
 
-        if (tableData.get(table.getId()).containsKey(primaryKey)) {
+        //TODO This needs to check the IndexManager, not table data!
+        if (tableData.get(tableId).containsKey(row.getPrimaryKey())) {
             throw new ValidationException("A row already exists with the provided primary key attribute; primary keys must be unique");
         }
 
-        if (primaryKeyAttr.getType() == DataType.INT) {
-            tableData.get(table.getId()).put((Integer) primaryKey, attributes);
-        }
-
-        return (Integer) primaryKey;
+        tableData.get(tableId).put(row.getPrimaryKey(), row);
     }
 
     /**
@@ -192,44 +187,40 @@ class StorageData {
      * -Something special will have to be done to cast deserialized Objects into their appropriate types based off
      *  of an Attribute's DataType
      */
-    private Map<Attribute, Object> getRow(final Integer tableId, final Integer primaryKey) {
+    private Row getRow(final Integer tableId, final Integer primaryKey) {
         Integer blockId = indexManager.getIndex(tableId).getBlockId(primaryKey);
 
         if (blockId == null) {
             throw new NullPointerException("Primary key: " + primaryKey + " does not exist for table ID: " + tableId);
         }
 
-        Map<Attribute, Object> rowData = tableData.get(tableId).get(primaryKey);
+        Row row = tableData.get(tableId).get(primaryKey);
 
-        if (rowData == null || rowData.isEmpty()) {
+        //Try to find the data on disk if it isn't in memory already
+        if (row == null || row.getRowData() == null || row.getRowData().isEmpty()) {
             Block block = fileManager.importTableBlock(tableId, blockId);
-            List<Map<Attribute, Object>> blockData = block.getBlockData();
+            List<Row> rowData = block.getBlockData();
 
             //TODO Add a better representation of row data so access by primary key can be more efficient
-            for (Map<Attribute, Object> row : blockData) {
-                Integer currPrimaryKey = (Integer) row.get(tables.get(tableId).getDescription().getPrimaryKeyAttribute());
-
-                if (primaryKey.equals(currPrimaryKey)) {
-                    rowData = row;
+            for (Row currRow : rowData) {
+                if (primaryKey.equals(currRow.getPrimaryKey())) {
+                    row = currRow;
                 }
             }
 
-            if (rowData == null) {
-                throw new NullPointerException("Row data could not be retrieved and populated");
+            if (row == null || row.getRowData() == null || row.getRowData().isEmpty()) {
+                return null;
             }
 
             addBlock(tableId, block);
         }
 
-        Block block = fileManager.importTableBlock(tableId, blockId);
-
-        return rowData;
+        return row;
     }
 
     private void addBlock(final Integer tableId, final Block block) {
-        for (Map<Attribute, Object> rowData : block.getBlockData()) {
-            Integer primaryKey = (Integer) rowData.get(tables.get(tableId).getDescription().getPrimaryKeyAttribute());
-            tableData.get(tableId).put(primaryKey, rowData);
+        for (Row row : block.getBlockData()) {
+            tableData.get(tableId).put(row.getPrimaryKey(), row);
         }
     }
 
@@ -263,14 +254,14 @@ class StorageData {
             for (Integer blockId : blockIndex.keySet()) {
                 List<Integer> primaryKeys = blockIndex.get(blockId);
 
-                List<Map<Attribute, Object>> blockData = Lists.newArrayList();
+                List<Row> rows = Lists.newArrayList();
 
                 for (Integer primaryKey : primaryKeys) {
-                    blockData.add(tableData.get(tableId).get(primaryKey));
+                    rows.add(tableData.get(tableId).get(primaryKey));
                 }
 
                 int blockSize = blockManager.getBlockSize(tableId, blockId);
-                fileManager.exportTableBlock(tableId, blockId, blockSize, blockData);
+                fileManager.exportTableBlock(tableId, blockId, blockSize, rows);
             }
         }
     }

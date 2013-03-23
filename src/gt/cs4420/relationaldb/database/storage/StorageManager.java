@@ -1,12 +1,11 @@
 package gt.cs4420.relationaldb.database.storage;
 
 import gt.cs4420.relationaldb.domain.Attribute;
+import gt.cs4420.relationaldb.domain.Row;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
 import gt.cs4420.relationaldb.domain.validator.AttributeValidator;
 import gt.cs4420.relationaldb.domain.validator.TableValidator;
-
-import java.util.Map;
 
 /**
  * The point of interaction for the Storage Engine. Use the provided methods to perform database operations.
@@ -87,15 +86,30 @@ public class StorageManager {
      * Inserts the given attribute data mapping into the given table.
      *
      * @param tableId the ID of the table
-     * @param attributes the mapping of the data to insert
+     * @param row the row to insert (with the primary key at least populated in the row's data)
      * @throws ValidationException if a row already exists with the private key or the data is not valid for the table's description
      */
-    public void insert(final Integer tableId, Map<Attribute, Object> attributes) throws ValidationException {
+    public void insert(final Integer tableId, Row row) throws ValidationException {
         validateTableExists(tableId);
-        attributeValidator.validate(attributes, storageData.getTable(tableId).getDescription());
+
+        //Attempt to resolve primary key
+        Attribute primaryKeyAttr = storageData.getTable(tableId).getDescription().getPrimaryKeyAttribute();
+
+        //TODO make a better transition from Object primary key to Integer
+        Integer primaryKey = (Integer) row.getRowData().get(primaryKeyAttr);
+
+        if (primaryKey == null) {
+            throw new IllegalArgumentException("Primary key must be set for Row in its row data");
+        }
+
+        row.setPrimaryKey(primaryKey);
+
+        //Validate the the row data is populated with valid data
+        attributeValidator.validate(row.getRowData(), storageData.getTable(tableId).getDescription());
+
         //TODO Implement insert validation
 
-        storageData.insert(tableId, attributes);
+        storageData.insert(tableId, row);
     }
 
     /**

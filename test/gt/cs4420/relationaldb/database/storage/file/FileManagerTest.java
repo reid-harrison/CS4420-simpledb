@@ -5,10 +5,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import gt.cs4420.relationaldb.database.storage.block.Block;
 import gt.cs4420.relationaldb.database.storage.index.IndexManager;
-import gt.cs4420.relationaldb.domain.Attribute;
-import gt.cs4420.relationaldb.domain.DataType;
-import gt.cs4420.relationaldb.domain.Description;
-import gt.cs4420.relationaldb.domain.Table;
+import gt.cs4420.relationaldb.domain.*;
 import gt.cs4420.relationaldb.test.TestFailedException;
 
 import java.util.HashSet;
@@ -93,30 +90,36 @@ public class FileManagerTest {
          */
         int usersBlockSize = 4;
 
+        Row row1 = new Row();
         Map<Attribute, Object> user1Attrs = Maps.newHashMap();
         user1Attrs.put(userAttrs[0], 0);
         user1Attrs.put(userAttrs[1], "reid");
         user1Attrs.put(userAttrs[2], "rharr90@gmail.com");
         user1Attrs.put(userAttrs[3], "reidpass");
+        row1.setRowData(user1Attrs);
 
+        Row row2 = new Row();
         Map<Attribute, Object> user2Attrs = Maps.newHashMap();
         user2Attrs.put(userAttrs[0], 1);
         user2Attrs.put(userAttrs[1], "phil");
         user2Attrs.put(userAttrs[2], "sortofrican90@gmail.com");
         user2Attrs.put(userAttrs[3], "philpass");
+        row2.setRowData(user2Attrs);
 
+        Row row3 = new Row();
         Map<Attribute, Object> user3Attrs = Maps.newHashMap();
         user3Attrs.put(userAttrs[0], 3);
         user3Attrs.put(userAttrs[1], "bruce");
         user3Attrs.put(userAttrs[2], "chenhao.liu@gmail.com");
         user3Attrs.put(userAttrs[3], "brucepass");
+        row3.setRowData(user3Attrs);
 
-        List<Map<Attribute, Object>> block1 = Lists.newArrayList();
-        block1.add(user1Attrs);
-        block1.add(user2Attrs);
+        List<Row> block1 = Lists.newArrayList();
+        block1.add(row1);
+        block1.add(row2);
 
-        List<Map<Attribute, Object>> block2 = Lists.newArrayList();
-        block2.add(user3Attrs);
+        List<Row> block2 = Lists.newArrayList();
+        block2.add(row3);
 
         /**
          * Test exporting and importing table blocks
@@ -136,9 +139,9 @@ public class FileManagerTest {
         indexManager.createIndex(postsTable.getId());
         indexManager.createIndex(followersTable.getId());
 
-        indexManager.addIndexEntry(usersTable.getId(), (Integer) block1.get(0).get(userAttrs[0]), 0);
-        indexManager.addIndexEntry(usersTable.getId(), (Integer) block1.get(1).get(userAttrs[0]), 0);
-        indexManager.addIndexEntry(usersTable.getId(), (Integer) block2.get(0).get(userAttrs[0]), 1);
+        indexManager.addIndexEntry(usersTable.getId(), (Integer) block1.get(0).getRowData().get(userAttrs[0]), 0);
+        indexManager.addIndexEntry(usersTable.getId(), (Integer) block1.get(1).getRowData().get(userAttrs[0]), 0);
+        indexManager.addIndexEntry(usersTable.getId(), (Integer) block2.get(0).getRowData().get(userAttrs[0]), 1);
 
         IndexManager importIndex = new IndexManager();
         importIndex.createIndex(usersTable.getId());
@@ -175,15 +178,15 @@ public class FileManagerTest {
 
     }
 
-    private void testExportTableBlock(final Integer tableId, final Integer blockId, final int blockSize, final List<Map<Attribute, Object>> blockData) {
-        manager.exportTableBlock(tableId, blockId, blockSize, blockData);
+    private void testExportTableBlock(final Integer tableId, final Integer blockId, final int blockSize, final List<Row> rowData) {
+        manager.exportTableBlock(tableId, blockId, blockSize, rowData);
     }
 
-    private void testImportTableBlock(final Integer tableId, final Integer blockId, final List<Map<Attribute, Object>> expectedBlock) {
+    private void testImportTableBlock(final Integer tableId, final Integer blockId, final List<Row> expectedRows) {
        Block importBlock = manager.importTableBlock(tableId, blockId);
 
-        for (Map<Attribute, Object> attributes : expectedBlock) {
-            if (!importBlock.getBlockData().contains(attributes)) {
+        for (Row row : expectedRows) {
+            if (!importBlock.getBlockData().contains(row.getRowData())) {
                 throw new TestFailedException("Import table block", "received block does not equal expected");
             }
         }

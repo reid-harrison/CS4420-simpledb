@@ -4,7 +4,7 @@ import gt.cs4420.relationaldb.database.storage.block.Block;
 import gt.cs4420.relationaldb.database.storage.index.Index;
 import gt.cs4420.relationaldb.database.storage.index.IndexManager;
 import gt.cs4420.relationaldb.database.storage.index.IndexSerializer;
-import gt.cs4420.relationaldb.domain.Attribute;
+import gt.cs4420.relationaldb.domain.Row;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.json.TableSerializer;
 import org.json.JSONObject;
@@ -12,7 +12,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -87,7 +86,7 @@ public class FileManager {
         return blockSerializer.deserialize(fileReader.read(blockFile));
     }
 
-    public void exportTableBlock(final Integer tableId, final Integer blockId, final int blockSize, final List<Map<Attribute, Object>> blockData) {
+    public void exportTableBlock(final Integer tableId, final Integer blockId, final int blockSize, final List<Row> rows) {
         File blockFile = new File(DB_ROOT_DIRECTORY + tableId + "/blocks/" + blockId + ".json");
         blockFile.getParentFile().mkdirs();
 
@@ -97,7 +96,7 @@ public class FileManager {
             e.printStackTrace();
         }
 
-        Block block = new Block(blockId, blockData, blockSize);
+        Block block = new Block(blockId, rows, blockSize);
 
         fileWriter.write(blockFile, blockSerializer.serialize(block));
     }

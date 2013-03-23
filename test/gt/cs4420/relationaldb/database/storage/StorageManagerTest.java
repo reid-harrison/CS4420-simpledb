@@ -1,10 +1,7 @@
 package gt.cs4420.relationaldb.database.storage;
 
 import com.google.common.collect.Maps;
-import gt.cs4420.relationaldb.domain.Attribute;
-import gt.cs4420.relationaldb.domain.DataType;
-import gt.cs4420.relationaldb.domain.Description;
-import gt.cs4420.relationaldb.domain.Table;
+import gt.cs4420.relationaldb.domain.*;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
 import gt.cs4420.relationaldb.test.TestFailedException;
 
@@ -108,7 +105,10 @@ public class StorageManagerTest {
 
     private void testInsert(final Integer tableId, Map<Attribute, Object> attributes) {
         try {
-            manager.insert(tableId, attributes);
+            Row row = new Row();
+            row.setRowData(attributes);
+
+            manager.insert(tableId, row);
         } catch (final ValidationException ve) {
             ve.printStackTrace();
             throw new TestFailedException("Insert");
