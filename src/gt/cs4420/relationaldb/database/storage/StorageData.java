@@ -16,10 +16,7 @@ import java.util.Set;
 
 /**
  * TODO:
- * -Implement in-memory storage
- * -Mechanism for writing to disk
- * -Importing data from disk
- * -Indexing
+ * -More functionality
  */
 class StorageData {
 
@@ -127,7 +124,7 @@ class StorageData {
     protected void insert(final Integer tableId, final Map<Attribute, Object> attributes) throws ValidationException {
         Integer primaryKey = addRow(getTable(tableId), attributes);
 
-        //TODO Make use of spanning blocks and figure out what to do about long ass Strings
+        //TODO Figure out what to do about long ass Strings
         Integer blockIndex = blockManager.allocateBlockSpace(tableId, attributes.size());
 
         indexManager.addIndexEntry(tableId, primaryKey, blockIndex);

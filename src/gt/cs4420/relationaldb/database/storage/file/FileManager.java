@@ -1,5 +1,6 @@
 package gt.cs4420.relationaldb.database.storage.file;
 
+import gt.cs4420.relationaldb.database.storage.block.Block;
 import gt.cs4420.relationaldb.database.storage.index.Index;
 import gt.cs4420.relationaldb.database.storage.index.IndexManager;
 import gt.cs4420.relationaldb.database.storage.index.IndexSerializer;
@@ -72,7 +73,7 @@ public class FileManager {
             return null;
         }
 
-        return blockSerializer.deserialize(fileReader.read(blockFile));
+        return blockSerializer.deserialize(fileReader.read(blockFile)).getBlockData();
     }
 
     public void exportTableBlock(final Integer tableId, final Integer blockId, final int blockSize, final List<Map<Attribute, Object>> blockData) {
@@ -85,7 +86,9 @@ public class FileManager {
             e.printStackTrace();
         }
 
-        fileWriter.write(blockFile, blockSerializer.serializeWithSize(blockData, blockSize));
+        Block block = new Block(blockId, blockData, blockSize);
+
+        fileWriter.write(blockFile, blockSerializer.serialize(block));
     }
 
     /**

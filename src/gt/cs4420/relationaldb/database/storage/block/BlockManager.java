@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * TODO:
- * * Spanning blocks
+ * * Load and store block sizes correctly on disk
  * * Figure out the best way to handle what determines the "size" of a block (currently an arbitrary unit)
  * * Keep data in sorted order by primary key
  */
@@ -32,11 +32,6 @@ public class BlockManager {
      * @return Integer the block ID in which space was allocated
      */
     public Integer allocateBlockSpace(final Integer tableId, final int requestedSize) {
-        //TODO Make this more sophisticated with spanning blocks
-        if (requestedSize > MAX_BLOCK_SIZE) {
-            throw new IllegalArgumentException("At the moment, space cannot be allocated for data larger than: " + requestedSize);
-        }
-
         Map<Integer, Integer> tableBlockSizes = blockSizes.get(tableId);
 
         if (tableBlockSizes == null) {
@@ -44,13 +39,19 @@ public class BlockManager {
             blockSizes.put(tableId, tableBlockSizes);
         }
 
-        for (Integer blockId : tableBlockSizes.keySet()) {
-            if (tableBlockSizes.get(blockId) + requestedSize <= MAX_BLOCK_SIZE) {
-                tableBlockSizes.put(blockId, tableBlockSizes.get(blockId) + requestedSize);
-                return blockId;
+        //If the requested size is small enough, it will share a block with other data
+        if (requestedSize < MAX_BLOCK_SIZE) {
+
+            //Find the first block with enough space to be allocated
+            for (Integer blockId : tableBlockSizes.keySet()) {
+                if (tableBlockSizes.get(blockId) + requestedSize <= MAX_BLOCK_SIZE) {
+                    tableBlockSizes.put(blockId, tableBlockSizes.get(blockId) + requestedSize);
+                    return blockId;
+                }
             }
         }
 
+        //No available blocks, allocate a new one
         Integer newBlockId = addBlock(tableId);
         tableBlockSizes.put(newBlockId, requestedSize);
 

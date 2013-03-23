@@ -1,6 +1,7 @@
 package gt.cs4420.relationaldb.database.storage.file;
 
 import com.google.common.collect.Lists;
+import gt.cs4420.relationaldb.database.storage.block.Block;
 import gt.cs4420.relationaldb.domain.Attribute;
 import gt.cs4420.relationaldb.domain.json.AttributeSerializer;
 import gt.cs4420.relationaldb.domain.json.JsonSerializer;
@@ -10,7 +11,7 @@ import org.json.JSONObject;
 import java.util.List;
 import java.util.Map;
 
-class BlockSerializer implements JsonSerializer<List<Map<Attribute, Object>>> {
+class BlockSerializer implements JsonSerializer<Block> {
 
     private AttributeSerializer attributeSerializer;
 
@@ -19,44 +20,44 @@ class BlockSerializer implements JsonSerializer<List<Map<Attribute, Object>>> {
     }
 
     @Override
-    public JSONObject serialize(final List<Map<Attribute, Object>> blockData) {
+    public JSONObject serialize(final Block block) {
         JSONObject json = new JSONObject();
-
         JSONArray blockArray = new JSONArray();
 
-        for (int i = 0; i < blockData.size(); i++) {
-            blockArray.put(i, attributeSerializer.serialize(blockData.get(i)));
+        for (int i = 0; i < block.getBlockData().size(); i++) {
+            blockArray.put(i, attributeSerializer.serialize(block.getBlockData().get(i)));
         }
 
-        json.put("block", blockArray);
+        JSONObject blockJson = new JSONObject();
+        blockJson.put("blockId", block.getBlockId());
+        blockJson.put("size", block.getBlockSize());
+        blockJson.put("data", blockArray);
+
+        json.put("block", blockJson);
         return json;
     }
 
     @Override
-    public List<Map<Attribute, Object>> deserialize(final JSONObject json) {
+    public Block deserialize(final JSONObject json) {
+        Block block = new Block();
+
+        JSONObject blockJson = json.getJSONObject("block");
+
+        block.setBlockSize(blockJson.getInt("size"));
+        block.setBlockId(blockJson.getInt("blockId"));
+
+        JSONArray dataArray = blockJson.getJSONArray("data");
+
         List<Map<Attribute, Object>> blockData = Lists.newArrayList();
-
-        JSONArray blockArray = json.getJSONArray("block");
-
-        for (int i = 0; i < blockArray.length(); i++) {
-            Map<Attribute, Object> attrs = attributeSerializer.deserializeWithData(blockArray.getJSONArray(i));
+        
+        for (int i = 0; i < dataArray.length(); i++) {
+            Map<Attribute, Object> attrs = attributeSerializer.deserializeWithData(dataArray.getJSONArray(i));
             blockData.add(attrs);
         }
 
-        //TODO do something with the block size
-        int blockSize = json.getInt("size");
+        block.setBlockData(blockData);
 
-        return blockData;
+        return block;
     }
 
-    /**
-     * Serializes the block data in the standard block format but also appends the size for easy reference later.
-     *
-     * @param blockData
-     * @param blockSize
-     * @return JSONObject
-     */
-    public JSONObject serializeWithSize(final List<Map<Attribute, Object>> blockData, final int blockSize) {
-        return serialize(blockData).put("size", blockSize);
-    }
 }

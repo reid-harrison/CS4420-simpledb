@@ -181,7 +181,7 @@ public class FileManagerTest {
     private void testImportTableBlock(final Integer tableId, final Integer blockId, final List<Map<Attribute, Object>> expectedBlock) {
         List<Map<Attribute, Object>> receivedBlock = manager.importTableBlock(tableId, blockId);
 
-        for (Map<Attribute, Object> attributes : receivedBlock) {
+        for (Map<Attribute, Object> attributes : expectedBlock) {
             if (!receivedBlock.contains(attributes)) {
                 throw new TestFailedException("Import table block", "received block does not equal expected");
             }
