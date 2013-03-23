@@ -1,5 +1,6 @@
 package gt.cs4420.relationaldb.database.storage.file;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import gt.cs4420.relationaldb.database.storage.index.Index;
 import gt.cs4420.relationaldb.database.storage.index.IndexManager;
@@ -64,7 +65,15 @@ public class FileManager {
         fileWriter.write(descriptionFile, tableSerializer.serialize(tables));
     }
 
-    public void importTableBlock() {
+    public List<Map<Attribute, Object>> importTableBlock(final Integer tableId, final Integer blockId) {
+        File blockFile = new File(DB_ROOT_DIRECTORY + tableId + "/blocks/" + blockId + ".json");
+
+        if (!blockFile.exists()) {
+            return null;
+        }
+
+        return blockSerializer.deserialize(fileReader.read(blockFile));
+
         //TODO Implement importTableBlock
     }
 

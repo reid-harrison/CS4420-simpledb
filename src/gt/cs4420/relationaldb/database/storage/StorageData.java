@@ -89,7 +89,12 @@ class StorageData {
 
         fileManager.importIndexes(indexManager);
 
-        //TODO Set up block manager
+        /**
+         * TODO
+         * -Set up block manager (Import table blocks)
+         * -Something special will have to be done to cast to deserialized Objects into their appropriate types based off
+         *  of and Attribute's DataType
+         */
     }
 
     protected boolean tableExists(final Integer tableId) {

@@ -1,5 +1,9 @@
 package gt.cs4420.relationaldb.domain;
 
+/**
+ * TODO:
+ * I don't think I've used attributeId anywhere. Maybe it isn't needed.
+ */
 public class Attribute {
 
     private DataType type;

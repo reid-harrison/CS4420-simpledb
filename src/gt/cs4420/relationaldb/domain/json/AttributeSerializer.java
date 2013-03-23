@@ -1,6 +1,7 @@
 package gt.cs4420.relationaldb.domain.json;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
 import gt.cs4420.relationaldb.domain.Attribute;
 import gt.cs4420.relationaldb.domain.DataType;
 import org.json.JSONArray;
@@ -8,10 +9,14 @@ import org.json.JSONObject;
 
 import java.util.Map;
 
+/**
+ * TODO:
+ * -Serialize attribute ids?
+ */
 public class AttributeSerializer implements JsonSerializer<Attribute> {
 
     @Override
-    public JSONObject serialize(Attribute object) {
+    public JSONObject serialize(final Attribute object) {
         JSONObject json = new JSONObject();
 
         json.put("name", object.getName());
@@ -40,6 +45,14 @@ public class AttributeSerializer implements JsonSerializer<Attribute> {
         return json;
     }
 
+    /**
+     * Serializes an Attribute -> Object pair. The attribute's name is used as the key for the serialized value.
+     * The DataType of the Attribute is not serialized.
+     *
+     * @param attribute
+     * @param value
+     * @return JSONObject
+     */
     public JSONObject serialize(final Attribute attribute, final Object value) {
         JSONObject json = new JSONObject();
         DataType type = attribute.getType();
@@ -67,7 +80,7 @@ public class AttributeSerializer implements JsonSerializer<Attribute> {
     }
 
     @Override
-    public Attribute deserialize(JSONObject json) {
+    public Attribute deserialize(final JSONObject json) {
         Attribute attribute = new Attribute();
 
         attribute.setName(json.getString("name"));
@@ -76,7 +89,13 @@ public class AttributeSerializer implements JsonSerializer<Attribute> {
         return attribute;
     }
 
-    public Attribute[] deserialize(JSONArray jsonArray) {
+    /**
+     * Deserializes an array of Attribute objects for importing Descriptions.
+     *
+     * @param jsonArray
+     * @return Attribute[] array of Attribute descriptions (no data)
+     */
+    public Attribute[] deserialize(final JSONArray jsonArray) {
         Attribute[] attributes = new Attribute[jsonArray.length()];
 
         for (int i = 0; i < jsonArray.length(); i++) {
@@ -85,4 +104,29 @@ public class AttributeSerializer implements JsonSerializer<Attribute> {
 
         return attributes;
     }
+
+    public Map<Attribute, Object> deserializeWithData(final JSONArray jsonArray) {
+        Map<Attribute, Object> attributeData = Maps.newHashMap();
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            attributeData.putAll(deserializeWithData(jsonArray.getJSONObject(i)));
+        }
+
+        return attributeData;
+    }
+
+    /**
+     * Deserializes a single attribute with data.
+     *
+     * @param jsonObject
+     * @return Map<Attribute, Object> containing one item
+     */
+    public Map<Attribute, Object> deserializeWithData(final JSONObject jsonObject) {
+        Map<Attribute, Object> attributeMap = Maps.newHashMap();
+        Attribute attr = new Attribute(jsonObject.keys().next().toString());
+
+        attributeMap.put(attr, jsonObject.get(attr.getName()));
+        return attributeMap;
+    }
+
 }

@@ -1,5 +1,6 @@
 package gt.cs4420.relationaldb.database.storage.file;
 
+import com.google.common.collect.Lists;
 import gt.cs4420.relationaldb.domain.Attribute;
 import gt.cs4420.relationaldb.domain.json.AttributeSerializer;
 import gt.cs4420.relationaldb.domain.json.JsonSerializer;
@@ -11,15 +12,20 @@ import java.util.Map;
 
 class BlockSerializer implements JsonSerializer<List<Map<Attribute, Object>>> {
 
+    private AttributeSerializer attributeSerializer;
+
+    public BlockSerializer() {
+        attributeSerializer = new AttributeSerializer();
+    }
+
     @Override
     public JSONObject serialize(final List<Map<Attribute, Object>> blockData) {
         JSONObject json = new JSONObject();
-        AttributeSerializer attrSerializer = new AttributeSerializer();
 
         JSONArray blockArray = new JSONArray();
 
         for (int i = 0; i < blockData.size(); i++) {
-            blockArray.put(i, attrSerializer.serialize(blockData.get(i)));
+            blockArray.put(i, attributeSerializer.serialize(blockData.get(i)));
         }
 
         json.put("block", blockArray);
@@ -28,8 +34,19 @@ class BlockSerializer implements JsonSerializer<List<Map<Attribute, Object>>> {
 
     @Override
     public List<Map<Attribute, Object>> deserialize(final JSONObject json) {
-        //TODO Implement deserialize
-        return null;
+        List<Map<Attribute, Object>> blockData = Lists.newArrayList();
+
+        JSONArray blockArray = json.getJSONArray("block");
+
+        for (int i = 0; i < blockArray.length(); i++) {
+            Map<Attribute, Object> attrs = attributeSerializer.deserializeWithData(blockArray.getJSONArray(i));
+            blockData.add(attrs);
+        }
+
+        //TODO do something with the block size
+        int blockSize = json.getInt("blockSize");
+
+        return blockData;
     }
 
     /**
