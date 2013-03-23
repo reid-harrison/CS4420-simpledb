@@ -1,5 +1,7 @@
 package gt.cs4420.relationaldb.database.storage.file;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import gt.cs4420.relationaldb.domain.Attribute;
 import gt.cs4420.relationaldb.domain.DataType;
@@ -8,6 +10,8 @@ import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.test.TestFailedException;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class FileManagerTest {
@@ -71,10 +75,47 @@ public class FileManagerTest {
         testTableSet.add(followersTable);
 
         /**
-         * Run tests
+         * Run Export Description tests
          */
         testExportDescriptions(testTableSet);
         testImportDescriptions(testTableSet);
+
+
+        /**
+         * Build User data
+         */
+        int usersBlockSize = 4;
+
+        Map<Attribute, Object> user1Attrs = Maps.newHashMap();
+        user1Attrs.put(userAttrs[0], 0);
+        user1Attrs.put(userAttrs[1], "reid");
+        user1Attrs.put(userAttrs[2], "rharr90@gmail.com");
+        user1Attrs.put(userAttrs[3], "reidpass");
+
+        Map<Attribute, Object> user2Attrs = Maps.newHashMap();
+        user2Attrs.put(userAttrs[0], 1);
+        user2Attrs.put(userAttrs[1], "phil");
+        user2Attrs.put(userAttrs[2], "sortofrican90@gmail.com");
+        user2Attrs.put(userAttrs[3], "philpass");
+
+        Map<Attribute, Object> user3Attrs = Maps.newHashMap();
+        user3Attrs.put(userAttrs[0], 3);
+        user3Attrs.put(userAttrs[1], "bruce");
+        user3Attrs.put(userAttrs[2], "chenhao.liu@gmail.com");
+        user3Attrs.put(userAttrs[3], "brucepass");
+
+        List<Map<Attribute, Object>> block1 = Lists.newArrayList();
+        block1.add(user1Attrs);
+        block1.add(user2Attrs);
+
+        List<Map<Attribute, Object>> block2 = Lists.newArrayList();
+        block2.add(user3Attrs);
+
+        /**
+         * Test exporting table blocks
+         */
+        testExportTableBlock(usersTable.getId(), 0, usersBlockSize * 2, block1);
+        testExportTableBlock(usersTable.getId(), 0, usersBlockSize, block2);
 
         //TODO Lots more tests to do
 
@@ -98,4 +139,13 @@ public class FileManagerTest {
         }
 
     }
+
+    private void testExportTableBlock(final Integer tableId, final Integer blockId, final int blockSize, final List<Map<Attribute, Object>> blockData) {
+        manager.exportTableBlock(tableId, blockId, blockSize, blockData);
+    }
+
+    private void testImportTableBlock() {
+        //TODO Implement test
+    }
+
 }
