@@ -3,13 +3,17 @@ package gt.cs4420.relationaldb.database.storage.file;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import gt.cs4420.relationaldb.database.storage.index.IndexManager;
 import gt.cs4420.relationaldb.domain.Attribute;
 import gt.cs4420.relationaldb.domain.DataType;
 import gt.cs4420.relationaldb.domain.Description;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.test.TestFailedException;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * TODO:
@@ -122,6 +126,31 @@ public class FileManagerTest {
         testExportTableBlock(usersTable.getId(), 1, usersBlockSize, block2);
         testImportTableBlock(usersTable.getId(), 1, block2);
 
+        /**
+         * Build Index data
+         */
+        IndexManager indexManager = new IndexManager();
+
+        indexManager.createIndex(usersTable.getId());
+        indexManager.createIndex(postsTable.getId());
+        indexManager.createIndex(followersTable.getId());
+
+        indexManager.addIndexEntry(usersTable.getId(), (Integer) block1.get(0).get(userAttrs[0]), 0);
+        indexManager.addIndexEntry(usersTable.getId(), (Integer) block1.get(1).get(userAttrs[0]), 0);
+        indexManager.addIndexEntry(usersTable.getId(), (Integer) block2.get(0).get(userAttrs[0]), 1);
+
+        IndexManager importIndex = new IndexManager();
+        importIndex.createIndex(usersTable.getId());
+        importIndex.createIndex(postsTable.getId());
+        importIndex.createIndex(followersTable.getId());
+
+        /**
+         * Test exporting and importing indexes
+         */
+        testExportIndexes(indexManager);
+        testImportIndexes(importIndex, indexManager);
+
+
         //TODO Some more tests to do
 
     }
@@ -157,6 +186,19 @@ public class FileManagerTest {
                 throw new TestFailedException("Import table block", "received block does not equal expected");
             }
         }
+    }
+
+    private void testExportIndexes(final IndexManager indexManager) {
+        manager.exportIndexes(indexManager);
+    }
+
+    private void testImportIndexes(final IndexManager indexManager, final IndexManager expectedIndexManager) {
+        manager.importIndexes(indexManager);
+
+        if (!expectedIndexManager.equals(indexManager)) {
+            throw new TestFailedException("Import indexes", "Imported index manager does not equals expected");
+        }
+
     }
 
 }

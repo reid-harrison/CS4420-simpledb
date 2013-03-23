@@ -2,8 +2,6 @@ package gt.cs4420.relationaldb.domain;
 
 import com.google.common.base.Strings;
 
-import java.util.Arrays;
-
 public class Description {
 
     private Attribute[] attributes;

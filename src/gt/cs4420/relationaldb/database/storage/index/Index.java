@@ -42,4 +42,33 @@ public class Index {
         return blockIndex;
     }
 
+    /**
+     * Returns true if both Indexes have the same index mapping primaryKeys -> block ID.
+     *
+     * @param object
+     * @return
+     */
+    @Override
+    public boolean equals(final Object object) {
+        if (object == null || !(object instanceof Index)) {
+            return false;
+        }
+
+        Index other = (Index) object;
+        Set<Integer> otherSet = other.getPrimaryKeySet();
+        Set<Integer> thisSet = getPrimaryKeySet();
+
+        if (!otherSet.equals(thisSet)) {
+            return false;
+        }
+
+        for (Integer primaryKey : thisSet) {
+            if (!index.get(primaryKey).equals(other.getBlockId(primaryKey))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 }

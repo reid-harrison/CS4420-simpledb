@@ -40,4 +40,33 @@ public class IndexManager {
     public Set<Integer> getTableIdSet() {
         return indexes.keySet();
     }
+
+    /**
+     * Returns true if the two IndexManagers both have the same table ID -> Index mapping.
+     *
+     * @param object
+     * @return
+     */
+    @Override
+    public boolean equals(final Object object) {
+        if (object == null || !(object instanceof IndexManager)) {
+            return false;
+        }
+
+        IndexManager other = (IndexManager) object;
+        Set<Integer> otherSet = other.getTableIdSet();
+        Set<Integer> thisSet = indexes.keySet();
+
+        if (!otherSet.equals(thisSet)) {
+            return false;
+        }
+
+        for (Integer tableId : thisSet) {
+            if (!indexes.get(tableId).equals(other.getIndex(tableId))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

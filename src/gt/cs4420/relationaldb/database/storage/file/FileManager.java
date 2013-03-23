@@ -1,7 +1,5 @@
 package gt.cs4420.relationaldb.database.storage.file;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import gt.cs4420.relationaldb.database.storage.index.Index;
 import gt.cs4420.relationaldb.database.storage.index.IndexManager;
 import gt.cs4420.relationaldb.database.storage.index.IndexSerializer;
@@ -91,7 +89,7 @@ public class FileManager {
     }
 
     /**
-     * Imports the indexes for the Indexes kept by the provided IndexManager from disk and populates the IndexManager.
+     * Imports the indexes for the Indexes (by table ID) kept by the provided IndexManager from disk and populates the IndexManager.
      *
      * @param indexManager IndexManager with the desired indexes already instantiated
      */
