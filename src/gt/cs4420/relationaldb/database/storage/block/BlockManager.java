@@ -58,7 +58,7 @@ public class BlockManager {
         return newBlockId;
     }
 
-    public int getBlockSize(final Integer tableId, final Integer blockId) {
+    public Integer getBlockSize(final Integer tableId, final Integer blockId) {
         Integer blockSize = blockSizes.get(tableId).get(blockId);
 
         if (blockSize == null) {
@@ -66,6 +66,21 @@ public class BlockManager {
         }
 
         return blockSize;
+    }
+
+    public void setBlockSize(final Integer tableId, final Integer blockId, final Integer blockSize) {
+        Map<Integer, Integer> tableBlockSizes = blockSizes.get(tableId);
+
+        if (tableBlockSizes == null) {
+            tableBlockSizes = Maps.newHashMap();
+            blockSizes.put(tableId, tableBlockSizes);
+        }
+
+        if (nextBlockIds.get(tableId) <= blockId) {
+            nextBlockIds.put(tableId, blockId + 1);
+        }
+
+        tableBlockSizes.put(blockId, blockSize);
     }
 
     private Integer addBlock(final Integer tableId) {

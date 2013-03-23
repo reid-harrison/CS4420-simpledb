@@ -16,13 +16,24 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * StorageData
+ *
+ * Maintains state information about data in the database including a cache of recently accessed data. StorageData is best
+ * kept as a singleton so that data remains consistent.
+ *
  * TODO:
- * -More functionality
+ * -More database functionality for StorageManager
  */
 class StorageData {
 
+    //The singleton instance of this class
     private static StorageData instance;
 
+    /**
+     * Returns the static instance to the StorageData singleton.
+     *
+     * @return StorageData singleton instance
+     */
     protected static StorageData getInstance() {
         if (instance == null) {
             instance = new StorageData();
@@ -31,18 +42,28 @@ class StorageData {
         return instance;
     }
 
+    //The root directory relative to run-time directory where the database files are kept (this will be moved elsewhere later)
     private final String DB_ROOT_DIRECTORY = "database";
 
+    //The amount of dirty operations to allow before dirtied data is flushed
     private final int DIRTY_COUNT_LIMIT = 10;
+    //The current number of dirty operations before last flush
     private int dirtyCount = 0;
 
+    //Control flags for exporting data to file that are useful for testing
     protected static boolean ignoreDirty = false;
     protected static boolean exportDisabled = false;
 
+    //Table name -> Table ID
     private Map<String, Integer> tableNames;
+
+    //Table ID -> Table
     private Map<Integer, Table> tables;
+
+    //Table ID -> (Primary Key -> Attribute value mapping)
     private Map<Integer, Map<Integer, Map<Attribute, Object>>> tableData;
 
+    //Various assisting Managers
     private IndexManager indexManager;
     private FileManager fileManager;
     private BlockManager blockManager;
@@ -60,7 +81,8 @@ class StorageData {
         blockManager = new BlockManager();
 
         loadTableDescriptions();
-        createIndex();
+        initIndexManager();
+        initBlockManager();
     }
 
     private void loadTableDescriptions() {
@@ -80,19 +102,25 @@ class StorageData {
         nextId = highestId + 1;
     }
 
-    private void createIndex() {
+    private void initIndexManager() {
         for (Integer tableId : tables.keySet()) {
             indexManager.createIndex(tableId);
         }
 
         fileManager.importIndexes(indexManager);
+    }
 
-        /**
-         * TODO
-         * -Set up block manager (Import table blocks)
-         * -Something special will have to be done to cast to deserialized Objects into their appropriate types based off
-         *  of an Attribute's DataType
-         */
+    private void initBlockManager() {
+
+        //Import the block sizes for already allocated blocks referenced by the current IndexManager
+        for (Integer tableId : indexManager.getTableIdSet()) {
+            List<Block> blockSizes = fileManager.importBlockSizes(tableId);
+
+            for (Block block : blockSizes) {
+                blockManager.setBlockSize(tableId, block.getBlockId(), block.getBlockSize());
+            }
+        }
+
     }
 
     protected boolean tableExists(final Integer tableId) {
@@ -159,6 +187,11 @@ class StorageData {
         return (Integer) primaryKey;
     }
 
+    /**
+     * TODO
+     * -Something special will have to be done to cast deserialized Objects into their appropriate types based off
+     *  of an Attribute's DataType
+     */
     private Map<Attribute, Object> getRow(final Integer tableId, final Integer primaryKey) {
         Integer blockId = indexManager.getIndex(tableId).getBlockId(primaryKey);
 

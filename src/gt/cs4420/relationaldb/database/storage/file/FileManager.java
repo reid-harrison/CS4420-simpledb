@@ -66,6 +66,17 @@ public class FileManager {
         fileWriter.write(descriptionFile, tableSerializer.serialize(tables));
     }
 
+    /**
+     * Imports of a List of Blocks that have their IDs and sizes populated.
+     *
+     * @param tableId
+     * @return List<Block>
+     */
+    public List<Block> importBlockSizes(final Integer tableId) {
+        //TODO Implement import block sizes
+        return null;
+    }
+
     public Block importTableBlock(final Integer tableId, final Integer blockId) {
         File blockFile = new File(DB_ROOT_DIRECTORY + tableId + "/blocks/" + blockId + ".json");
 
