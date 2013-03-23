@@ -37,7 +37,7 @@ public class IndexSerializer implements JsonSerializer<Index> {
             JSONObject entry = null;
 
             try {
-                entry = new JSONObject((String) indexEntries.get(i));
+                entry = new JSONObject(indexEntries.get(i).toString());
             } catch (final ParseException pe) {
                 pe.printStackTrace();
             }

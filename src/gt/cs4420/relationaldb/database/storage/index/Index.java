@@ -1,7 +1,9 @@
 package gt.cs4420.relationaldb.database.storage.index;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,6 +18,7 @@ public class Index {
 
     public Index() {
         index = Maps.newHashMap();
+        blockIndex = Maps.newHashMap();
     }
 
     public Set<Integer> getPrimaryKeySet() {
@@ -28,6 +31,10 @@ public class Index {
 
     public void addIndexEntry(final Integer primaryKey, final Integer blockId) {
         index.put(primaryKey, blockId);
+
+        if (blockIndex.get(blockId) == null) {
+            blockIndex.put(blockId, new ArrayList<Integer>());
+        }
 
         blockIndex.get(blockId).add(primaryKey);
     }
