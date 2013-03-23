@@ -49,7 +49,7 @@ class BlockSerializer implements JsonSerializer<Block> {
         JSONArray dataArray = blockJson.getJSONArray("data");
 
         List<Map<Attribute, Object>> blockData = Lists.newArrayList();
-        
+
         for (int i = 0; i < dataArray.length(); i++) {
             Map<Attribute, Object> attrs = attributeSerializer.deserializeWithData(dataArray.getJSONArray(i));
             blockData.add(attrs);

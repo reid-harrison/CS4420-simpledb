@@ -6,8 +6,8 @@ import java.util.Map;
 
 /**
  * TODO:
- * * Load and store block sizes correctly on disk
- * * Figure out the best way to handle what determines the "size" of a block (currently an arbitrary unit)
+ * * A block meta-data file needs to be kept with sizes and stuff
+ * * Figure out the best way to handle what determines the "size" of a block (currently an attribute count)
  * * Keep data in sorted order by primary key
  */
 public class BlockManager {

@@ -66,14 +66,14 @@ public class FileManager {
         fileWriter.write(descriptionFile, tableSerializer.serialize(tables));
     }
 
-    public List<Map<Attribute, Object>> importTableBlock(final Integer tableId, final Integer blockId) {
+    public Block importTableBlock(final Integer tableId, final Integer blockId) {
         File blockFile = new File(DB_ROOT_DIRECTORY + tableId + "/blocks/" + blockId + ".json");
 
         if (!blockFile.exists()) {
             return null;
         }
 
-        return blockSerializer.deserialize(fileReader.read(blockFile)).getBlockData();
+        return blockSerializer.deserialize(fileReader.read(blockFile));
     }
 
     public void exportTableBlock(final Integer tableId, final Integer blockId, final int blockSize, final List<Map<Attribute, Object>> blockData) {

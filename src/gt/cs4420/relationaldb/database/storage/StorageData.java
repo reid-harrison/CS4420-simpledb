@@ -2,6 +2,7 @@ package gt.cs4420.relationaldb.database.storage;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import gt.cs4420.relationaldb.database.storage.block.Block;
 import gt.cs4420.relationaldb.database.storage.block.BlockManager;
 import gt.cs4420.relationaldb.database.storage.file.FileManager;
 import gt.cs4420.relationaldb.database.storage.index.IndexManager;
@@ -90,7 +91,7 @@ class StorageData {
          * TODO
          * -Set up block manager (Import table blocks)
          * -Something special will have to be done to cast to deserialized Objects into their appropriate types based off
-         *  of and Attribute's DataType
+         *  of an Attribute's DataType
          */
     }
 
@@ -158,6 +159,47 @@ class StorageData {
         return (Integer) primaryKey;
     }
 
+    private Map<Attribute, Object> getRow(final Integer tableId, final Integer primaryKey) {
+        Integer blockId = indexManager.getIndex(tableId).getBlockId(primaryKey);
+
+        if (blockId == null) {
+            throw new NullPointerException("Primary key: " + primaryKey + " does not exist for table ID: " + tableId);
+        }
+
+        Map<Attribute, Object> rowData = tableData.get(tableId).get(primaryKey);
+
+        if (rowData == null || rowData.isEmpty()) {
+            Block block = fileManager.importTableBlock(tableId, blockId);
+            List<Map<Attribute, Object>> blockData = block.getBlockData();
+
+            //TODO Add a better representation of row data so access by primary key can be more efficient
+            for (Map<Attribute, Object> row : blockData) {
+                Integer currPrimaryKey = (Integer) row.get(tables.get(tableId).getDescription().getPrimaryKeyAttribute());
+
+                if (primaryKey.equals(currPrimaryKey)) {
+                    rowData = row;
+                }
+            }
+
+            if (rowData == null) {
+                throw new NullPointerException("Row data could not be retrieved and populated");
+            }
+
+            addBlock(tableId, block);
+        }
+
+        Block block = fileManager.importTableBlock(tableId, blockId);
+
+        return rowData;
+    }
+
+    private void addBlock(final Integer tableId, final Block block) {
+        for (Map<Attribute, Object> rowData : block.getBlockData()) {
+            Integer primaryKey = (Integer) rowData.get(tables.get(tableId).getDescription().getPrimaryKeyAttribute());
+            tableData.get(tableId).put(primaryKey, rowData);
+        }
+    }
+
     private void dirtyCheck() {
         if (ignoreDirty) { return; }
 
@@ -174,7 +216,7 @@ class StorageData {
 
     private void export() {
         //TODO Make a smart export (only export modified data)
-
+        //TODO Currently, block data will get overwritten if it hasn't been imported yet
         if (!exportDisabled) {
             exportBlocks();
             exportIndexes();
