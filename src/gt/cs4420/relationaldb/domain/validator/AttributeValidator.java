@@ -85,6 +85,16 @@ public class AttributeValidator implements Validator<Attribute> {
         for (Attribute attr : attributes.keySet()) {
             Object obj = attributes.get(attr);
 
+            if (obj == null) {
+                if (attr == description.getPrimaryKeyAttribute()) {
+                    ve.addMessage("Primary key attribute cannot be null, must be set");
+                    continue;
+                }
+
+                //Null value not for primary key (allowed) no need to validate further
+                continue;
+            }
+
             try {
                 attributeTypeCheck(attr, obj);
             } catch (final ClassCastException cce) {
@@ -111,6 +121,10 @@ public class AttributeValidator implements Validator<Attribute> {
             case STRING:
                 if (!(object instanceof String)) {
                     error = true;
+                }
+
+                if (object.toString().length() > 10000) {
+                    throw new ClassCastException("Congratulations, you hit our arbitrary String length cap of 10,000 characters!");
                 }
 
                 break;

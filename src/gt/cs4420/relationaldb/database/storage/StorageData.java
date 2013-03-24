@@ -152,7 +152,6 @@ class StorageData {
     protected void insert(final Integer tableId, final Row row) throws ValidationException {
         addRow(tableId, row);
 
-        //TODO Figure out what to do about long ass Strings
         Integer blockIndex = blockManager.allocateBlockSpace(tableId, row.getRowData().size());
 
         indexManager.addIndexEntry(tableId, row.getPrimaryKey(), blockIndex);
@@ -174,19 +173,17 @@ class StorageData {
      */
     private void addRow(final Integer tableId, final Row row) throws ValidationException {
 
-        //TODO This needs to check the IndexManager, not table data!
-        if (tableData.get(tableId).containsKey(row.getPrimaryKey())) {
+        if (row.getPrimaryKey() == null) {
+            throw new ValidationException("Primary key must be set for any new row");
+        }
+
+        if (indexManager.getIndex(tableId).getPrimaryKeySet().contains(row.getPrimaryKey())) {
             throw new ValidationException("A row already exists with the provided primary key attribute; primary keys must be unique");
         }
 
         tableData.get(tableId).put(row.getPrimaryKey(), row);
     }
 
-    /**
-     * TODO
-     * -Something special will have to be done to cast deserialized Objects into their appropriate types based off
-     *  of an Attribute's DataType
-     */
     private Row getRow(final Integer tableId, final Integer primaryKey) {
         Integer blockId = indexManager.getIndex(tableId).getBlockId(primaryKey);
 
@@ -201,7 +198,6 @@ class StorageData {
             Block block = fileManager.importTableBlock(tableId, blockId);
             List<Row> rowData = block.getBlockData();
 
-            //TODO Add a better representation of row data so access by primary key can be more efficient
             for (Row currRow : rowData) {
                 if (primaryKey.equals(currRow.getPrimaryKey())) {
                     row = currRow;

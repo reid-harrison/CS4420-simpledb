@@ -5,6 +5,7 @@ import gt.cs4420.relationaldb.domain.Row;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
 import gt.cs4420.relationaldb.domain.validator.AttributeValidator;
+import gt.cs4420.relationaldb.domain.validator.RowValidator;
 import gt.cs4420.relationaldb.domain.validator.TableValidator;
 
 /**
@@ -23,11 +24,12 @@ public class StorageManager {
     private StorageData storageData;
 
     private TableValidator tableValidator;
-    private AttributeValidator attributeValidator;
+    private RowValidator rowValidator;
 
     public StorageManager() {
         storageData = StorageData.getInstance();
         tableValidator = new TableValidator();
+        rowValidator = new RowValidator();
     }
 
     /**
@@ -92,22 +94,15 @@ public class StorageManager {
     public void insert(final Integer tableId, Row row) throws ValidationException {
         validateTableExists(tableId);
 
-        //Attempt to resolve primary key
+        //Validate the the row data is populated with valid data
+        rowValidator.validate(row, storageData.getTable(tableId).getDescription());
+
+        //Resolve primary key
         Attribute primaryKeyAttr = storageData.getTable(tableId).getDescription().getPrimaryKeyAttribute();
-
-        //TODO make a better transition from Object primary key to Integer
         Integer primaryKey = (Integer) row.getRowData().get(primaryKeyAttr);
-
-        if (primaryKey == null) {
-            throw new IllegalArgumentException("Primary key must be set for Row in its row data");
-        }
-
         row.setPrimaryKey(primaryKey);
 
-        //Validate the the row data is populated with valid data
-        attributeValidator.validate(row.getRowData(), storageData.getTable(tableId).getDescription());
-
-        //TODO Implement insert validation
+        //TODO Implement more insert validation?
 
         storageData.insert(tableId, row);
     }
