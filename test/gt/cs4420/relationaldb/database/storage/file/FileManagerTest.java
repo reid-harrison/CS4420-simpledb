@@ -125,10 +125,10 @@ public class FileManagerTest {
          * Test exporting and importing table blocks
          */
         testExportTableBlock(usersTable.getId(), 0, usersBlockSize * 2, block1);
-        testImportTableBlock(usersTable.getId(), 0, block1);
+        testImportTableBlock(usersTable.getId(), 0, usersTable.getDescription(), block1);
 
         testExportTableBlock(usersTable.getId(), 1, usersBlockSize, block2);
-        testImportTableBlock(usersTable.getId(), 1, block2);
+        testImportTableBlock(usersTable.getId(), 1, usersTable.getDescription(), block2);
 
         /**
          * Build Index data
@@ -182,8 +182,8 @@ public class FileManagerTest {
         manager.exportTableBlock(tableId, blockId, blockSize, rowData);
     }
 
-    private void testImportTableBlock(final Integer tableId, final Integer blockId, final List<Row> expectedRows) {
-       Block importBlock = manager.importTableBlock(tableId, blockId);
+    private void testImportTableBlock(final Integer tableId, final Integer blockId, final Description description, final List<Row> expectedRows) {
+       Block importBlock = manager.importTableBlock(tableId, blockId, description);
 
         for (Row row : expectedRows) {
             if (!importBlock.getBlockData().contains(row.getRowData())) {
