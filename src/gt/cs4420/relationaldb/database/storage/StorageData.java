@@ -111,9 +111,9 @@ class StorageData {
 
     private void initBlockManager() {
 
-        //Import the block sizes for already allocated blocks referenced by the current IndexManager
+        //Import the block meta-data for already allocated blocks referenced by the current IndexManager
         for (Integer tableId : indexManager.getTableIdSet()) {
-            List<Block> blockSizes = fileManager.importBlockSizes(tableId);
+            List<Block> blockSizes = fileManager.importBlockMetaData(tableId);
 
             for (Block block : blockSizes) {
                 blockManager.setBlockSize(tableId, block.getBlockId(), block.getBlockSize());
@@ -248,6 +248,24 @@ class StorageData {
     }
 
     private void exportBlocks() {
+        exportBlockMetaData();
+        exportBlockRowData();
+    }
+
+    private void exportBlockMetaData() {
+        for (Integer tableId : indexManager.getTableIdSet()) {
+            List<Block> metaBlocks = Lists.newArrayList();
+
+            for (Integer blockId  : blockManager.getBlockIdSet(tableId)) {
+                Block block = blockManager.getBlock(tableId, blockId);
+                metaBlocks.add(block);
+            }
+
+            fileManager.exportBlockMetaData(tableId, metaBlocks);
+        }
+    }
+
+    private void exportBlockRowData() {
         for (Integer tableId : indexManager.getTableIdSet()) {
             Map<Integer, List<Integer>> blockIndex = indexManager.getIndex(tableId).getBlockIndex();
 

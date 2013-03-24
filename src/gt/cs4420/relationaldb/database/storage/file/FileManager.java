@@ -71,9 +71,27 @@ public class FileManager {
      * @param tableId
      * @return List<Block>
      */
-    public List<Block> importBlockSizes(final Integer tableId) {
-        //TODO Implement import block sizes
-        return null;
+    public List<Block> importBlockMetaData(final Integer tableId) {
+        File blockMetaFile = new File(DB_ROOT_DIRECTORY + tableId + "/blocks/meta.json");
+
+        if (!blockMetaFile.exists()) {
+            return null;
+        }
+
+        return blockSerializer.deserializeBlockMetaData(fileReader.read(blockMetaFile));
+    }
+
+    public void exportBlockMetaData(final Integer tableId, final List<Block> metaBlocks) {
+        File blockMetaFile = new File(DB_ROOT_DIRECTORY + tableId + "/blocks/meta.json");
+        blockMetaFile.getParentFile().mkdirs();
+
+        try {
+            blockMetaFile.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        fileWriter.write(blockMetaFile, blockSerializer.serializeBlockMetaData(metaBlocks));
     }
 
     public Block importTableBlock(final Integer tableId, final Integer blockId) {

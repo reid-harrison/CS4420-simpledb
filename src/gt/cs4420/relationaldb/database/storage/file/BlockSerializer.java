@@ -62,4 +62,39 @@ class BlockSerializer implements JsonSerializer<Block> {
         return block;
     }
 
+    public JSONObject serializeBlockMetaData(final List<Block> metaBlocks) {
+        JSONObject metaJson = new JSONObject();
+        JSONArray metaArray = new JSONArray();
+
+        for (Block block : metaBlocks) {
+            JSONObject blockJson = new JSONObject();
+
+            blockJson.put("blockId", block.getBlockId());
+            blockJson.put("size", block.getBlockSize());
+
+            metaArray.put(blockJson);
+        }
+
+        metaJson.put("meta", metaArray);
+        return metaJson;
+    }
+
+    public List<Block> deserializeBlockMetaData(final JSONObject json) {
+        List<Block> blocks = Lists.newArrayList();
+
+        JSONArray metaArray = json.getJSONArray("meta");
+
+        for (int i = 0; i < metaArray.length(); i++) {
+            JSONObject blockData = metaArray.getJSONObject(i);
+            Block block = new Block();
+
+            block.setBlockId(blockData.getInt("blockId"));
+            block.setBlockSize(blockData.getInt("size"));
+
+            blocks.add(block);
+        }
+
+        return blocks;
+    }
+
 }

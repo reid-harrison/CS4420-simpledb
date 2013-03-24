@@ -3,10 +3,10 @@ package gt.cs4420.relationaldb.database.storage.block;
 import com.google.common.collect.Maps;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * TODO:
- * * A block meta-data file needs to be kept with sizes and stuff
  * * Figure out the best way to handle what determines the "size" of a block (currently an attribute count)
  * * Keep data in sorted order by primary key
  */
@@ -16,12 +16,26 @@ public class BlockManager {
     private final int MAX_BLOCK_SIZE = 16;
 
     //Mapping from table ID to a map of block IDs to current block size
-    private Map<Integer, Map<Integer, Integer>> blockSizes;
+    private Map<Integer, Map<Integer, Block>> tableBlocks;
     private Map<Integer, Integer> nextBlockIds;
 
     public BlockManager() {
-        blockSizes = Maps.newHashMap();
+        tableBlocks = Maps.newHashMap();
         nextBlockIds = Maps.newHashMap();
+    }
+    
+    public Set<Integer> getBlockIdSet(final Integer tableId) {
+        return tableBlocks.get(tableId).keySet();
+    }
+
+    public Block getBlock(final Integer tableId, final Integer blockId) {
+        Map<Integer, Block> blocks = tableBlocks.get(tableId);
+
+        if (blocks == null) {
+            return null;
+        }
+
+        return blocks.get(blockId);
     }
 
     /**
@@ -32,20 +46,22 @@ public class BlockManager {
      * @return Integer the block ID in which space was allocated
      */
     public Integer allocateBlockSpace(final Integer tableId, final int requestedSize) {
-        Map<Integer, Integer> tableBlockSizes = blockSizes.get(tableId);
+        Map<Integer, Block> blocks = tableBlocks.get(tableId);
 
-        if (tableBlockSizes == null) {
-            tableBlockSizes = Maps.newHashMap();
-            blockSizes.put(tableId, tableBlockSizes);
+        if (blocks == null) {
+            blocks = Maps.newHashMap();
+            tableBlocks.put(tableId, blocks);
         }
 
         //If the requested size is small enough, it will share a block with other data
         if (requestedSize < MAX_BLOCK_SIZE) {
 
             //Find the first block with enough space to be allocated
-            for (Integer blockId : tableBlockSizes.keySet()) {
-                if (tableBlockSizes.get(blockId) + requestedSize <= MAX_BLOCK_SIZE) {
-                    tableBlockSizes.put(blockId, tableBlockSizes.get(blockId) + requestedSize);
+            for (Integer blockId : blocks.keySet()) {
+                Integer currBlockSize = blocks.get(blockId).getBlockSize();
+
+                if (currBlockSize + requestedSize <= MAX_BLOCK_SIZE) {
+                    blocks.get(blockId).setBlockSize(currBlockSize + requestedSize);
                     return blockId;
                 }
             }
@@ -53,13 +69,13 @@ public class BlockManager {
 
         //No available blocks, allocate a new one
         Integer newBlockId = addBlock(tableId);
-        tableBlockSizes.put(newBlockId, requestedSize);
+        blocks.put(newBlockId, new Block(newBlockId, requestedSize));
 
         return newBlockId;
     }
 
     public Integer getBlockSize(final Integer tableId, final Integer blockId) {
-        Integer blockSize = blockSizes.get(tableId).get(blockId);
+        Integer blockSize = tableBlocks.get(tableId).get(blockId).getBlockSize();
 
         if (blockSize == null) {
             throw new IllegalArgumentException("No block with ID: " + blockId + " has been allocated for table with ID: " + tableId);
@@ -69,23 +85,27 @@ public class BlockManager {
     }
 
     public void setBlockSize(final Integer tableId, final Integer blockId, final Integer blockSize) {
-        Map<Integer, Integer> tableBlockSizes = blockSizes.get(tableId);
+        Map<Integer, Block> blocks = tableBlocks.get(tableId);
 
-        if (tableBlockSizes == null) {
-            tableBlockSizes = Maps.newHashMap();
-            blockSizes.put(tableId, tableBlockSizes);
+        if (blocks == null) {
+            blocks = Maps.newHashMap();
+            tableBlocks.put(tableId, blocks);
+        }
+
+        if (blocks.get(blockId) != null) {
+            blocks.get(blockId).setBlockSize(blockSize);
         }
 
         if (nextBlockIds.get(tableId) <= blockId) {
             nextBlockIds.put(tableId, blockId + 1);
         }
 
-        tableBlockSizes.put(blockId, blockSize);
+        blocks.put(blockId, new Block(blockId, blockSize));
     }
 
     private Integer addBlock(final Integer tableId) {
         Integer nextBlockId = getNextBlockId(tableId);
-        blockSizes.get(tableId).put(nextBlockId, 0);
+        tableBlocks.get(tableId).put(nextBlockId, new Block(nextBlockId));
 
         return nextBlockId;
     }
