@@ -53,7 +53,7 @@ class BlockSerializer implements JsonSerializer<Block> {
         List<Row> rows = Lists.newArrayList();
 
         for (int i = 0; i < dataArray.length(); i++) {
-            Row rowData = rowSerializer.deserialize(dataArray.getJSONArray(i));
+            Row rowData = rowSerializer.deserialize(dataArray.getJSONObject(i));
             rows.add(rowData);
         }
 

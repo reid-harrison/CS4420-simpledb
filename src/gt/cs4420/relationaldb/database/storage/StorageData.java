@@ -195,7 +195,7 @@ class StorageData {
 
         //Try to find the data on disk if it isn't in memory already
         if (row == null || row.getRowData() == null || row.getRowData().isEmpty()) {
-            Block block = fileManager.importTableBlock(tableId, blockId);
+            Block block = fileManager.importTableBlock(tableId, blockId, tables.get(tableId).getDescription());
             List<Row> rowData = block.getBlockData();
 
             for (Row currRow : rowData) {
@@ -214,6 +214,12 @@ class StorageData {
         return row;
     }
 
+    /**
+     * Adds a table data block to in-memory storage.
+     *
+     * @param tableId
+     * @param block
+     */
     private void addBlock(final Integer tableId, final Block block) {
         for (Row row : block.getBlockData()) {
             tableData.get(tableId).put(row.getPrimaryKey(), row);

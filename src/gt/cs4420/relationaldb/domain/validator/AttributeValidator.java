@@ -45,7 +45,7 @@ public class AttributeValidator implements Validator<Attribute> {
         ValidationException ve = new ValidationException();
         List<Attribute> descAttributes = Arrays.asList(description.getAttributes());
 
-        for (Attribute attr : description.getAttributes()) {
+        for (Attribute attr : attributes) {
             int index = descAttributes.indexOf(attr);
 
             if (index < 0) {
@@ -86,7 +86,7 @@ public class AttributeValidator implements Validator<Attribute> {
             Object obj = attributes.get(attr);
 
             if (obj == null) {
-                if (attr == description.getPrimaryKeyAttribute()) {
+                if (attr.getName().equals(description.getPrimaryKeyAttribute())) {
                     ve.addMessage("Primary key attribute cannot be null, must be set");
                     continue;
                 }

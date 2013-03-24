@@ -13,41 +13,45 @@ import java.util.Map;
 public class RowSerializer implements JsonSerializer<Row> {
 
     @Override
-    public JSONObject serialize(Row object) {
-        //TODO Implement serialize
-        return null;
+    public JSONObject serialize(final Row row) {
+        JSONObject rowJson = new JSONObject();
+
+        rowJson.put("primaryKey", row.getPrimaryKey());
+        rowJson.put("attributes", serialize(row.getRowData()));
+
+        return rowJson;
     }
 
     @Override
-    public Row deserialize(JSONObject json) {
-        return null;
-    }
-
-    public Row deserialize(final JSONArray jsonArray) {
+    public Row deserialize(final JSONObject json) {
         Row row = new Row();
-        Map<Attribute, Object> rowData = Maps.newHashMap();
 
-        for (int i = 0; i < jsonArray.length(); i++) {
-            rowData.putAll(deserializeWithData(jsonArray.getJSONObject(i)));
-        }
-
-        row.setRowData(rowData);
+        row.setPrimaryKey(json.getInt("primaryKey"));
+        row.setRowData(deserializeAttributes(json.getJSONObject("attributes")));
 
         return row;
     }
 
-    /**
-     * Deserializes a single attribute with data.
-     *
-     * @param jsonObject
-     * @return Map<Attribute, Object> containing one item
-     */
-    private Map<Attribute, Object> deserializeWithData(final JSONObject jsonObject) {
-        Map<Attribute, Object> attributeMap = Maps.newHashMap();
-        Attribute attr = new Attribute(jsonObject.keys().next().toString());
+    private Map<Attribute, Object> deserializeAttributes(final JSONObject jsonObject) {
+        Map<Attribute, Object> attributes = Maps.newHashMap();
 
-        attributeMap.put(attr, jsonObject.get(attr.getName()));
-        return attributeMap;
+        while (jsonObject.keys().hasNext()) {
+            String attrName = (String) jsonObject.keys().next();
+            attributes.put(new Attribute(attrName), jsonObject.get(attrName));
+        }
+
+        return attributes;
+
+    }
+
+    private JSONObject serialize(Map<Attribute, Object> attributes) {
+        JSONObject attrJson = new JSONObject();
+
+        for (Attribute attr : attributes.keySet()) {
+            attrJson.put(attr.getName(), serialize(attr, attributes.get(attr)));
+        }
+
+        return attrJson;
     }
 
     /**
@@ -58,7 +62,7 @@ public class RowSerializer implements JsonSerializer<Row> {
      * @param value
      * @return JSONObject
      */
-    public JSONObject serialize(final Attribute attribute, final Object value) {
+    private JSONObject serialize(final Attribute attribute, final Object value) {
         JSONObject json = new JSONObject();
         DataType type = attribute.getType();
         String name = attribute.getName();

@@ -1,9 +1,12 @@
 package gt.cs4420.relationaldb.database.storage.file;
 
+import com.google.common.collect.Maps;
 import gt.cs4420.relationaldb.database.storage.block.Block;
 import gt.cs4420.relationaldb.database.storage.index.Index;
 import gt.cs4420.relationaldb.database.storage.index.IndexManager;
 import gt.cs4420.relationaldb.database.storage.index.IndexSerializer;
+import gt.cs4420.relationaldb.domain.Attribute;
+import gt.cs4420.relationaldb.domain.Description;
 import gt.cs4420.relationaldb.domain.Row;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.json.TableSerializer;
@@ -12,6 +15,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -94,14 +98,38 @@ public class FileManager {
         fileWriter.write(blockMetaFile, blockSerializer.serializeBlockMetaData(metaBlocks));
     }
 
-    public Block importTableBlock(final Integer tableId, final Integer blockId) {
+    public Block importTableBlock(final Integer tableId, final Integer blockId, final Description tableDescription) {
         File blockFile = new File(DB_ROOT_DIRECTORY + tableId + "/blocks/" + blockId + ".json");
 
         if (!blockFile.exists()) {
             return null;
         }
 
-        return blockSerializer.deserialize(fileReader.read(blockFile));
+        Block block = blockSerializer.deserialize(fileReader.read(blockFile));
+
+        //Cast all row data appropriately
+        for (Row row : block.getBlockData()) {
+            Map<Attribute, Object> attributes = row.getRowData();
+            Map<Attribute, Object> castedAttributes = Maps.newHashMapWithExpectedSize(block.getBlockData().size());
+
+            for (Attribute attr : attributes.keySet()) {
+                //Use the descriptions attribute listing since it includes data types
+                Attribute descAttr = tableDescription.getAttribute(attr.getName());
+
+                switch (descAttr.getType()) {
+                    case STRING:
+                        castedAttributes.put(attr, (String) attributes.get(attr));
+                        break;
+                    case INT:
+                        castedAttributes.put(attr, (Integer) attributes.get(attr));
+                        break;
+                }
+            }
+
+            row.setRowData(castedAttributes);
+        }
+
+        return block;
     }
 
     public void exportTableBlock(final Integer tableId, final Integer blockId, final int blockSize, final List<Row> rows) {
