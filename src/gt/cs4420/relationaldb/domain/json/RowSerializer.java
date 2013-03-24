@@ -3,9 +3,7 @@ package gt.cs4420.relationaldb.domain.json;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import gt.cs4420.relationaldb.domain.Attribute;
-import gt.cs4420.relationaldb.domain.DataType;
 import gt.cs4420.relationaldb.domain.Row;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -64,26 +62,13 @@ public class RowSerializer implements JsonSerializer<Row> {
      */
     private JSONObject serialize(final Attribute attribute, final Object value) {
         JSONObject json = new JSONObject();
-        DataType type = attribute.getType();
         String name = attribute.getName();
-
-        if (type == null) {
-            throw new IllegalArgumentException("DataType cannot be null for attribute: " + attribute.getName());
-        }
 
         if(Strings.isNullOrEmpty(name)) {
             throw new IllegalArgumentException("Name must be set for attribute: " + attribute.getName());
         }
 
-        //TODO This might not be necessary
-        switch (type) {
-            case INT:
-                json.put(name, (Integer) value);
-                break;
-            case STRING:
-                json.put(name, (String) value);
-                break;
-        }
+        json.put(name, value);
 
         return json;
     }

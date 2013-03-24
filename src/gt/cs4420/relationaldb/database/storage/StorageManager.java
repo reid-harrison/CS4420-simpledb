@@ -4,7 +4,6 @@ import gt.cs4420.relationaldb.domain.Attribute;
 import gt.cs4420.relationaldb.domain.Row;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
-import gt.cs4420.relationaldb.domain.validator.AttributeValidator;
 import gt.cs4420.relationaldb.domain.validator.RowValidator;
 import gt.cs4420.relationaldb.domain.validator.TableValidator;
 
