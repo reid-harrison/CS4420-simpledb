@@ -14,6 +14,7 @@ public class Index {
 
     //The index of blocks to the primary keys they contain
     private Map<Integer, List<Integer>> blockIndex;
+    
 
     public Index() {
         index = Maps.newHashMap();

@@ -8,3 +8,4 @@ out/
 .classpath
 .settings/
 /database
+/bin
