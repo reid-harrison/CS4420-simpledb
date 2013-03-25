@@ -2,10 +2,9 @@
 *.bak
 target/
 out/
-database/
 .idea/
 .project
 .class
 .classpath
 .settings/
-
+/database
