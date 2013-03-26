@@ -15,10 +15,10 @@ public class BlockManager {
     //The maximum amount of attributes to store in a single block
     private final int MAX_BLOCK_SIZE = 16;
 
-    //Mapping from table ID to a map of block IDs to current block size
+    //Table ID -> (Block ID -> Block)
     private Map<Integer, Map<Integer, Block>> tableBlocks;
     private Map<Integer, Integer> nextBlockIds;
-
+ 
     public BlockManager() {
         tableBlocks = Maps.newHashMap();
         nextBlockIds = Maps.newHashMap();
