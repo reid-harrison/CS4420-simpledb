@@ -1,4 +1,4 @@
-// $ANTLR 3.5 C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g 2013-03-27 16:52:35
+// $ANTLR 3.5 C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g 2013-03-27 18:37:12
 
 package gt.cs4420.relationaldb.database.query;
 
@@ -11,31 +11,35 @@ import java.util.ArrayList;
 @SuppressWarnings("all")
 public class SQLLexer extends Lexer {
 	public static final int EOF=-1;
-	public static final int T__11=11;
-	public static final int T__12=12;
-	public static final int T__13=13;
-	public static final int T__14=14;
-	public static final int T__15=15;
-	public static final int T__16=16;
-	public static final int T__17=17;
-	public static final int T__18=18;
-	public static final int T__19=19;
-	public static final int T__20=20;
-	public static final int T__21=21;
-	public static final int T__22=22;
-	public static final int T__23=23;
-	public static final int T__24=24;
-	public static final int T__25=25;
-	public static final int T__26=26;
-	public static final int T__27=27;
-	public static final int T__28=28;
-	public static final int COMMENT=4;
-	public static final int DIGIT=5;
-	public static final int IDENT=6;
-	public static final int INTEGER=7;
-	public static final int LETTER=8;
-	public static final int STRING_LITERAL=9;
-	public static final int WS=10;
+	public static final int AND=4;
+	public static final int ASC=5;
+	public static final int COMMA=6;
+	public static final int DESC=7;
+	public static final int DIGIT=8;
+	public static final int EQUAL=9;
+	public static final int FROM=10;
+	public static final int GREATER_THAN=11;
+	public static final int GREATER_THAN_EQUAL=12;
+	public static final int IDENT=13;
+	public static final int INSERT=14;
+	public static final int INTEGER=15;
+	public static final int INTO=16;
+	public static final int LESS_THAN=17;
+	public static final int LESS_THAN_EQUAL=18;
+	public static final int LETTER=19;
+	public static final int LPAREN=20;
+	public static final int NOT_EQUAL=21;
+	public static final int OR=22;
+	public static final int ORDER_BY=23;
+	public static final int RPAREN=24;
+	public static final int SELECT=25;
+	public static final int SEMI=26;
+	public static final int SET=27;
+	public static final int STRING_LITERAL=28;
+	public static final int UPDATE=29;
+	public static final int VALUES=30;
+	public static final int WHERE=31;
+	public static final int WS=32;
 
 	// delegates
 	// delegators
@@ -52,16 +56,62 @@ public class SQLLexer extends Lexer {
 	}
 	@Override public String getGrammarFileName() { return "C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g"; }
 
-	// $ANTLR start "T__11"
-	public final void mT__11() throws RecognitionException {
+	// $ANTLR start "SELECT"
+	public final void mSELECT() throws RecognitionException {
 		try {
-			int _type = T__11;
+			int _type = SELECT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:11:7: ( '!=' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:11:9: '!='
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:110:8: ( ( 's' | 'S' ) ( 'e' | 'E' ) ( 'l' | 'L' ) ( 'e' | 'E' ) ( 'c' | 'C' ) ( 't' | 'T' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:110:10: ( 's' | 'S' ) ( 'e' | 'E' ) ( 'l' | 'L' ) ( 'e' | 'E' ) ( 'c' | 'C' ) ( 't' | 'T' )
 			{
-			match("!="); 
-
+			if ( input.LA(1)=='S'||input.LA(1)=='s' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='L'||input.LA(1)=='l' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='C'||input.LA(1)=='c' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='T'||input.LA(1)=='t' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
 			}
 
 			state.type = _type;
@@ -71,15 +121,668 @@ public class SQLLexer extends Lexer {
 			// do for sure before leaving
 		}
 	}
-	// $ANTLR end "T__11"
+	// $ANTLR end "SELECT"
 
-	// $ANTLR start "T__12"
-	public final void mT__12() throws RecognitionException {
+	// $ANTLR start "FROM"
+	public final void mFROM() throws RecognitionException {
 		try {
-			int _type = T__12;
+			int _type = FROM;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:12:7: ( '(' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:12:9: '('
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:111:6: ( ( 'f' | 'F' ) ( 'r' | 'R' ) ( 'o' | 'O' ) ( 'm' | 'M' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:111:8: ( 'f' | 'F' ) ( 'r' | 'R' ) ( 'o' | 'O' ) ( 'm' | 'M' )
+			{
+			if ( input.LA(1)=='F'||input.LA(1)=='f' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='R'||input.LA(1)=='r' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='O'||input.LA(1)=='o' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='M'||input.LA(1)=='m' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "FROM"
+
+	// $ANTLR start "WHERE"
+	public final void mWHERE() throws RecognitionException {
+		try {
+			int _type = WHERE;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:112:7: ( ( 'w' | 'W' ) ( 'h' | 'H' ) ( 'e' | 'E' ) ( 'r' | 'R' ) ( 'e' | 'E' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:112:9: ( 'w' | 'W' ) ( 'h' | 'H' ) ( 'e' | 'E' ) ( 'r' | 'R' ) ( 'e' | 'E' )
+			{
+			if ( input.LA(1)=='W'||input.LA(1)=='w' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='H'||input.LA(1)=='h' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='R'||input.LA(1)=='r' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "WHERE"
+
+	// $ANTLR start "ORDER_BY"
+	public final void mORDER_BY() throws RecognitionException {
+		try {
+			int _type = ORDER_BY;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:113:10: ( ( 'o' | 'O' ) ( 'r' | 'R' ) ( 'd' | 'D' ) ( 'e' | 'E' ) ( 'r' | 'R' ) ' ' ( 'b' | 'B' ) ( 'y' | 'Y' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:113:12: ( 'o' | 'O' ) ( 'r' | 'R' ) ( 'd' | 'D' ) ( 'e' | 'E' ) ( 'r' | 'R' ) ' ' ( 'b' | 'B' ) ( 'y' | 'Y' )
+			{
+			if ( input.LA(1)=='O'||input.LA(1)=='o' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='R'||input.LA(1)=='r' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='D'||input.LA(1)=='d' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='R'||input.LA(1)=='r' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			match(' '); 
+			if ( input.LA(1)=='B'||input.LA(1)=='b' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='Y'||input.LA(1)=='y' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "ORDER_BY"
+
+	// $ANTLR start "INSERT"
+	public final void mINSERT() throws RecognitionException {
+		try {
+			int _type = INSERT;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:114:8: ( ( 'i' | 'I' ) ( 'n' | 'N' ) ( 's' | 'S' ) ( 'e' | 'E' ) ( 'r' | 'R' ) ( 't' | 'T' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:114:10: ( 'i' | 'I' ) ( 'n' | 'N' ) ( 's' | 'S' ) ( 'e' | 'E' ) ( 'r' | 'R' ) ( 't' | 'T' )
+			{
+			if ( input.LA(1)=='I'||input.LA(1)=='i' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='N'||input.LA(1)=='n' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='S'||input.LA(1)=='s' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='R'||input.LA(1)=='r' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='T'||input.LA(1)=='t' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "INSERT"
+
+	// $ANTLR start "INTO"
+	public final void mINTO() throws RecognitionException {
+		try {
+			int _type = INTO;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:115:6: ( ( 'i' | 'I' ) ( 'n' | 'N' ) ( 't' | 'T' ) ( 'o' | 'O' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:115:8: ( 'i' | 'I' ) ( 'n' | 'N' ) ( 't' | 'T' ) ( 'o' | 'O' )
+			{
+			if ( input.LA(1)=='I'||input.LA(1)=='i' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='N'||input.LA(1)=='n' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='T'||input.LA(1)=='t' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='O'||input.LA(1)=='o' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "INTO"
+
+	// $ANTLR start "VALUES"
+	public final void mVALUES() throws RecognitionException {
+		try {
+			int _type = VALUES;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:116:8: ( ( 'v' | 'V' ) ( 'a' | 'A' ) ( 'l' | 'L' ) ( 'u' | 'U' ) ( 'e' | 'E' ) ( 's' | 'S' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:116:10: ( 'v' | 'V' ) ( 'a' | 'A' ) ( 'l' | 'L' ) ( 'u' | 'U' ) ( 'e' | 'E' ) ( 's' | 'S' )
+			{
+			if ( input.LA(1)=='V'||input.LA(1)=='v' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='A'||input.LA(1)=='a' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='L'||input.LA(1)=='l' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='U'||input.LA(1)=='u' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='S'||input.LA(1)=='s' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "VALUES"
+
+	// $ANTLR start "AND"
+	public final void mAND() throws RecognitionException {
+		try {
+			int _type = AND;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:117:5: ( ( 'a' | 'A' ) ( 'n' | 'N' ) ( 'd' | 'D' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:117:7: ( 'a' | 'A' ) ( 'n' | 'N' ) ( 'd' | 'D' )
+			{
+			if ( input.LA(1)=='A'||input.LA(1)=='a' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='N'||input.LA(1)=='n' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='D'||input.LA(1)=='d' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "AND"
+
+	// $ANTLR start "OR"
+	public final void mOR() throws RecognitionException {
+		try {
+			int _type = OR;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:118:4: ( ( 'o' | 'O' ) ( 'r' | 'R' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:118:6: ( 'o' | 'O' ) ( 'r' | 'R' )
+			{
+			if ( input.LA(1)=='O'||input.LA(1)=='o' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='R'||input.LA(1)=='r' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "OR"
+
+	// $ANTLR start "UPDATE"
+	public final void mUPDATE() throws RecognitionException {
+		try {
+			int _type = UPDATE;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:119:8: ( ( 'u' | 'U' ) ( 'p' | 'P' ) ( 'd' | 'D' ) ( 'a' | 'A' ) ( 't' | 'T' ) ( 'e' | 'E' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:119:10: ( 'u' | 'U' ) ( 'p' | 'P' ) ( 'd' | 'D' ) ( 'a' | 'A' ) ( 't' | 'T' ) ( 'e' | 'E' )
+			{
+			if ( input.LA(1)=='U'||input.LA(1)=='u' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='P'||input.LA(1)=='p' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='D'||input.LA(1)=='d' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='A'||input.LA(1)=='a' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='T'||input.LA(1)=='t' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "UPDATE"
+
+	// $ANTLR start "SET"
+	public final void mSET() throws RecognitionException {
+		try {
+			int _type = SET;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:120:5: ( ( 's' | 'S' ) ( 'e' | 'E' ) ( 't' | 'T' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:120:7: ( 's' | 'S' ) ( 'e' | 'E' ) ( 't' | 'T' )
+			{
+			if ( input.LA(1)=='S'||input.LA(1)=='s' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='T'||input.LA(1)=='t' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "SET"
+
+	// $ANTLR start "ASC"
+	public final void mASC() throws RecognitionException {
+		try {
+			int _type = ASC;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:121:5: ( ( 'a' | 'A' ) ( 's' | 'S' ) ( 'c' | 'C' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:121:7: ( 'a' | 'A' ) ( 's' | 'S' ) ( 'c' | 'C' )
+			{
+			if ( input.LA(1)=='A'||input.LA(1)=='a' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='S'||input.LA(1)=='s' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='C'||input.LA(1)=='c' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "ASC"
+
+	// $ANTLR start "DESC"
+	public final void mDESC() throws RecognitionException {
+		try {
+			int _type = DESC;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:122:5: ( ( 'd' | 'D' ) ( 'e' | 'E' ) ( 's' | 'S' ) ( 'c' | 'S' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:122:7: ( 'd' | 'D' ) ( 'e' | 'E' ) ( 's' | 'S' ) ( 'c' | 'S' )
+			{
+			if ( input.LA(1)=='D'||input.LA(1)=='d' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='S'||input.LA(1)=='s' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='S'||input.LA(1)=='c' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "DESC"
+
+	// $ANTLR start "LPAREN"
+	public final void mLPAREN() throws RecognitionException {
+		try {
+			int _type = LPAREN;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:124:8: ( '(' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:124:10: '('
 			{
 			match('('); 
 			}
@@ -91,15 +794,15 @@ public class SQLLexer extends Lexer {
 			// do for sure before leaving
 		}
 	}
-	// $ANTLR end "T__12"
+	// $ANTLR end "LPAREN"
 
-	// $ANTLR start "T__13"
-	public final void mT__13() throws RecognitionException {
+	// $ANTLR start "RPAREN"
+	public final void mRPAREN() throws RecognitionException {
 		try {
-			int _type = T__13;
+			int _type = RPAREN;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:13:7: ( ')' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:13:9: ')'
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:125:8: ( ')' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:125:10: ')'
 			{
 			match(')'); 
 			}
@@ -111,15 +814,15 @@ public class SQLLexer extends Lexer {
 			// do for sure before leaving
 		}
 	}
-	// $ANTLR end "T__13"
+	// $ANTLR end "RPAREN"
 
-	// $ANTLR start "T__14"
-	public final void mT__14() throws RecognitionException {
+	// $ANTLR start "COMMA"
+	public final void mCOMMA() throws RecognitionException {
 		try {
-			int _type = T__14;
+			int _type = COMMA;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:14:7: ( ',' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:14:9: ','
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:126:7: ( ',' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:126:9: ','
 			{
 			match(','); 
 			}
@@ -131,15 +834,15 @@ public class SQLLexer extends Lexer {
 			// do for sure before leaving
 		}
 	}
-	// $ANTLR end "T__14"
+	// $ANTLR end "COMMA"
 
-	// $ANTLR start "T__15"
-	public final void mT__15() throws RecognitionException {
+	// $ANTLR start "SEMI"
+	public final void mSEMI() throws RecognitionException {
 		try {
-			int _type = T__15;
+			int _type = SEMI;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:15:7: ( ';' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:15:9: ';'
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:127:6: ( ';' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:127:8: ';'
 			{
 			match(';'); 
 			}
@@ -151,17 +854,17 @@ public class SQLLexer extends Lexer {
 			// do for sure before leaving
 		}
 	}
-	// $ANTLR end "T__15"
+	// $ANTLR end "SEMI"
 
-	// $ANTLR start "T__16"
-	public final void mT__16() throws RecognitionException {
+	// $ANTLR start "EQUAL"
+	public final void mEQUAL() throws RecognitionException {
 		try {
-			int _type = T__16;
+			int _type = EQUAL;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:16:7: ( '<' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:16:9: '<'
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:129:7: ( '=' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:129:9: '='
 			{
-			match('<'); 
+			match('='); 
 			}
 
 			state.type = _type;
@@ -171,15 +874,68 @@ public class SQLLexer extends Lexer {
 			// do for sure before leaving
 		}
 	}
-	// $ANTLR end "T__16"
+	// $ANTLR end "EQUAL"
 
-	// $ANTLR start "T__17"
-	public final void mT__17() throws RecognitionException {
+	// $ANTLR start "NOT_EQUAL"
+	public final void mNOT_EQUAL() throws RecognitionException {
 		try {
-			int _type = T__17;
+			int _type = NOT_EQUAL;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:17:7: ( '<=' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:17:9: '<='
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:130:11: ( ( '!=' | '<>' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:130:13: ( '!=' | '<>' )
+			{
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:130:13: ( '!=' | '<>' )
+			int alt1=2;
+			int LA1_0 = input.LA(1);
+			if ( (LA1_0=='!') ) {
+				alt1=1;
+			}
+			else if ( (LA1_0=='<') ) {
+				alt1=2;
+			}
+
+			else {
+				NoViableAltException nvae =
+					new NoViableAltException("", 1, 0, input);
+				throw nvae;
+			}
+
+			switch (alt1) {
+				case 1 :
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:130:14: '!='
+					{
+					match("!="); 
+
+					}
+					break;
+				case 2 :
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:130:21: '<>'
+					{
+					match("<>"); 
+
+					}
+					break;
+
+			}
+
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "NOT_EQUAL"
+
+	// $ANTLR start "LESS_THAN_EQUAL"
+	public final void mLESS_THAN_EQUAL() throws RecognitionException {
+		try {
+			int _type = LESS_THAN_EQUAL;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:131:17: ( '<=' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:131:19: '<='
 			{
 			match("<="); 
 
@@ -192,17 +948,17 @@ public class SQLLexer extends Lexer {
 			// do for sure before leaving
 		}
 	}
-	// $ANTLR end "T__17"
+	// $ANTLR end "LESS_THAN_EQUAL"
 
-	// $ANTLR start "T__18"
-	public final void mT__18() throws RecognitionException {
+	// $ANTLR start "LESS_THAN"
+	public final void mLESS_THAN() throws RecognitionException {
 		try {
-			int _type = T__18;
+			int _type = LESS_THAN;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:18:7: ( '=' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:18:9: '='
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:132:11: ( '<' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:132:13: '<'
 			{
-			match('='); 
+			match('<'); 
 			}
 
 			state.type = _type;
@@ -212,35 +968,15 @@ public class SQLLexer extends Lexer {
 			// do for sure before leaving
 		}
 	}
-	// $ANTLR end "T__18"
+	// $ANTLR end "LESS_THAN"
 
-	// $ANTLR start "T__19"
-	public final void mT__19() throws RecognitionException {
+	// $ANTLR start "GREATER_THAN_EQUAL"
+	public final void mGREATER_THAN_EQUAL() throws RecognitionException {
 		try {
-			int _type = T__19;
+			int _type = GREATER_THAN_EQUAL;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:19:7: ( '>' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:19:9: '>'
-			{
-			match('>'); 
-			}
-
-			state.type = _type;
-			state.channel = _channel;
-		}
-		finally {
-			// do for sure before leaving
-		}
-	}
-	// $ANTLR end "T__19"
-
-	// $ANTLR start "T__20"
-	public final void mT__20() throws RecognitionException {
-		try {
-			int _type = T__20;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:20:7: ( '>=' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:20:9: '>='
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:133:20: ( '>=' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:133:22: '>='
 			{
 			match(">="); 
 
@@ -253,18 +989,17 @@ public class SQLLexer extends Lexer {
 			// do for sure before leaving
 		}
 	}
-	// $ANTLR end "T__20"
+	// $ANTLR end "GREATER_THAN_EQUAL"
 
-	// $ANTLR start "T__21"
-	public final void mT__21() throws RecognitionException {
+	// $ANTLR start "GREATER_THAN"
+	public final void mGREATER_THAN() throws RecognitionException {
 		try {
-			int _type = T__21;
+			int _type = GREATER_THAN;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:21:7: ( 'and' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:21:9: 'and'
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:134:14: ( '>' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:134:16: '>'
 			{
-			match("and"); 
-
+			match('>'); 
 			}
 
 			state.type = _type;
@@ -274,159 +1009,12 @@ public class SQLLexer extends Lexer {
 			// do for sure before leaving
 		}
 	}
-	// $ANTLR end "T__21"
-
-	// $ANTLR start "T__22"
-	public final void mT__22() throws RecognitionException {
-		try {
-			int _type = T__22;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:22:7: ( 'from' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:22:9: 'from'
-			{
-			match("from"); 
-
-			}
-
-			state.type = _type;
-			state.channel = _channel;
-		}
-		finally {
-			// do for sure before leaving
-		}
-	}
-	// $ANTLR end "T__22"
-
-	// $ANTLR start "T__23"
-	public final void mT__23() throws RecognitionException {
-		try {
-			int _type = T__23;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:23:7: ( 'insert' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:23:9: 'insert'
-			{
-			match("insert"); 
-
-			}
-
-			state.type = _type;
-			state.channel = _channel;
-		}
-		finally {
-			// do for sure before leaving
-		}
-	}
-	// $ANTLR end "T__23"
-
-	// $ANTLR start "T__24"
-	public final void mT__24() throws RecognitionException {
-		try {
-			int _type = T__24;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:24:7: ( 'into' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:24:9: 'into'
-			{
-			match("into"); 
-
-			}
-
-			state.type = _type;
-			state.channel = _channel;
-		}
-		finally {
-			// do for sure before leaving
-		}
-	}
-	// $ANTLR end "T__24"
-
-	// $ANTLR start "T__25"
-	public final void mT__25() throws RecognitionException {
-		try {
-			int _type = T__25;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:25:7: ( 'or' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:25:9: 'or'
-			{
-			match("or"); 
-
-			}
-
-			state.type = _type;
-			state.channel = _channel;
-		}
-		finally {
-			// do for sure before leaving
-		}
-	}
-	// $ANTLR end "T__25"
-
-	// $ANTLR start "T__26"
-	public final void mT__26() throws RecognitionException {
-		try {
-			int _type = T__26;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:26:7: ( 'select' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:26:9: 'select'
-			{
-			match("select"); 
-
-			}
-
-			state.type = _type;
-			state.channel = _channel;
-		}
-		finally {
-			// do for sure before leaving
-		}
-	}
-	// $ANTLR end "T__26"
-
-	// $ANTLR start "T__27"
-	public final void mT__27() throws RecognitionException {
-		try {
-			int _type = T__27;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:27:7: ( 'values' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:27:9: 'values'
-			{
-			match("values"); 
-
-			}
-
-			state.type = _type;
-			state.channel = _channel;
-		}
-		finally {
-			// do for sure before leaving
-		}
-	}
-	// $ANTLR end "T__27"
-
-	// $ANTLR start "T__28"
-	public final void mT__28() throws RecognitionException {
-		try {
-			int _type = T__28;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:28:7: ( 'where' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:28:9: 'where'
-			{
-			match("where"); 
-
-			}
-
-			state.type = _type;
-			state.channel = _channel;
-		}
-		finally {
-			// do for sure before leaving
-		}
-	}
-	// $ANTLR end "T__28"
+	// $ANTLR end "GREATER_THAN"
 
 	// $ANTLR start "LETTER"
 	public final void mLETTER() throws RecognitionException {
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:93:17: ( ( 'a' .. 'z' | 'A' .. 'Z' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:136:17: ( ( 'a' .. 'z' | 'A' .. 'Z' ) )
 			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:
 			{
 			if ( (input.LA(1) >= 'A' && input.LA(1) <= 'Z')||(input.LA(1) >= 'a' && input.LA(1) <= 'z') ) {
@@ -449,7 +1037,7 @@ public class SQLLexer extends Lexer {
 	// $ANTLR start "DIGIT"
 	public final void mDIGIT() throws RecognitionException {
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:94:16: ( ( '0' .. '9' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:137:16: ( ( '0' .. '9' ) )
 			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:
 			{
 			if ( (input.LA(1) >= '0' && input.LA(1) <= '9') ) {
@@ -474,21 +1062,21 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = IDENT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:95:7: ( LETTER ( LETTER | DIGIT )* )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:95:9: LETTER ( LETTER | DIGIT )*
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:138:7: ( LETTER ( LETTER | DIGIT )* )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:138:9: LETTER ( LETTER | DIGIT )*
 			{
 			mLETTER(); 
 
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:95:16: ( LETTER | DIGIT )*
-			loop1:
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:138:16: ( LETTER | DIGIT )*
+			loop2:
 			while (true) {
-				int alt1=2;
-				int LA1_0 = input.LA(1);
-				if ( ((LA1_0 >= '0' && LA1_0 <= '9')||(LA1_0 >= 'A' && LA1_0 <= 'Z')||(LA1_0 >= 'a' && LA1_0 <= 'z')) ) {
-					alt1=1;
+				int alt2=2;
+				int LA2_0 = input.LA(1);
+				if ( ((LA2_0 >= '0' && LA2_0 <= '9')||(LA2_0 >= 'A' && LA2_0 <= 'Z')||(LA2_0 >= 'a' && LA2_0 <= 'z')) ) {
+					alt2=1;
 				}
 
-				switch (alt1) {
+				switch (alt2) {
 				case 1 :
 					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:
 					{
@@ -504,7 +1092,7 @@ public class SQLLexer extends Lexer {
 					break;
 
 				default :
-					break loop1;
+					break loop2;
 				}
 			}
 
@@ -524,20 +1112,20 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = WS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:96:4: ( ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' )+ )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:96:6: ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' )+
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:139:4: ( ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' )+ )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:139:6: ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' )+
 			{
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:96:6: ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' )+
-			int cnt2=0;
-			loop2:
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:139:6: ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' )+
+			int cnt3=0;
+			loop3:
 			while (true) {
-				int alt2=2;
-				int LA2_0 = input.LA(1);
-				if ( ((LA2_0 >= '\t' && LA2_0 <= '\n')||(LA2_0 >= '\f' && LA2_0 <= '\r')||LA2_0==' ') ) {
-					alt2=1;
+				int alt3=2;
+				int LA3_0 = input.LA(1);
+				if ( ((LA3_0 >= '\t' && LA3_0 <= '\n')||(LA3_0 >= '\f' && LA3_0 <= '\r')||LA3_0==' ') ) {
+					alt3=1;
 				}
 
-				switch (alt2) {
+				switch (alt3) {
 				case 1 :
 					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:
 					{
@@ -553,11 +1141,11 @@ public class SQLLexer extends Lexer {
 					break;
 
 				default :
-					if ( cnt2 >= 1 ) break loop2;
-					EarlyExitException eee = new EarlyExitException(2, input);
+					if ( cnt3 >= 1 ) break loop3;
+					EarlyExitException eee = new EarlyExitException(3, input);
 					throw eee;
 				}
-				cnt2++;
+				cnt3++;
 			}
 
 			_channel = HIDDEN;
@@ -577,20 +1165,20 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = INTEGER;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:97:9: ( ( DIGIT )+ )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:97:11: ( DIGIT )+
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:140:9: ( ( DIGIT )+ )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:140:11: ( DIGIT )+
 			{
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:97:11: ( DIGIT )+
-			int cnt3=0;
-			loop3:
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:140:11: ( DIGIT )+
+			int cnt4=0;
+			loop4:
 			while (true) {
-				int alt3=2;
-				int LA3_0 = input.LA(1);
-				if ( ((LA3_0 >= '0' && LA3_0 <= '9')) ) {
-					alt3=1;
+				int alt4=2;
+				int LA4_0 = input.LA(1);
+				if ( ((LA4_0 >= '0' && LA4_0 <= '9')) ) {
+					alt4=1;
 				}
 
-				switch (alt3) {
+				switch (alt4) {
 				case 1 :
 					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:
 					{
@@ -606,11 +1194,11 @@ public class SQLLexer extends Lexer {
 					break;
 
 				default :
-					if ( cnt3 >= 1 ) break loop3;
-					EarlyExitException eee = new EarlyExitException(3, input);
+					if ( cnt4 >= 1 ) break loop4;
+					EarlyExitException eee = new EarlyExitException(4, input);
 					throw eee;
 				}
-				cnt3++;
+				cnt4++;
 			}
 
 			}
@@ -624,71 +1212,16 @@ public class SQLLexer extends Lexer {
 	}
 	// $ANTLR end "INTEGER"
 
-	// $ANTLR start "COMMENT"
-	public final void mCOMMENT() throws RecognitionException {
-		try {
-			int _type = COMMENT;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:98:9: ( '--' ( . )* ( '\\n' | '\\r' ) )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:98:11: '--' ( . )* ( '\\n' | '\\r' )
-			{
-			match("--"); 
-
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:98:16: ( . )*
-			loop4:
-			while (true) {
-				int alt4=2;
-				int LA4_0 = input.LA(1);
-				if ( (LA4_0=='\n'||LA4_0=='\r') ) {
-					alt4=2;
-				}
-				else if ( ((LA4_0 >= '\u0000' && LA4_0 <= '\t')||(LA4_0 >= '\u000B' && LA4_0 <= '\f')||(LA4_0 >= '\u000E' && LA4_0 <= '\uFFFF')) ) {
-					alt4=1;
-				}
-
-				switch (alt4) {
-				case 1 :
-					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:98:16: .
-					{
-					matchAny(); 
-					}
-					break;
-
-				default :
-					break loop4;
-				}
-			}
-
-			if ( input.LA(1)=='\n'||input.LA(1)=='\r' ) {
-				input.consume();
-			}
-			else {
-				MismatchedSetException mse = new MismatchedSetException(null,input);
-				recover(mse);
-				throw mse;
-			}
-			_channel = HIDDEN;
-			}
-
-			state.type = _type;
-			state.channel = _channel;
-		}
-		finally {
-			// do for sure before leaving
-		}
-	}
-	// $ANTLR end "COMMENT"
-
 	// $ANTLR start "STRING_LITERAL"
 	public final void mSTRING_LITERAL() throws RecognitionException {
 		try {
 			int _type = STRING_LITERAL;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:99:16: ( '\\'' ( . )* '\\'' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:99:18: '\\'' ( . )* '\\''
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:142:16: ( '\\'' ( . )* '\\'' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:142:18: '\\'' ( . )* '\\''
 			{
 			match('\''); 
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:99:23: ( . )*
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:142:23: ( . )*
 			loop5:
 			while (true) {
 				int alt5=2;
@@ -702,7 +1235,7 @@ public class SQLLexer extends Lexer {
 
 				switch (alt5) {
 				case 1 :
-					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:99:23: .
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:142:23: .
 					{
 					matchAny(); 
 					}
@@ -727,166 +1260,194 @@ public class SQLLexer extends Lexer {
 
 	@Override
 	public void mTokens() throws RecognitionException {
-		// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:8: ( T__11 | T__12 | T__13 | T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | IDENT | WS | INTEGER | COMMENT | STRING_LITERAL )
-		int alt6=23;
+		// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:8: ( SELECT | FROM | WHERE | ORDER_BY | INSERT | INTO | VALUES | AND | OR | UPDATE | SET | ASC | DESC | LPAREN | RPAREN | COMMA | SEMI | EQUAL | NOT_EQUAL | LESS_THAN_EQUAL | LESS_THAN | GREATER_THAN_EQUAL | GREATER_THAN | IDENT | WS | INTEGER | STRING_LITERAL )
+		int alt6=27;
 		alt6 = dfa6.predict(input);
 		switch (alt6) {
 			case 1 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:10: T__11
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:10: SELECT
 				{
-				mT__11(); 
+				mSELECT(); 
 
 				}
 				break;
 			case 2 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:16: T__12
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:17: FROM
 				{
-				mT__12(); 
+				mFROM(); 
 
 				}
 				break;
 			case 3 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:22: T__13
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:22: WHERE
 				{
-				mT__13(); 
+				mWHERE(); 
 
 				}
 				break;
 			case 4 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:28: T__14
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:28: ORDER_BY
 				{
-				mT__14(); 
+				mORDER_BY(); 
 
 				}
 				break;
 			case 5 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:34: T__15
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:37: INSERT
 				{
-				mT__15(); 
+				mINSERT(); 
 
 				}
 				break;
 			case 6 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:40: T__16
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:44: INTO
 				{
-				mT__16(); 
+				mINTO(); 
 
 				}
 				break;
 			case 7 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:46: T__17
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:49: VALUES
 				{
-				mT__17(); 
+				mVALUES(); 
 
 				}
 				break;
 			case 8 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:52: T__18
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:56: AND
 				{
-				mT__18(); 
+				mAND(); 
 
 				}
 				break;
 			case 9 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:58: T__19
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:60: OR
 				{
-				mT__19(); 
+				mOR(); 
 
 				}
 				break;
 			case 10 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:64: T__20
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:63: UPDATE
 				{
-				mT__20(); 
+				mUPDATE(); 
 
 				}
 				break;
 			case 11 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:70: T__21
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:70: SET
 				{
-				mT__21(); 
+				mSET(); 
 
 				}
 				break;
 			case 12 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:76: T__22
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:74: ASC
 				{
-				mT__22(); 
+				mASC(); 
 
 				}
 				break;
 			case 13 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:82: T__23
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:78: DESC
 				{
-				mT__23(); 
+				mDESC(); 
 
 				}
 				break;
 			case 14 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:88: T__24
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:83: LPAREN
 				{
-				mT__24(); 
+				mLPAREN(); 
 
 				}
 				break;
 			case 15 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:94: T__25
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:90: RPAREN
 				{
-				mT__25(); 
+				mRPAREN(); 
 
 				}
 				break;
 			case 16 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:100: T__26
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:97: COMMA
 				{
-				mT__26(); 
+				mCOMMA(); 
 
 				}
 				break;
 			case 17 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:106: T__27
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:103: SEMI
 				{
-				mT__27(); 
+				mSEMI(); 
 
 				}
 				break;
 			case 18 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:112: T__28
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:108: EQUAL
 				{
-				mT__28(); 
+				mEQUAL(); 
 
 				}
 				break;
 			case 19 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:118: IDENT
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:114: NOT_EQUAL
+				{
+				mNOT_EQUAL(); 
+
+				}
+				break;
+			case 20 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:124: LESS_THAN_EQUAL
+				{
+				mLESS_THAN_EQUAL(); 
+
+				}
+				break;
+			case 21 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:140: LESS_THAN
+				{
+				mLESS_THAN(); 
+
+				}
+				break;
+			case 22 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:150: GREATER_THAN_EQUAL
+				{
+				mGREATER_THAN_EQUAL(); 
+
+				}
+				break;
+			case 23 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:169: GREATER_THAN
+				{
+				mGREATER_THAN(); 
+
+				}
+				break;
+			case 24 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:182: IDENT
 				{
 				mIDENT(); 
 
 				}
 				break;
-			case 20 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:124: WS
+			case 25 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:188: WS
 				{
 				mWS(); 
 
 				}
 				break;
-			case 21 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:127: INTEGER
+			case 26 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:191: INTEGER
 				{
 				mINTEGER(); 
 
 				}
 				break;
-			case 22 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:135: COMMENT
-				{
-				mCOMMENT(); 
-
-				}
-				break;
-			case 23 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:143: STRING_LITERAL
+			case 27 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:199: STRING_LITERAL
 				{
 				mSTRING_LITERAL(); 
 
@@ -899,86 +1460,114 @@ public class SQLLexer extends Lexer {
 
 	protected DFA6 dfa6 = new DFA6(this);
 	static final String DFA6_eotS =
-		"\6\uffff\1\26\1\uffff\1\30\7\20\11\uffff\3\20\1\44\3\20\1\50\3\20\1\uffff"+
-		"\3\20\1\uffff\1\57\1\20\1\61\3\20\1\uffff\1\20\1\uffff\2\20\1\70\1\71"+
-		"\1\72\1\73\4\uffff";
+		"\1\uffff\11\22\6\uffff\1\41\1\43\4\uffff\3\22\1\51\6\22\4\uffff\1\22\1"+
+		"\62\3\22\1\uffff\3\22\1\71\1\72\3\22\1\uffff\1\76\3\22\1\102\1\22\2\uffff"+
+		"\1\22\1\105\1\22\1\uffff\1\107\2\22\1\uffff\2\22\1\uffff\1\114\2\uffff"+
+		"\1\115\1\116\1\117\4\uffff";
 	static final String DFA6_eofS =
-		"\74\uffff";
+		"\120\uffff";
 	static final String DFA6_minS =
-		"\1\11\5\uffff\1\75\1\uffff\1\75\1\156\1\162\1\156\1\162\1\145\1\141\1"+
-		"\150\11\uffff\1\144\1\157\1\163\1\60\2\154\1\145\1\60\1\155\1\145\1\157"+
-		"\1\uffff\1\145\1\165\1\162\1\uffff\1\60\1\162\1\60\1\143\2\145\1\uffff"+
-		"\1\164\1\uffff\1\164\1\163\4\60\4\uffff";
+		"\1\11\1\105\1\122\1\110\1\122\1\116\1\101\1\116\1\120\1\105\6\uffff\2"+
+		"\75\4\uffff\1\114\1\117\1\105\1\60\1\123\1\114\1\104\1\103\1\104\1\123"+
+		"\4\uffff\1\105\1\60\1\115\1\122\1\105\1\uffff\1\105\1\117\1\125\2\60\1"+
+		"\101\1\123\1\103\1\uffff\1\60\1\105\2\122\1\60\1\105\2\uffff\1\124\1\60"+
+		"\1\124\1\uffff\1\60\1\40\1\124\1\uffff\1\123\1\105\1\uffff\1\60\2\uffff"+
+		"\3\60\4\uffff";
 	static final String DFA6_maxS =
-		"\1\172\5\uffff\1\75\1\uffff\1\75\1\156\1\162\1\156\1\162\1\145\1\141\1"+
-		"\150\11\uffff\1\144\1\157\1\164\1\172\2\154\1\145\1\172\1\155\1\145\1"+
-		"\157\1\uffff\1\145\1\165\1\162\1\uffff\1\172\1\162\1\172\1\143\2\145\1"+
-		"\uffff\1\164\1\uffff\1\164\1\163\4\172\4\uffff";
+		"\1\172\1\145\1\162\1\150\1\162\1\156\1\141\1\163\1\160\1\145\6\uffff\1"+
+		"\76\1\75\4\uffff\1\164\1\157\1\145\1\172\1\164\1\154\1\144\1\143\1\144"+
+		"\1\163\4\uffff\1\145\1\172\1\155\1\162\1\145\1\uffff\1\145\1\157\1\165"+
+		"\2\172\1\141\2\143\1\uffff\1\172\1\145\2\162\1\172\1\145\2\uffff\1\164"+
+		"\1\172\1\164\1\uffff\1\172\1\40\1\164\1\uffff\1\163\1\145\1\uffff\1\172"+
+		"\2\uffff\3\172\4\uffff";
 	static final String DFA6_acceptS =
-		"\1\uffff\1\1\1\2\1\3\1\4\1\5\1\uffff\1\10\10\uffff\1\23\1\24\1\25\1\26"+
-		"\1\27\1\7\1\6\1\12\1\11\13\uffff\1\17\3\uffff\1\13\6\uffff\1\14\1\uffff"+
-		"\1\16\6\uffff\1\22\1\15\1\20\1\21";
+		"\12\uffff\1\16\1\17\1\20\1\21\1\22\1\23\2\uffff\1\30\1\31\1\32\1\33\12"+
+		"\uffff\1\24\1\25\1\26\1\27\5\uffff\1\11\10\uffff\1\13\6\uffff\1\10\1\14"+
+		"\3\uffff\1\2\3\uffff\1\6\2\uffff\1\15\1\uffff\1\3\1\4\3\uffff\1\1\1\5"+
+		"\1\7\1\12";
 	static final String DFA6_specialS =
-		"\74\uffff}>";
+		"\120\uffff}>";
 	static final String[] DFA6_transitionS = {
-			"\2\21\1\uffff\2\21\22\uffff\1\21\1\1\5\uffff\1\24\1\2\1\3\2\uffff\1\4"+
-			"\1\23\2\uffff\12\22\1\uffff\1\5\1\6\1\7\1\10\2\uffff\32\20\6\uffff\1"+
-			"\11\4\20\1\12\2\20\1\13\5\20\1\14\3\20\1\15\2\20\1\16\1\17\3\20",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"\1\25",
-			"",
-			"\1\27",
-			"\1\31",
-			"\1\32",
-			"\1\33",
-			"\1\34",
-			"\1\35",
-			"\1\36",
-			"\1\37",
-			"",
-			"",
+			"\2\23\1\uffff\2\23\22\uffff\1\23\1\17\5\uffff\1\25\1\12\1\13\2\uffff"+
+			"\1\14\3\uffff\12\24\1\uffff\1\15\1\20\1\16\1\21\2\uffff\1\7\2\22\1\11"+
+			"\1\22\1\2\2\22\1\5\5\22\1\4\3\22\1\1\1\22\1\10\1\6\1\3\3\22\6\uffff\1"+
+			"\7\2\22\1\11\1\22\1\2\2\22\1\5\5\22\1\4\3\22\1\1\1\22\1\10\1\6\1\3\3"+
+			"\22",
+			"\1\26\37\uffff\1\26",
+			"\1\27\37\uffff\1\27",
+			"\1\30\37\uffff\1\30",
+			"\1\31\37\uffff\1\31",
+			"\1\32\37\uffff\1\32",
+			"\1\33\37\uffff\1\33",
+			"\1\34\4\uffff\1\35\32\uffff\1\34\4\uffff\1\35",
+			"\1\36\37\uffff\1\36",
+			"\1\37\37\uffff\1\37",
 			"",
 			"",
 			"",
 			"",
 			"",
 			"",
+			"\1\40\1\17",
+			"\1\42",
 			"",
-			"\1\40",
-			"\1\41",
-			"\1\42\1\43",
-			"\12\20\7\uffff\32\20\6\uffff\32\20",
-			"\1\45",
-			"\1\46",
-			"\1\47",
-			"\12\20\7\uffff\32\20\6\uffff\32\20",
-			"\1\51",
-			"\1\52",
-			"\1\53",
 			"",
-			"\1\54",
-			"\1\55",
-			"\1\56",
 			"",
-			"\12\20\7\uffff\32\20\6\uffff\32\20",
-			"\1\60",
-			"\12\20\7\uffff\32\20\6\uffff\32\20",
-			"\1\62",
-			"\1\63",
-			"\1\64",
 			"",
-			"\1\65",
+			"\1\44\7\uffff\1\45\27\uffff\1\44\7\uffff\1\45",
+			"\1\46\37\uffff\1\46",
+			"\1\47\37\uffff\1\47",
+			"\12\22\7\uffff\3\22\1\50\26\22\6\uffff\3\22\1\50\26\22",
+			"\1\52\1\53\36\uffff\1\52\1\53",
+			"\1\54\37\uffff\1\54",
+			"\1\55\37\uffff\1\55",
+			"\1\56\37\uffff\1\56",
+			"\1\57\37\uffff\1\57",
+			"\1\60\37\uffff\1\60",
 			"",
-			"\1\66",
-			"\1\67",
-			"\12\20\7\uffff\32\20\6\uffff\32\20",
-			"\12\20\7\uffff\32\20\6\uffff\32\20",
-			"\12\20\7\uffff\32\20\6\uffff\32\20",
-			"\12\20\7\uffff\32\20\6\uffff\32\20",
+			"",
+			"",
+			"",
+			"\1\61\37\uffff\1\61",
+			"\12\22\7\uffff\32\22\6\uffff\32\22",
+			"\1\63\37\uffff\1\63",
+			"\1\64\37\uffff\1\64",
+			"\1\65\37\uffff\1\65",
+			"",
+			"\1\66\37\uffff\1\66",
+			"\1\67\37\uffff\1\67",
+			"\1\70\37\uffff\1\70",
+			"\12\22\7\uffff\32\22\6\uffff\32\22",
+			"\12\22\7\uffff\32\22\6\uffff\32\22",
+			"\1\73\37\uffff\1\73",
+			"\1\74\17\uffff\1\74",
+			"\1\75\37\uffff\1\75",
+			"",
+			"\12\22\7\uffff\32\22\6\uffff\32\22",
+			"\1\77\37\uffff\1\77",
+			"\1\100\37\uffff\1\100",
+			"\1\101\37\uffff\1\101",
+			"\12\22\7\uffff\32\22\6\uffff\32\22",
+			"\1\103\37\uffff\1\103",
+			"",
+			"",
+			"\1\104\37\uffff\1\104",
+			"\12\22\7\uffff\32\22\6\uffff\32\22",
+			"\1\106\37\uffff\1\106",
+			"",
+			"\12\22\7\uffff\32\22\6\uffff\32\22",
+			"\1\110",
+			"\1\111\37\uffff\1\111",
+			"",
+			"\1\112\37\uffff\1\112",
+			"\1\113\37\uffff\1\113",
+			"",
+			"\12\22\7\uffff\32\22\6\uffff\32\22",
+			"",
+			"",
+			"\12\22\7\uffff\32\22\6\uffff\32\22",
+			"\12\22\7\uffff\32\22\6\uffff\32\22",
+			"\12\22\7\uffff\32\22\6\uffff\32\22",
 			"",
 			"",
 			"",
@@ -1016,7 +1605,7 @@ public class SQLLexer extends Lexer {
 		}
 		@Override
 		public String getDescription() {
-			return "1:1: Tokens : ( T__11 | T__12 | T__13 | T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | IDENT | WS | INTEGER | COMMENT | STRING_LITERAL );";
+			return "1:1: Tokens : ( SELECT | FROM | WHERE | ORDER_BY | INSERT | INTO | VALUES | AND | OR | UPDATE | SET | ASC | DESC | LPAREN | RPAREN | COMMA | SEMI | EQUAL | NOT_EQUAL | LESS_THAN_EQUAL | LESS_THAN | GREATER_THAN_EQUAL | GREATER_THAN | IDENT | WS | INTEGER | STRING_LITERAL );";
 		}
 	}
 
