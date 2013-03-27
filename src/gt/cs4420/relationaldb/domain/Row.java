@@ -3,7 +3,9 @@ package gt.cs4420.relationaldb.domain;
 import java.util.Map;
 
 public class Row {
-
+/*
+ * Need a little more clarification of the private fields here
+ */
     private Integer primaryKey;
     private Map<Attribute, Object> rowData;
 
