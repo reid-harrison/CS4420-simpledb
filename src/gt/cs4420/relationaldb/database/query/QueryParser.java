@@ -18,13 +18,13 @@ public class QueryParser {
 	 */
 	public static void main(String[] args) throws RecognitionException {
 		
-		String select = "SELECT userID, firstName, lastName, password FROM users WHERE firstName = 'phil' AND lastName = 'oliver' ORDER BY lastName, firstName;";
+		String select = "SELECT userID, firstName, lastName, password FROM users WHERE userID = 1 AND firstName = 'phil' AND lastName = 'oliver' ORDER BY lastName, firstName;";
 		String insert = "INSERT INTO table1 (userID, firstName, lastname, password) VALUES (1, 'phil', 'oliver', 'unicorns');";	
 		String update = "UPDATE users SET firstName = 'phil', lastName = 'oliver' WHERE userID = 1;";
 		
-		//CharStream charStream = new ANTLRStringStream(select);
-		//CharStream charStream = new ANTLRStringStream(select);
-		CharStream charStream = new ANTLRStringStream(update);
+		CharStream charStream = new ANTLRStringStream(select);
+		//CharStream charStream = new ANTLRStringStream(insert);
+		//CharStream charStream = new ANTLRStringStream(update);
 		SQLLexer lexer = new SQLLexer(charStream);
 		CommonTokenStream tokenStream = new CommonTokenStream(lexer);
 		SQLParser parser = new SQLParser(tokenStream);

@@ -20,37 +20,69 @@ statement
 	:	select
 	|	insert
 	|	update
+	|	EOF
 	;
-	
+
+
+/* query statements */
 select
-	:	SELECT columns FROM table (whereClause)? (orderByClause)? SEMI
+	:	selectClause fromClause (whereClause)? (orderByClause)? SEMI!
 	;
 	
 insert
-	:	INSERT INTO table LPAREN columns RPAREN VALUES LPAREN values RPAREN SEMI
+	:	insertClause valuesClause SEMI!
 	;
 	
 update
-	:	UPDATE table SET assignments whereClause SEMI
+	:	updateClause setClause whereClause SEMI!
 	;
 	
-assignments
-	:	assignment (COMMA assignment)*
+	
+	
+	
+	
+/* Query clauses */
+selectClause
+	:	SELECT^ columns
 	;
 	
-assignment
-	:	column EQUAL value
+insertClause
+	:	INSERT_INTO^ insertParams
 	;
 	
-columns
-	:	column (COMMA column)*
+updateClause
+	:	UPDATE^ table
 	;
 	
-column
-	/*@init
-		{
-		}*/
-	:	IDENT // need validation of column existence within table
+fromClause
+	:	FROM^ table
+	;
+	
+whereClause
+	:	WHERE^ searchConditions
+	;
+	
+orderByClause
+	:	ORDER_BY^ column (COMMA! column)* (order)?
+	;
+	
+valuesClause
+	: VALUES^ LPAREN! values RPAREN!
+	;
+
+setClause
+	:	SET^ assignments
+	;
+
+
+
+
+
+
+/* Query parameters	*/
+	
+insertParams
+	:	table^ LPAREN! columns RPAREN!
 	;
 	
 table
@@ -59,13 +91,25 @@ table
 		}*/
 	:	IDENT // need validation of table existence
 	;
-	
-whereClause
-	:	WHERE searchConditions
+
+columns
+	:	column (COMMA! column)*
 	;
 	
-orderByClause
-	:	ORDER_BY column (COMMA column)* (order)?
+column
+	/*@init
+		{
+		}*/
+	:	IDENT // need validation of column existence within table
+	;
+
+value
+	:	STRING_LITERAL
+	| 	INTEGER
+	;
+	
+values
+	:	value (COMMA! value)*
 	;
 	
 order
@@ -73,14 +117,28 @@ order
 	|	DESC
 	;
 	
+assignments
+	:	assignment (COMMA! assignment)*
+	;
+	
+assignment
+	:	column EQUAL^ value
+	;
+	
 searchConditions
-	:	searchCondition (logicalOperator searchCondition)?
+	:	searchCondition (logicalOperator^ searchCondition)?
 	;
 	
 searchCondition
-	:	column comparisonOperator value
+	:	column comparisonOperator^ value
 	;
 	
+
+
+	
+
+	
+/* Operators */
 comparisonOperator
 	:	EQUAL
 	|	NOT_EQUAL
@@ -91,28 +149,20 @@ comparisonOperator
 	;
 	
 logicalOperator
-	:	AND
-	|	OR
+	:	AND^
+	|	OR^
 	;
 	
-value
-	:	STRING_LITERAL
-	| 	INTEGER
-	;
-	
-values
-	:	value (COMMA value)*
-	;
 
 
 
-// case insensitive reserved words
+
+/* Tokens */
 SELECT : ('s' | 'S')('e' | 'E' )('l' | 'L')('e' | 'E')('c' | 'C')('t' | 'T') ;
 FROM : ('f' |'F')('r' | 'R')('o' | 'O')('m' | 'M') ;
 WHERE : ('w' | 'W')('h' | 'H')('e' | 'E')('r' | 'R')('e' | 'E') ;
 ORDER_BY : ('o' | 'O')('r' | 'R')('d' | 'D')('e' | 'E')('r' | 'R')' '('b' |'B')('y' | 'Y');
-INSERT : ('i' | 'I')('n' |'N')('s' | 'S')('e' | 'E')('r' | 'R')('t' | 'T') ;
-INTO : ('i' | 'I')('n' | 'N')('t' | 'T')('o' | 'O') ;
+INSERT_INTO : ('i' | 'I')('n' |'N')('s' | 'S')('e' | 'E')('r' | 'R')('t' | 'T')' '('i' | 'I')('n' | 'N')('t' | 'T')('o' | 'O') ;
 VALUES : ('v' | 'V')('a' | 'A')('l' | 'L')('u' | 'U')('e' | 'E')('s' | 'S') ;
 AND : ('a' |'A')('n' | 'N')('d' | 'D') ;
 OR : ('o' | 'O')('r' | 'R') ;
@@ -138,5 +188,5 @@ fragment DIGIT : ('0'..'9') ;
 IDENT : LETTER (LETTER | DIGIT)* ;
 WS : (' ' | '\t' | '\n' | '\r' | '\f')+ {$channel = HIDDEN;} ;
 INTEGER : DIGIT+;
-//COMMENT : '--' ~('\r' | '\n')* ('\r'? '\n')+ {$channel = HIDDEN;} ;
+COMMENT : '--' .* ('\r' | '\n') {$channel = HIDDEN;} ;
 STRING_LITERAL : '\'' .* '\'' ;
