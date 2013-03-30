@@ -1,6 +1,7 @@
 package gt.cs4420.relationaldb.database.storage;
 
 import gt.cs4420.relationaldb.domain.Attribute;
+import gt.cs4420.relationaldb.domain.Description;
 import gt.cs4420.relationaldb.domain.Row;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
@@ -24,6 +25,7 @@ public class StorageManager {
 
     private TableValidator tableValidator;
     private RowValidator rowValidator;
+    
 
     public StorageManager() {
         storageData = StorageData.getInstance();
@@ -51,6 +53,10 @@ public class StorageManager {
      */
     public Table getTable(final String tableName) {
         return storageData.getTable(tableName);
+    }
+    
+    public Description getTableDescription(final String tableName) {
+    	return storageData.getTableDescription(tableName);
     }
 
     /**
@@ -94,7 +100,7 @@ public class StorageManager {
         validateTableExists(tableId);
 
         //Validate the the row data is populated with valid data
-        rowValidator.validate(row, storageData.getTable(tableId).getDescription());
+        rowValidator.validate(row, storageData.getTable(tableId));
 
         //Resolve primary key
         Attribute primaryKeyAttr = storageData.getTable(tableId).getDescription().getPrimaryKeyAttribute();
@@ -116,6 +122,23 @@ public class StorageManager {
         if (!storageData.tableExists(tableId)) {
             throw new ValidationException("Table does not exist with ID: " + tableId);
         }
+    }
+    
+    /**
+     * Throws a ValidationException if the given tableName does not correspond to an existing table.
+     *
+     * @param tableName
+     * @throws ValidationException
+     */
+    public void validateTableExists(final String tableName) throws ValidationException {
+        if (!storageData.tableExists(tableName)) {
+            throw new ValidationException("Table does not exist with name: " + tableName);
+        }
+    }
+    
+    public void validateAttributeExists() throws ValidationException {
+    	
+    	
     }
 
 }
