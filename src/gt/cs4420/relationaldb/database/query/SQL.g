@@ -40,9 +40,13 @@ options {
 }
 
 @header {
+///////////////////////////////////////////////////////////////////
+//                                                               //
+//   THIS IS A DERIVED FILE! MAKE ANY DESIRED CHANGES IN SQL.g   //
+//                                                               //
+///////////////////////////////////////////////////////////////////
+
 package gt.cs4420.relationaldb.database.query;
-import gt.cs4200.relationaldb.database.validator.TableAttributeValidator;
-import gt.cs4200.relationaldb.database.validator.TableValidator;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.Attribute;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
@@ -54,6 +58,12 @@ import java.util.Map;
 }
 
 @lexer::header {
+///////////////////////////////////////////////////////////////////
+//                                                               //
+//   THIS IS A DERIVED FILE! MAKE ANY DESIRED CHANGES IN SQL.g   //
+//                                                               //
+///////////////////////////////////////////////////////////////////
+
 package gt.cs4420.relationaldb.database.query;
 }
 
