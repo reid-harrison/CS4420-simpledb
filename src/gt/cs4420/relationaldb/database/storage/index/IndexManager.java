@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class IndexManager {
-
+	//Table ID -> Index
     private Map<Integer, Index> indexes;
 
     public IndexManager() {

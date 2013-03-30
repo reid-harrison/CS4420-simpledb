@@ -49,7 +49,7 @@ public class FileManager {
     }
 
     private void initDescription() {
-        descriptionFile = new File(DB_ROOT_DIRECTORY + "description.json");
+        descriptionFile = new File(DB_ROOT_DIRECTORY + "/description.json");
 
         try {
             descriptionFile.getParentFile().mkdirs();
@@ -60,7 +60,7 @@ public class FileManager {
     }
 
     public Set<Table> importDescriptions() {
-        descriptionFile = new File(DB_ROOT_DIRECTORY + "description.json");
+        descriptionFile = new File(DB_ROOT_DIRECTORY + "/description.json");
 
         return tableSerializer.deserializeTableSet(fileReader.read(descriptionFile));
     }

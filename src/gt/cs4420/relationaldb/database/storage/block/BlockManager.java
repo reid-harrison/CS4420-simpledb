@@ -17,6 +17,7 @@ public class BlockManager {
 
     //Table ID -> (Block ID -> Block)
     private Map<Integer, Map<Integer, Block>> tableBlocks;
+    //Table ID -> Block ID
     private Map<Integer, Integer> nextBlockIds;
  
     public BlockManager() {

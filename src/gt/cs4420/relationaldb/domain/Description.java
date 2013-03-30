@@ -47,10 +47,6 @@ public class Description {
         for (Attribute attr : attributes) {
             if (attr.getName().equals(primaryKeyAttribute.getName())) {
             	
-            	/** 
-            	 * By Bruce: i am not sure what the following two lines are doing; to me I think we should use 
-            		primaryKeyAttribute to set attr, not the other way around.
-            	 */
                 //Resolve type if need-be
                 if (primaryKeyAttribute.getType() == null) {
                     primaryKeyAttribute.setType(attr.getType());
