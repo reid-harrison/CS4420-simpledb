@@ -2,6 +2,7 @@ package gt.cs4420.relationaldb.domain.validator;
 
 import gt.cs4420.relationaldb.domain.Description;
 import gt.cs4420.relationaldb.domain.Row;
+import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
 
 public class RowValidator implements Validator<Row> {
@@ -23,10 +24,10 @@ public class RowValidator implements Validator<Row> {
         }
     }
 
-    public void validate(final Row row, final Description description) throws ValidationException {
+    public void validate(final Row row, final Table table) throws ValidationException {
         validate(row);
 
         //Validate the the row data is populated with valid data
-        attributeValidator.validate(row.getRowData(), description);
+        attributeValidator.validate(row.getRowData(), table);
     }
 }
