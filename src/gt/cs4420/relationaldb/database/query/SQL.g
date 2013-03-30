@@ -6,8 +6,44 @@ options {
   ASTLabelType = CommonTree;
 }
 
+@parser::members
+{
+	int numCols = 0;
+	int numVals = 0;
+	int numTables = 0;
+	TableValidator tv = new TableValidator();
+	TableAttributeValidator tav = new TableAttributeValidator();
+	Table table1 = new Table();
+	Attribute attr = new Attribute();
+	
+	@Override    
+    public void displayRecognitionError(String[] tokenNames, RecognitionException e) {
+        String hdr = getErrorHeader(e);
+        String msg = getErrorMessage(e, tokenNames);
+        throw new RuntimeException(hdr + ":" + msg);
+    }
+}
+
+@rulecatch {
+    catch (RecognitionException e) {
+        throw e;
+    }
+}
+
+@lexer::members {
+	@Override
+    public void reportError(RecognitionException e) {
+        throw new RuntimeException(e);
+    }
+}
+
 @header {
 package gt.cs4420.relationaldb.database.query;
+import gt.cs4200.relationaldb.database.validator.TableAttributeValidator;
+import gt.cs4200.relationaldb.database.validator.TableValidator;
+import gt.cs4420.relationaldb.domain.Table;
+import gt.cs4420.relationaldb.domain.Attribute;
+import gt.cs4420.relationaldb.domain.exception.ValidationException;
 }
 
 @lexer::header {
@@ -89,27 +125,54 @@ table
 	/*@init 
 		{
 		}*/
-	:	IDENT // need validation of table existence
+	:	IDENT
+		{
+			table1.setName($IDENT.text);
+			tv.validate(table1);
+		} // need validation of table existence
 	;
+	catch [ValidationException e]{}
 
 columns
-	:	column (COMMA! column)*
+	@init
+	{
+		
+	}
+	:	(column (COMMA! column)*)
 	;
 	
 column
 	/*@init
 		{
 		}*/
-	:	IDENT // need validation of column existence within table
-	;
+	:	IDENT
+		{
+			numCols++;
+			attr.setName($IDENT.text);
+			ArrayList<Object> list = new ArrayList<Object>();
+			list.add(table1);
+			list.add(attr);
+			tav.validate(list);
+		} // need validation of column existence within table
+	;catch [ValidationException e]{}
 
 value
-	:	STRING_LITERAL
-	| 	INTEGER
+	:	STRING_LITERAL {numVals++;}
+	| 	INTEGER	{numVals++;}
 	;
 	
 values
-	:	value (COMMA! value)*
+	@init
+	{
+		
+	}
+	:	(value (COMMA! value)*)
+		{
+			if (!(numVals == numCols))
+			{
+				throw new IllegalArgumentException(numCols + " columns specified and " + numVals + " values entered.");
+			}	
+		}
 	;
 	
 order
@@ -126,7 +189,7 @@ assignment
 	;
 	
 searchConditions
-	:	searchCondition (logicalOperator^ searchCondition)?
+	:	searchCondition (logicalOperator^ searchCondition)*
 	;
 	
 searchCondition
