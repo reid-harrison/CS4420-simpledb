@@ -189,6 +189,8 @@ values
 			for(int i = 0; i < table1Attributes.size(); i++) {
 				attrVals.put(table1Attributes.get(i), insertVals.get(i));			
 			}
+			
+			storageManager.validateValueTypes(attrVals, table1);
 		}
 	; catch [ValidationException e]{}
 	
