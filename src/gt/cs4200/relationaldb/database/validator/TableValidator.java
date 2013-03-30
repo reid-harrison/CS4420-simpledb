@@ -10,6 +10,7 @@ public class TableValidator implements Validator<Table> {
 	public void validate(Table table) throws ValidationException {
 		// TODO Validate presence of table in the database
 		
+		
 	}
 
 }

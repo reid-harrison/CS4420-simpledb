@@ -11,10 +11,12 @@ options {
 	int numCols = 0;
 	int numVals = 0;
 	int numTables = 0;
-	TableValidator tv = new TableValidator();
-	TableAttributeValidator tav = new TableAttributeValidator();
 	Table table1 = new Table();
-	Attribute attr = new Attribute();
+	Table table2 = new Table();
+	List<Attribute> table1Attributes = Lists.newArrayList();
+	List<Object> insertVals = Lists.newArrayList();
+	Map<Attribute, Object> attrVals = Maps.newHashMap();
+	StorageManager storageManager = new StorageManager();
 	
 	@Override    
     public void displayRecognitionError(String[] tokenNames, RecognitionException e) {
@@ -44,6 +46,11 @@ import gt.cs4200.relationaldb.database.validator.TableValidator;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.Attribute;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
+import gt.cs4420.relationaldb.database.storage.StorageManager;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
+import java.util.Map;
 }
 
 @lexer::header {
@@ -128,7 +135,8 @@ table
 	:	IDENT
 		{
 			table1.setName($IDENT.text);
-			tv.validate(table1);
+			table1.setDescription(storageManager.getTableDescription($IDENT.text));
+			storageManager.validateTableExists(table1.getName());
 		} // need validation of table existence
 	;
 	catch [ValidationException e]{}
@@ -148,17 +156,22 @@ column
 	:	IDENT
 		{
 			numCols++;
-			attr.setName($IDENT.text);
-			ArrayList<Object> list = new ArrayList<Object>();
-			list.add(table1);
-			list.add(attr);
-			tav.validate(list);
+			table1Attributes.add(new Attribute($IDENT.text));
+			
 		} // need validation of column existence within table
-	;catch [ValidationException e]{}
+	;
 
 value
-	:	STRING_LITERAL {numVals++;}
-	| 	INTEGER	{numVals++;}
+	:	STRING_LITERAL
+		{
+			insertVals.add($STRING_LITERAL);
+			numVals++;
+		}
+	| 	INTEGER
+		{
+			insertVals.add($INTEGER);
+			numVals++;
+		}
 	;
 	
 values
@@ -172,8 +185,12 @@ values
 			{
 				throw new IllegalArgumentException(numCols + " columns specified and " + numVals + " values entered.");
 			}	
+			
+			for(int i = 0; i < table1Attributes.size(); i++) {
+				attrVals.put(table1Attributes.get(i), insertVals.get(i));			
+			}
 		}
-	;
+	; catch [ValidationException e]{}
 	
 order
 	:	ASC

@@ -3,7 +3,6 @@ package gt.cs4420.relationaldb.domain.validator;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import gt.cs4420.relationaldb.domain.Attribute;
-import gt.cs4420.relationaldb.domain.Description;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
 
@@ -130,7 +129,7 @@ public class AttributeValidator implements Validator<Attribute> {
 
                 break;
         }
-
+        
         if (error) {
             throw new ClassCastException("The value given for attribute " + attribute.getName() + " is not the correct " +
                     "type (" + attribute.getType().getTypeString() + ")");
