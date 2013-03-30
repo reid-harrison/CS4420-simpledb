@@ -16,7 +16,7 @@ options {
 	List<Attribute> table1Attributes = Lists.newArrayList();
 	List<Object> insertVals = Lists.newArrayList();
 	Map<Attribute, Object> attrVals = Maps.newHashMap();
-	StorageManager storageManager = new StorageManager();
+	//StorageManager storageManager = new StorageManager();
 	
 	@Override    
     public void displayRecognitionError(String[] tokenNames, RecognitionException e) {
@@ -129,23 +129,17 @@ insertParams
 	;
 	
 table
-	/*@init 
-		{
-		}*/
 	:	IDENT
 		{
+			//build a Table for use with validation
 			table1.setName($IDENT.text);
-			table1.setDescription(storageManager.getTableDescription($IDENT.text));
-			storageManager.validateTableExists(table1.getName());
-		} // need validation of table existence
+			//storageManager.validateTableExists(table1.getName());
+			//table1.setDescription(storageManager.getTableDescription($IDENT.text));
+		}
 	;
-	catch [ValidationException e]{}
+	//catch [ValidationException e]{}
 
 columns
-	@init
-	{
-		
-	}
 	:	(column (COMMA! column)*)
 	;
 	
@@ -157,8 +151,7 @@ column
 		{
 			numCols++;
 			table1Attributes.add(new Attribute($IDENT.text));
-			
-		} // need validation of column existence within table
+		}
 	;
 
 value
@@ -175,10 +168,6 @@ value
 	;
 	
 values
-	@init
-	{
-		
-	}
 	:	(value (COMMA! value)*)
 		{
 			if (!(numVals == numCols))
@@ -190,9 +179,9 @@ values
 				attrVals.put(table1Attributes.get(i), insertVals.get(i));			
 			}
 			
-			storageManager.validateValueTypes(attrVals, table1);
+			//storageManager.validateValueTypes(attrVals, table1);
 		}
-	; catch [ValidationException e]{}
+	; //catch [ValidationException e]{}
 	
 order
 	:	ASC
