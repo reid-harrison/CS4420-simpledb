@@ -22,6 +22,13 @@ public class IndexNode <T extends Comparable<T>,E extends Comparable<E>> {
 		this.right = null;
 	}
 	
+	public IndexNode(IndexNode<T,E> in) {
+		this.indexID = in.getIndexId();
+		this.blockID = in.getBlockID();
+		this.left = in.getLeft();
+		this.right = in.getRight();
+	}
+	
 	public void setIndexID(T indexID){
 		this.indexID = indexID;
 	}
