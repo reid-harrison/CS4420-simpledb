@@ -3,7 +3,7 @@ package gt.cs4420.relationaldb.domain.validator;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import gt.cs4420.relationaldb.domain.Attribute;
-import gt.cs4420.relationaldb.domain.Description;
+import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
 
 import java.util.Arrays;
@@ -35,29 +35,29 @@ public class AttributeValidator implements Validator<Attribute> {
     }
 
     /**
-     * Validates that all of the given Attributes are included in the given Description.
+     * Validates that all of the given Attributes are included in the given Table's Description.
      *
      * @param attributes
-     * @param description
+     * @param table
      * @throws ValidationException
      */
-    public void validate(final Attribute[] attributes, final Description description) throws ValidationException {
+    public void validate(final Attribute[] attributes, final Table table) throws ValidationException {
         ValidationException ve = new ValidationException();
-        List<Attribute> descAttributes = Arrays.asList(description.getAttributes());
+        List<Attribute> descAttributes = Arrays.asList(table.getDescription().getAttributes());
 
         for (Attribute attr : attributes) {
             int index = descAttributes.indexOf(attr);
 
             if (index < 0) {
                 ve.addMessage("The attribute " + attr.getName() + " of type " + attr.getType()
-                        + " is not in the table's description");
+                        + " is not in the description of table \'" + table.getName() + "\'");
             }
 
             Attribute descAttr = descAttributes.get(index);
 
             if (attr.getType() != descAttr.getType()) {
                 ve.addMessage("The attribute " + attr.getName() + " of type " + attr.getType()
-                        + " does not match the table's description (" + descAttr.getName() + ": " + descAttr.getType().getTypeString());
+                        + " does not match the table " + table.getName()  + "\'s description (" + descAttr.getName() + ": " + descAttr.getType().getTypeString() + ")");
             }
         }
 
@@ -67,17 +67,17 @@ public class AttributeValidator implements Validator<Attribute> {
     }
 
     /**
-     * Validates that all of the given Attributes and their corresponding values are valid for the given Description.
+     * Validates that all of the given Attributes and their corresponding values are valid for the given Table's Description.
      * This will check that the types of values match with the Attribute's correct DataType.
      *
      * @param attributes The Attribute->Value mapping to be validated
-     * @param description The Table Description to be validated against
+     * @param table The Table against whose Description to validate
      */
-    public void validate(final Map<Attribute, Object> attributes, final Description description) throws ValidationException {
+    public void validate(final Map<Attribute, Object> attributes, final Table table) throws ValidationException {
         ValidationException ve = new ValidationException();
 
         try {
-            validate((Attribute[]) Lists.newArrayList(attributes.keySet()).toArray(), description);
+            validate((Attribute[]) Lists.newArrayList(attributes.keySet()).toArray(), table);
         } catch (final ValidationException v) {
             ve.addException(v);
         }
@@ -86,7 +86,7 @@ public class AttributeValidator implements Validator<Attribute> {
             Object obj = attributes.get(attr);
 
             if (obj == null) {
-                if (attr.getName().equals(description.getPrimaryKeyAttribute())) {
+                if (attr.getName().equals(table.getDescription().getPrimaryKeyAttribute())) {
                     ve.addMessage("Primary key attribute cannot be null, must be set");
                     continue;
                 }
@@ -129,7 +129,7 @@ public class AttributeValidator implements Validator<Attribute> {
 
                 break;
         }
-
+        
         if (error) {
             throw new ClassCastException("The value given for attribute " + attribute.getName() + " is not the correct " +
                     "type (" + attribute.getType().getTypeString() + ")");

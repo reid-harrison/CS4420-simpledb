@@ -11,10 +11,12 @@ options {
 	int numCols = 0;
 	int numVals = 0;
 	int numTables = 0;
-	TableValidator tv = new TableValidator();
-	TableAttributeValidator tav = new TableAttributeValidator();
 	Table table1 = new Table();
-	Attribute attr = new Attribute();
+	Table table2 = new Table();
+	List<Attribute> table1Attributes = Lists.newArrayList();
+	List<Object> insertVals = Lists.newArrayList();
+	Map<Attribute, Object> attrVals = Maps.newHashMap();
+	//StorageManager storageManager = new StorageManager();
 	
 	@Override    
     public void displayRecognitionError(String[] tokenNames, RecognitionException e) {
@@ -38,15 +40,30 @@ options {
 }
 
 @header {
+///////////////////////////////////////////////////////////////////
+//                                                               //
+//   THIS IS A DERIVED FILE! MAKE ANY DESIRED CHANGES IN SQL.g   //
+//                                                               //
+///////////////////////////////////////////////////////////////////
+
 package gt.cs4420.relationaldb.database.query;
-import gt.cs4200.relationaldb.database.validator.TableAttributeValidator;
-import gt.cs4200.relationaldb.database.validator.TableValidator;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.Attribute;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
+import gt.cs4420.relationaldb.database.storage.StorageManager;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
+import java.util.Map;
 }
 
 @lexer::header {
+///////////////////////////////////////////////////////////////////
+//                                                               //
+//   THIS IS A DERIVED FILE! MAKE ANY DESIRED CHANGES IN SQL.g   //
+//                                                               //
+///////////////////////////////////////////////////////////////////
+
 package gt.cs4420.relationaldb.database.query;
 }
 
@@ -122,22 +139,17 @@ insertParams
 	;
 	
 table
-	/*@init 
-		{
-		}*/
 	:	IDENT
 		{
+			//build a Table for use with validation
 			table1.setName($IDENT.text);
-			tv.validate(table1);
-		} // need validation of table existence
+			//storageManager.validateTableExists(table1.getName());
+			//table1.setDescription(storageManager.getTableDescription($IDENT.text));
+		}
 	;
-	catch [ValidationException e]{}
+	//catch [ValidationException e]{}
 
 columns
-	@init
-	{
-		
-	}
 	:	(column (COMMA! column)*)
 	;
 	
@@ -148,32 +160,38 @@ column
 	:	IDENT
 		{
 			numCols++;
-			attr.setName($IDENT.text);
-			ArrayList<Object> list = new ArrayList<Object>();
-			list.add(table1);
-			list.add(attr);
-			tav.validate(list);
-		} // need validation of column existence within table
-	;catch [ValidationException e]{}
+			table1Attributes.add(new Attribute($IDENT.text));
+		}
+	;
 
 value
-	:	STRING_LITERAL {numVals++;}
-	| 	INTEGER	{numVals++;}
+	:	STRING_LITERAL
+		{
+			insertVals.add($STRING_LITERAL);
+			numVals++;
+		}
+	| 	INTEGER
+		{
+			insertVals.add($INTEGER);
+			numVals++;
+		}
 	;
 	
 values
-	@init
-	{
-		
-	}
 	:	(value (COMMA! value)*)
 		{
 			if (!(numVals == numCols))
 			{
 				throw new IllegalArgumentException(numCols + " columns specified and " + numVals + " values entered.");
 			}	
+			
+			for(int i = 0; i < table1Attributes.size(); i++) {
+				attrVals.put(table1Attributes.get(i), insertVals.get(i));			
+			}
+			
+			//storageManager.validateValueTypes(attrVals, table1);
 		}
-	;
+	; //catch [ValidationException e]{}
 	
 order
 	:	ASC

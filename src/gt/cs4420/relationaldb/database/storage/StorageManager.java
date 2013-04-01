@@ -1,9 +1,13 @@
 package gt.cs4420.relationaldb.database.storage;
 
+import java.util.Map;
+
 import gt.cs4420.relationaldb.domain.Attribute;
+import gt.cs4420.relationaldb.domain.Description;
 import gt.cs4420.relationaldb.domain.Row;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
+import gt.cs4420.relationaldb.domain.validator.AttributeValidator;
 import gt.cs4420.relationaldb.domain.validator.RowValidator;
 import gt.cs4420.relationaldb.domain.validator.TableValidator;
 
@@ -24,11 +28,14 @@ public class StorageManager {
 
     private TableValidator tableValidator;
     private RowValidator rowValidator;
+    private AttributeValidator attrValidator;
+    
 
     public StorageManager() {
         storageData = StorageData.getInstance();
         tableValidator = new TableValidator();
         rowValidator = new RowValidator();
+        attrValidator = new AttributeValidator();
     }
 
     /**
@@ -51,6 +58,10 @@ public class StorageManager {
      */
     public Table getTable(final String tableName) {
         return storageData.getTable(tableName);
+    }
+    
+    public Description getTableDescription(final String tableName) {
+    	return storageData.getTableDescription(tableName);
     }
 
     /**
@@ -94,7 +105,7 @@ public class StorageManager {
         validateTableExists(tableId);
 
         //Validate the the row data is populated with valid data
-        rowValidator.validate(row, storageData.getTable(tableId).getDescription());
+        rowValidator.validate(row, storageData.getTable(tableId));
 
         //Resolve primary key
         Attribute primaryKeyAttr = storageData.getTable(tableId).getDescription().getPrimaryKeyAttribute();
@@ -117,5 +128,37 @@ public class StorageManager {
             throw new ValidationException("Table does not exist with ID: " + tableId);
         }
     }
-
+    
+    /**
+     * Throws a ValidationException if the given tableName does not correspond to an existing table.
+     *
+     * @param tableName
+     * @throws ValidationException
+     */
+    public void validateTableExists(final String tableName) throws ValidationException {
+        if (!storageData.tableExists(tableName)) {
+            throw new ValidationException("Table does not exist with name: " + tableName);
+        }
+    }
+    
+    /**
+     * Throws a ValidationException if the given tableName does not correspond to an existing table.
+     *
+     * @param tableName
+     * @throws ValidationException
+     */
+    public void validateAttributeExists(final Attribute[] attributes, Table table) throws ValidationException {
+    	attrValidator.validate(attributes, table);
+    }
+    
+    /**
+     * Throws a ValidationException if the given attributes contain invalid attributes or value types for the given table description.
+     *
+     * @param attributes
+     * @param table
+     * @throws ValidationException
+     */
+    public void validateValueTypes(final Map<Attribute, Object> attributes, Table table) throws ValidationException {
+    	attrValidator.validate(attributes, table);
+    }
 }

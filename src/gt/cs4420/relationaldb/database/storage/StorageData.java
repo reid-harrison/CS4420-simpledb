@@ -6,6 +6,7 @@ import gt.cs4420.relationaldb.database.storage.block.Block;
 import gt.cs4420.relationaldb.database.storage.block.BlockManager;
 import gt.cs4420.relationaldb.database.storage.file.FileManager;
 import gt.cs4420.relationaldb.database.storage.index.IndexManager;
+import gt.cs4420.relationaldb.domain.Description;
 import gt.cs4420.relationaldb.domain.Row;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
@@ -136,6 +137,10 @@ class StorageData {
 
     protected Table getTable(final String tableName) {
         return getTable(tableNames.get(tableName));
+    }
+    
+    protected Description getTableDescription(final String tableName) {
+    	return getTable(tableNames.get(tableName)).getDescription();
     }
 
     protected void addTable(final Table table) {
