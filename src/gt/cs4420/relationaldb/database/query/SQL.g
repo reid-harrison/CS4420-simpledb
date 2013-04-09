@@ -13,6 +13,7 @@ options {
 	int numTables = 0;
 	Table table1 = new Table();
 	Table table2 = new Table();
+	List<String> tables = Lists.newArrayList();
 	List<Attribute> table1Attributes = Lists.newArrayList();
 	List<Object> insertVals = Lists.newArrayList();
 	Map<Attribute, Object> attrVals = Maps.newHashMap();
@@ -79,7 +80,7 @@ statement
 
 /* query statements */
 select
-	:	selectClause fromClause (whereClause)? (orderByClause)? SEMI!
+	:	selectClause fromClause (onClause)? (whereClause)? (orderByClause)? SEMI!
 	;
 	
 insert
@@ -108,9 +109,40 @@ updateClause
 	;
 	
 fromClause
-	:	FROM^ table
+	:	FROM^ tableClause 
 	;
 	
+tableClause
+	:	table
+	|	joinClause
+	;
+	
+joinClause
+	:	table (joinOperator^ table)+
+	;
+	
+onClause
+	:	ON^ onSearchConditions
+	;
+
+onTable
+	:	IDENT
+		{
+			if (!tables.contains($IDENT.text))
+			{
+				throw new IllegalArgumentException("'" + $IDENT.text + "' is not a table from which items are being queried.");
+			}
+		}
+	;
+
+joinOperator
+	:	INNER_JOIN
+	|	OUTER_JOIN
+	|	LEFT_JOIN
+	|	RIGHT_JOIN
+	|	JOIN
+	;
+
 whereClause
 	:	WHERE^ searchConditions
 	;
@@ -143,20 +175,17 @@ table
 		{
 			//build a Table for use with validation
 			table1.setName($IDENT.text);
+			tables.add($IDENT.text);
 			//storageManager.validateTableExists(table1.getName());
 			//table1.setDescription(storageManager.getTableDescription($IDENT.text));
 		}
 	;
-	//catch [ValidationException e]{}
 
 columns
 	:	(column (COMMA! column)*)
 	;
 	
 column
-	/*@init
-		{
-		}*/
 	:	IDENT
 		{
 			numCols++;
@@ -212,6 +241,16 @@ searchConditions
 	
 searchCondition
 	:	column comparisonOperator^ value
+		//Possibly validate type of value against column type?
+	;
+	
+onSearchConditions
+	:	onSearchCondition (logicalOperator^ onSearchCondition)*
+	;
+
+onSearchCondition
+	:	onTable DOT! column comparisonOperator^ value
+		//Possibly validate type of value against column type?
 	;
 	
 
@@ -251,6 +290,13 @@ UPDATE : ('u' | 'U')('p' | 'P')('d' | 'D')('a' | 'A')('t' | 'T')('e' | 'E') ;
 SET : ('s' | 'S')('e' | 'E')('t' | 'T') ;
 ASC : ('a' | 'A')('s' | 'S')('c' | 'C') ;
 DESC: ('d' | 'D')('e' | 'E')('s' | 'S')('c' | 'S') ;
+fragment JOIN : ('j' | 'J')('o' | 'O')('i' | 'I')('n' | 'N') ;
+INNER_JOIN: ('i' | 'I')('n' | 'N')('n' | 'N')('e' | 'E')('r' | 'R')(' ')JOIN ;
+OUTER_JOIN: ('o' | 'O')('u' | 'U')('t' | 'T')('e' | 'E')('r' | 'R')(' ')JOIN ;
+LEFT_JOIN: ('l' | 'L')('e' | 'E')('f' | 'F')('t' | 'T')(' ')JOIN ;
+RIGHT_JOIN: ('r' | 'R')('i' | 'I')('g' | 'G')('h' | 'H')('t' | 'T')(' ')JOIN ;
+ON : ('o' | 'O')('n' | 'N') ;
+DOT : '.' ;
 
 LPAREN : '(' ;
 RPAREN : ')';

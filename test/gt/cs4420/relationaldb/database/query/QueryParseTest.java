@@ -14,7 +14,7 @@ public class QueryParseTest {
 		switch(choice)
 		{
 			case 0:
-				query = "SELECT userID, firstName, lastName, password FROM users WHERE userID >= 1 AND firstName = 'phil' AND lastName = 'oliver' ORDER BY lastName, firstName;";
+				query = "SELECT userID, firstName, lastName, password FROM users INNER JOIN accounts OUTER JOIN company ON users.name=1 AND accounts.status = 'stupid' WHERE userID >= 1 AND firstName = 'phil' AND lastName = 'oliver' ORDER BY lastName, firstName;";
 				break;
 			
 			case 1:

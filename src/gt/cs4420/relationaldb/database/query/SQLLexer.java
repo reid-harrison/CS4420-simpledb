@@ -1,4 +1,4 @@
-// $ANTLR 3.5 C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g 2013-04-08 20:29:19
+// $ANTLR 3.5 C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g 2013-04-08 22:25:26
 
 ///////////////////////////////////////////////////////////////////
 //                                                               //
@@ -23,29 +23,36 @@ public class SQLLexer extends Lexer {
 	public static final int COMMENT=7;
 	public static final int DESC=8;
 	public static final int DIGIT=9;
-	public static final int EQUAL=10;
-	public static final int FROM=11;
-	public static final int GREATER_THAN=12;
-	public static final int GREATER_THAN_EQUAL=13;
-	public static final int IDENT=14;
-	public static final int INSERT_INTO=15;
-	public static final int INTEGER=16;
-	public static final int LESS_THAN=17;
-	public static final int LESS_THAN_EQUAL=18;
-	public static final int LETTER=19;
-	public static final int LPAREN=20;
-	public static final int NOT_EQUAL=21;
-	public static final int OR=22;
-	public static final int ORDER_BY=23;
-	public static final int RPAREN=24;
-	public static final int SELECT=25;
-	public static final int SEMI=26;
-	public static final int SET=27;
-	public static final int STRING_LITERAL=28;
-	public static final int UPDATE=29;
-	public static final int VALUES=30;
-	public static final int WHERE=31;
-	public static final int WS=32;
+	public static final int DOT=10;
+	public static final int EQUAL=11;
+	public static final int FROM=12;
+	public static final int GREATER_THAN=13;
+	public static final int GREATER_THAN_EQUAL=14;
+	public static final int IDENT=15;
+	public static final int INNER_JOIN=16;
+	public static final int INSERT_INTO=17;
+	public static final int INTEGER=18;
+	public static final int JOIN=19;
+	public static final int LEFT_JOIN=20;
+	public static final int LESS_THAN=21;
+	public static final int LESS_THAN_EQUAL=22;
+	public static final int LETTER=23;
+	public static final int LPAREN=24;
+	public static final int NOT_EQUAL=25;
+	public static final int ON=26;
+	public static final int OR=27;
+	public static final int ORDER_BY=28;
+	public static final int OUTER_JOIN=29;
+	public static final int RIGHT_JOIN=30;
+	public static final int RPAREN=31;
+	public static final int SELECT=32;
+	public static final int SEMI=33;
+	public static final int SET=34;
+	public static final int STRING_LITERAL=35;
+	public static final int UPDATE=36;
+	public static final int VALUES=37;
+	public static final int WHERE=38;
+	public static final int WS=39;
 
 		@Override
 	    public void reportError(RecognitionException e) {
@@ -73,8 +80,8 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = SELECT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:242:8: ( ( 's' | 'S' ) ( 'e' | 'E' ) ( 'l' | 'L' ) ( 'e' | 'E' ) ( 'c' | 'C' ) ( 't' | 'T' ) )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:242:10: ( 's' | 'S' ) ( 'e' | 'E' ) ( 'l' | 'L' ) ( 'e' | 'E' ) ( 'c' | 'C' ) ( 't' | 'T' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:281:8: ( ( 's' | 'S' ) ( 'e' | 'E' ) ( 'l' | 'L' ) ( 'e' | 'E' ) ( 'c' | 'C' ) ( 't' | 'T' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:281:10: ( 's' | 'S' ) ( 'e' | 'E' ) ( 'l' | 'L' ) ( 'e' | 'E' ) ( 'c' | 'C' ) ( 't' | 'T' )
 			{
 			if ( input.LA(1)=='S'||input.LA(1)=='s' ) {
 				input.consume();
@@ -140,8 +147,8 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = FROM;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:243:6: ( ( 'f' | 'F' ) ( 'r' | 'R' ) ( 'o' | 'O' ) ( 'm' | 'M' ) )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:243:8: ( 'f' | 'F' ) ( 'r' | 'R' ) ( 'o' | 'O' ) ( 'm' | 'M' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:282:6: ( ( 'f' | 'F' ) ( 'r' | 'R' ) ( 'o' | 'O' ) ( 'm' | 'M' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:282:8: ( 'f' | 'F' ) ( 'r' | 'R' ) ( 'o' | 'O' ) ( 'm' | 'M' )
 			{
 			if ( input.LA(1)=='F'||input.LA(1)=='f' ) {
 				input.consume();
@@ -191,8 +198,8 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = WHERE;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:244:7: ( ( 'w' | 'W' ) ( 'h' | 'H' ) ( 'e' | 'E' ) ( 'r' | 'R' ) ( 'e' | 'E' ) )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:244:9: ( 'w' | 'W' ) ( 'h' | 'H' ) ( 'e' | 'E' ) ( 'r' | 'R' ) ( 'e' | 'E' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:283:7: ( ( 'w' | 'W' ) ( 'h' | 'H' ) ( 'e' | 'E' ) ( 'r' | 'R' ) ( 'e' | 'E' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:283:9: ( 'w' | 'W' ) ( 'h' | 'H' ) ( 'e' | 'E' ) ( 'r' | 'R' ) ( 'e' | 'E' )
 			{
 			if ( input.LA(1)=='W'||input.LA(1)=='w' ) {
 				input.consume();
@@ -250,8 +257,8 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = ORDER_BY;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:245:10: ( ( 'o' | 'O' ) ( 'r' | 'R' ) ( 'd' | 'D' ) ( 'e' | 'E' ) ( 'r' | 'R' ) ' ' ( 'b' | 'B' ) ( 'y' | 'Y' ) )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:245:12: ( 'o' | 'O' ) ( 'r' | 'R' ) ( 'd' | 'D' ) ( 'e' | 'E' ) ( 'r' | 'R' ) ' ' ( 'b' | 'B' ) ( 'y' | 'Y' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:284:10: ( ( 'o' | 'O' ) ( 'r' | 'R' ) ( 'd' | 'D' ) ( 'e' | 'E' ) ( 'r' | 'R' ) ' ' ( 'b' | 'B' ) ( 'y' | 'Y' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:284:12: ( 'o' | 'O' ) ( 'r' | 'R' ) ( 'd' | 'D' ) ( 'e' | 'E' ) ( 'r' | 'R' ) ' ' ( 'b' | 'B' ) ( 'y' | 'Y' )
 			{
 			if ( input.LA(1)=='O'||input.LA(1)=='o' ) {
 				input.consume();
@@ -326,8 +333,8 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = INSERT_INTO;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:246:13: ( ( 'i' | 'I' ) ( 'n' | 'N' ) ( 's' | 'S' ) ( 'e' | 'E' ) ( 'r' | 'R' ) ( 't' | 'T' ) ' ' ( 'i' | 'I' ) ( 'n' | 'N' ) ( 't' | 'T' ) ( 'o' | 'O' ) )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:246:15: ( 'i' | 'I' ) ( 'n' | 'N' ) ( 's' | 'S' ) ( 'e' | 'E' ) ( 'r' | 'R' ) ( 't' | 'T' ) ' ' ( 'i' | 'I' ) ( 'n' | 'N' ) ( 't' | 'T' ) ( 'o' | 'O' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:285:13: ( ( 'i' | 'I' ) ( 'n' | 'N' ) ( 's' | 'S' ) ( 'e' | 'E' ) ( 'r' | 'R' ) ( 't' | 'T' ) ' ' ( 'i' | 'I' ) ( 'n' | 'N' ) ( 't' | 'T' ) ( 'o' | 'O' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:285:15: ( 'i' | 'I' ) ( 'n' | 'N' ) ( 's' | 'S' ) ( 'e' | 'E' ) ( 'r' | 'R' ) ( 't' | 'T' ) ' ' ( 'i' | 'I' ) ( 'n' | 'N' ) ( 't' | 'T' ) ( 'o' | 'O' )
 			{
 			if ( input.LA(1)=='I'||input.LA(1)=='i' ) {
 				input.consume();
@@ -426,8 +433,8 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = VALUES;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:247:8: ( ( 'v' | 'V' ) ( 'a' | 'A' ) ( 'l' | 'L' ) ( 'u' | 'U' ) ( 'e' | 'E' ) ( 's' | 'S' ) )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:247:10: ( 'v' | 'V' ) ( 'a' | 'A' ) ( 'l' | 'L' ) ( 'u' | 'U' ) ( 'e' | 'E' ) ( 's' | 'S' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:286:8: ( ( 'v' | 'V' ) ( 'a' | 'A' ) ( 'l' | 'L' ) ( 'u' | 'U' ) ( 'e' | 'E' ) ( 's' | 'S' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:286:10: ( 'v' | 'V' ) ( 'a' | 'A' ) ( 'l' | 'L' ) ( 'u' | 'U' ) ( 'e' | 'E' ) ( 's' | 'S' )
 			{
 			if ( input.LA(1)=='V'||input.LA(1)=='v' ) {
 				input.consume();
@@ -493,8 +500,8 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = AND;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:248:5: ( ( 'a' | 'A' ) ( 'n' | 'N' ) ( 'd' | 'D' ) )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:248:7: ( 'a' | 'A' ) ( 'n' | 'N' ) ( 'd' | 'D' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:287:5: ( ( 'a' | 'A' ) ( 'n' | 'N' ) ( 'd' | 'D' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:287:7: ( 'a' | 'A' ) ( 'n' | 'N' ) ( 'd' | 'D' )
 			{
 			if ( input.LA(1)=='A'||input.LA(1)=='a' ) {
 				input.consume();
@@ -536,8 +543,8 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = OR;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:249:4: ( ( 'o' | 'O' ) ( 'r' | 'R' ) )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:249:6: ( 'o' | 'O' ) ( 'r' | 'R' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:288:4: ( ( 'o' | 'O' ) ( 'r' | 'R' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:288:6: ( 'o' | 'O' ) ( 'r' | 'R' )
 			{
 			if ( input.LA(1)=='O'||input.LA(1)=='o' ) {
 				input.consume();
@@ -571,8 +578,8 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = UPDATE;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:250:8: ( ( 'u' | 'U' ) ( 'p' | 'P' ) ( 'd' | 'D' ) ( 'a' | 'A' ) ( 't' | 'T' ) ( 'e' | 'E' ) )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:250:10: ( 'u' | 'U' ) ( 'p' | 'P' ) ( 'd' | 'D' ) ( 'a' | 'A' ) ( 't' | 'T' ) ( 'e' | 'E' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:289:8: ( ( 'u' | 'U' ) ( 'p' | 'P' ) ( 'd' | 'D' ) ( 'a' | 'A' ) ( 't' | 'T' ) ( 'e' | 'E' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:289:10: ( 'u' | 'U' ) ( 'p' | 'P' ) ( 'd' | 'D' ) ( 'a' | 'A' ) ( 't' | 'T' ) ( 'e' | 'E' )
 			{
 			if ( input.LA(1)=='U'||input.LA(1)=='u' ) {
 				input.consume();
@@ -638,8 +645,8 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = SET;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:251:5: ( ( 's' | 'S' ) ( 'e' | 'E' ) ( 't' | 'T' ) )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:251:7: ( 's' | 'S' ) ( 'e' | 'E' ) ( 't' | 'T' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:290:5: ( ( 's' | 'S' ) ( 'e' | 'E' ) ( 't' | 'T' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:290:7: ( 's' | 'S' ) ( 'e' | 'E' ) ( 't' | 'T' )
 			{
 			if ( input.LA(1)=='S'||input.LA(1)=='s' ) {
 				input.consume();
@@ -681,8 +688,8 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = ASC;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:252:5: ( ( 'a' | 'A' ) ( 's' | 'S' ) ( 'c' | 'C' ) )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:252:7: ( 'a' | 'A' ) ( 's' | 'S' ) ( 'c' | 'C' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:291:5: ( ( 'a' | 'A' ) ( 's' | 'S' ) ( 'c' | 'C' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:291:7: ( 'a' | 'A' ) ( 's' | 'S' ) ( 'c' | 'C' )
 			{
 			if ( input.LA(1)=='A'||input.LA(1)=='a' ) {
 				input.consume();
@@ -724,8 +731,8 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = DESC;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:253:5: ( ( 'd' | 'D' ) ( 'e' | 'E' ) ( 's' | 'S' ) ( 'c' | 'S' ) )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:253:7: ( 'd' | 'D' ) ( 'e' | 'E' ) ( 's' | 'S' ) ( 'c' | 'S' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:292:5: ( ( 'd' | 'D' ) ( 'e' | 'E' ) ( 's' | 'S' ) ( 'c' | 'S' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:292:7: ( 'd' | 'D' ) ( 'e' | 'E' ) ( 's' | 'S' ) ( 'c' | 'S' )
 			{
 			if ( input.LA(1)=='D'||input.LA(1)=='d' ) {
 				input.consume();
@@ -770,13 +777,375 @@ public class SQLLexer extends Lexer {
 	}
 	// $ANTLR end "DESC"
 
+	// $ANTLR start "JOIN"
+	public final void mJOIN() throws RecognitionException {
+		try {
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:293:15: ( ( 'j' | 'J' ) ( 'o' | 'O' ) ( 'i' | 'I' ) ( 'n' | 'N' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:293:17: ( 'j' | 'J' ) ( 'o' | 'O' ) ( 'i' | 'I' ) ( 'n' | 'N' )
+			{
+			if ( input.LA(1)=='J'||input.LA(1)=='j' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='O'||input.LA(1)=='o' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='I'||input.LA(1)=='i' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='N'||input.LA(1)=='n' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			}
+
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "JOIN"
+
+	// $ANTLR start "INNER_JOIN"
+	public final void mINNER_JOIN() throws RecognitionException {
+		try {
+			int _type = INNER_JOIN;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:294:11: ( ( 'i' | 'I' ) ( 'n' | 'N' ) ( 'n' | 'N' ) ( 'e' | 'E' ) ( 'r' | 'R' ) ( ' ' ) JOIN )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:294:13: ( 'i' | 'I' ) ( 'n' | 'N' ) ( 'n' | 'N' ) ( 'e' | 'E' ) ( 'r' | 'R' ) ( ' ' ) JOIN
+			{
+			if ( input.LA(1)=='I'||input.LA(1)=='i' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='N'||input.LA(1)=='n' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='N'||input.LA(1)=='n' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='R'||input.LA(1)=='r' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:294:68: ( ' ' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:294:69: ' '
+			{
+			match(' '); 
+			}
+
+			mJOIN(); 
+
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "INNER_JOIN"
+
+	// $ANTLR start "OUTER_JOIN"
+	public final void mOUTER_JOIN() throws RecognitionException {
+		try {
+			int _type = OUTER_JOIN;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:295:11: ( ( 'o' | 'O' ) ( 'u' | 'U' ) ( 't' | 'T' ) ( 'e' | 'E' ) ( 'r' | 'R' ) ( ' ' ) JOIN )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:295:13: ( 'o' | 'O' ) ( 'u' | 'U' ) ( 't' | 'T' ) ( 'e' | 'E' ) ( 'r' | 'R' ) ( ' ' ) JOIN
+			{
+			if ( input.LA(1)=='O'||input.LA(1)=='o' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='U'||input.LA(1)=='u' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='T'||input.LA(1)=='t' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='R'||input.LA(1)=='r' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:295:68: ( ' ' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:295:69: ' '
+			{
+			match(' '); 
+			}
+
+			mJOIN(); 
+
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "OUTER_JOIN"
+
+	// $ANTLR start "LEFT_JOIN"
+	public final void mLEFT_JOIN() throws RecognitionException {
+		try {
+			int _type = LEFT_JOIN;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:296:10: ( ( 'l' | 'L' ) ( 'e' | 'E' ) ( 'f' | 'F' ) ( 't' | 'T' ) ( ' ' ) JOIN )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:296:12: ( 'l' | 'L' ) ( 'e' | 'E' ) ( 'f' | 'F' ) ( 't' | 'T' ) ( ' ' ) JOIN
+			{
+			if ( input.LA(1)=='L'||input.LA(1)=='l' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='F'||input.LA(1)=='f' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='T'||input.LA(1)=='t' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:296:56: ( ' ' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:296:57: ' '
+			{
+			match(' '); 
+			}
+
+			mJOIN(); 
+
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "LEFT_JOIN"
+
+	// $ANTLR start "RIGHT_JOIN"
+	public final void mRIGHT_JOIN() throws RecognitionException {
+		try {
+			int _type = RIGHT_JOIN;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:297:11: ( ( 'r' | 'R' ) ( 'i' | 'I' ) ( 'g' | 'G' ) ( 'h' | 'H' ) ( 't' | 'T' ) ( ' ' ) JOIN )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:297:13: ( 'r' | 'R' ) ( 'i' | 'I' ) ( 'g' | 'G' ) ( 'h' | 'H' ) ( 't' | 'T' ) ( ' ' ) JOIN
+			{
+			if ( input.LA(1)=='R'||input.LA(1)=='r' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='I'||input.LA(1)=='i' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='G'||input.LA(1)=='g' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='H'||input.LA(1)=='h' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='T'||input.LA(1)=='t' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:297:68: ( ' ' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:297:69: ' '
+			{
+			match(' '); 
+			}
+
+			mJOIN(); 
+
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "RIGHT_JOIN"
+
+	// $ANTLR start "ON"
+	public final void mON() throws RecognitionException {
+		try {
+			int _type = ON;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:298:4: ( ( 'o' | 'O' ) ( 'n' | 'N' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:298:6: ( 'o' | 'O' ) ( 'n' | 'N' )
+			{
+			if ( input.LA(1)=='O'||input.LA(1)=='o' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			if ( input.LA(1)=='N'||input.LA(1)=='n' ) {
+				input.consume();
+			}
+			else {
+				MismatchedSetException mse = new MismatchedSetException(null,input);
+				recover(mse);
+				throw mse;
+			}
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "ON"
+
+	// $ANTLR start "DOT"
+	public final void mDOT() throws RecognitionException {
+		try {
+			int _type = DOT;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:299:5: ( '.' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:299:7: '.'
+			{
+			match('.'); 
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "DOT"
+
 	// $ANTLR start "LPAREN"
 	public final void mLPAREN() throws RecognitionException {
 		try {
 			int _type = LPAREN;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:255:8: ( '(' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:255:10: '('
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:301:8: ( '(' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:301:10: '('
 			{
 			match('('); 
 			}
@@ -795,8 +1164,8 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = RPAREN;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:256:8: ( ')' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:256:10: ')'
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:302:8: ( ')' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:302:10: ')'
 			{
 			match(')'); 
 			}
@@ -815,8 +1184,8 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = COMMA;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:257:7: ( ',' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:257:9: ','
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:303:7: ( ',' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:303:9: ','
 			{
 			match(','); 
 			}
@@ -835,8 +1204,8 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = SEMI;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:258:6: ( ';' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:258:8: ';'
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:304:6: ( ';' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:304:8: ';'
 			{
 			match(';'); 
 			}
@@ -855,8 +1224,8 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = EQUAL;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:260:7: ( '=' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:260:9: '='
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:306:7: ( '=' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:306:9: '='
 			{
 			match('='); 
 			}
@@ -875,10 +1244,10 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = NOT_EQUAL;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:261:11: ( ( '!=' | '<>' ) )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:261:13: ( '!=' | '<>' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:307:11: ( ( '!=' | '<>' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:307:13: ( '!=' | '<>' )
 			{
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:261:13: ( '!=' | '<>' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:307:13: ( '!=' | '<>' )
 			int alt1=2;
 			int LA1_0 = input.LA(1);
 			if ( (LA1_0=='!') ) {
@@ -896,14 +1265,14 @@ public class SQLLexer extends Lexer {
 
 			switch (alt1) {
 				case 1 :
-					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:261:14: '!='
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:307:14: '!='
 					{
 					match("!="); 
 
 					}
 					break;
 				case 2 :
-					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:261:21: '<>'
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:307:21: '<>'
 					{
 					match("<>"); 
 
@@ -928,8 +1297,8 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = LESS_THAN_EQUAL;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:262:17: ( '<=' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:262:19: '<='
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:308:17: ( '<=' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:308:19: '<='
 			{
 			match("<="); 
 
@@ -949,8 +1318,8 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = LESS_THAN;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:263:11: ( '<' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:263:13: '<'
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:309:11: ( '<' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:309:13: '<'
 			{
 			match('<'); 
 			}
@@ -969,8 +1338,8 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = GREATER_THAN_EQUAL;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:264:20: ( '>=' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:264:22: '>='
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:310:20: ( '>=' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:310:22: '>='
 			{
 			match(">="); 
 
@@ -990,8 +1359,8 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = GREATER_THAN;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:265:14: ( '>' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:265:16: '>'
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:311:14: ( '>' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:311:16: '>'
 			{
 			match('>'); 
 			}
@@ -1008,7 +1377,7 @@ public class SQLLexer extends Lexer {
 	// $ANTLR start "LETTER"
 	public final void mLETTER() throws RecognitionException {
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:267:17: ( ( 'a' .. 'z' | 'A' .. 'Z' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:313:17: ( ( 'a' .. 'z' | 'A' .. 'Z' ) )
 			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:
 			{
 			if ( (input.LA(1) >= 'A' && input.LA(1) <= 'Z')||(input.LA(1) >= 'a' && input.LA(1) <= 'z') ) {
@@ -1031,7 +1400,7 @@ public class SQLLexer extends Lexer {
 	// $ANTLR start "DIGIT"
 	public final void mDIGIT() throws RecognitionException {
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:268:16: ( ( '0' .. '9' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:314:16: ( ( '0' .. '9' ) )
 			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:
 			{
 			if ( (input.LA(1) >= '0' && input.LA(1) <= '9') ) {
@@ -1056,12 +1425,12 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = IDENT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:269:7: ( LETTER ( LETTER | DIGIT )* )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:269:9: LETTER ( LETTER | DIGIT )*
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:315:7: ( LETTER ( LETTER | DIGIT )* )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:315:9: LETTER ( LETTER | DIGIT )*
 			{
 			mLETTER(); 
 
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:269:16: ( LETTER | DIGIT )*
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:315:16: ( LETTER | DIGIT )*
 			loop2:
 			while (true) {
 				int alt2=2;
@@ -1106,10 +1475,10 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = WS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:270:4: ( ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' )+ )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:270:6: ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' )+
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:316:4: ( ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' )+ )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:316:6: ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' )+
 			{
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:270:6: ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' )+
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:316:6: ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' )+
 			int cnt3=0;
 			loop3:
 			while (true) {
@@ -1159,10 +1528,10 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = INTEGER;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:271:9: ( ( DIGIT )+ )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:271:11: ( DIGIT )+
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:317:9: ( ( DIGIT )+ )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:317:11: ( DIGIT )+
 			{
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:271:11: ( DIGIT )+
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:317:11: ( DIGIT )+
 			int cnt4=0;
 			loop4:
 			while (true) {
@@ -1211,12 +1580,12 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = COMMENT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:272:9: ( '--' ( . )* ( '\\r' | '\\n' ) )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:272:11: '--' ( . )* ( '\\r' | '\\n' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:318:9: ( '--' ( . )* ( '\\r' | '\\n' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:318:11: '--' ( . )* ( '\\r' | '\\n' )
 			{
 			match("--"); 
 
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:272:16: ( . )*
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:318:16: ( . )*
 			loop5:
 			while (true) {
 				int alt5=2;
@@ -1230,7 +1599,7 @@ public class SQLLexer extends Lexer {
 
 				switch (alt5) {
 				case 1 :
-					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:272:16: .
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:318:16: .
 					{
 					matchAny(); 
 					}
@@ -1266,11 +1635,11 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = STRING_LITERAL;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:273:16: ( '\\'' ( . )* '\\'' )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:273:18: '\\'' ( . )* '\\''
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:319:16: ( '\\'' ( . )* '\\'' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:319:18: '\\'' ( . )* '\\''
 			{
 			match('\''); 
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:273:23: ( . )*
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:319:23: ( . )*
 			loop6:
 			while (true) {
 				int alt6=2;
@@ -1284,7 +1653,7 @@ public class SQLLexer extends Lexer {
 
 				switch (alt6) {
 				case 1 :
-					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:273:23: .
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:319:23: .
 					{
 					matchAny(); 
 					}
@@ -1309,8 +1678,8 @@ public class SQLLexer extends Lexer {
 
 	@Override
 	public void mTokens() throws RecognitionException {
-		// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:8: ( SELECT | FROM | WHERE | ORDER_BY | INSERT_INTO | VALUES | AND | OR | UPDATE | SET | ASC | DESC | LPAREN | RPAREN | COMMA | SEMI | EQUAL | NOT_EQUAL | LESS_THAN_EQUAL | LESS_THAN | GREATER_THAN_EQUAL | GREATER_THAN | IDENT | WS | INTEGER | COMMENT | STRING_LITERAL )
-		int alt7=27;
+		// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:8: ( SELECT | FROM | WHERE | ORDER_BY | INSERT_INTO | VALUES | AND | OR | UPDATE | SET | ASC | DESC | INNER_JOIN | OUTER_JOIN | LEFT_JOIN | RIGHT_JOIN | ON | DOT | LPAREN | RPAREN | COMMA | SEMI | EQUAL | NOT_EQUAL | LESS_THAN_EQUAL | LESS_THAN | GREATER_THAN_EQUAL | GREATER_THAN | IDENT | WS | INTEGER | COMMENT | STRING_LITERAL )
+		int alt7=33;
 		alt7 = dfa7.predict(input);
 		switch (alt7) {
 			case 1 :
@@ -1398,105 +1767,147 @@ public class SQLLexer extends Lexer {
 				}
 				break;
 			case 13 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:83: LPAREN
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:83: INNER_JOIN
+				{
+				mINNER_JOIN(); 
+
+				}
+				break;
+			case 14 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:94: OUTER_JOIN
+				{
+				mOUTER_JOIN(); 
+
+				}
+				break;
+			case 15 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:105: LEFT_JOIN
+				{
+				mLEFT_JOIN(); 
+
+				}
+				break;
+			case 16 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:115: RIGHT_JOIN
+				{
+				mRIGHT_JOIN(); 
+
+				}
+				break;
+			case 17 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:126: ON
+				{
+				mON(); 
+
+				}
+				break;
+			case 18 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:129: DOT
+				{
+				mDOT(); 
+
+				}
+				break;
+			case 19 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:133: LPAREN
 				{
 				mLPAREN(); 
 
 				}
 				break;
-			case 14 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:90: RPAREN
+			case 20 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:140: RPAREN
 				{
 				mRPAREN(); 
 
 				}
 				break;
-			case 15 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:97: COMMA
+			case 21 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:147: COMMA
 				{
 				mCOMMA(); 
 
 				}
 				break;
-			case 16 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:103: SEMI
+			case 22 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:153: SEMI
 				{
 				mSEMI(); 
 
 				}
 				break;
-			case 17 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:108: EQUAL
+			case 23 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:158: EQUAL
 				{
 				mEQUAL(); 
 
 				}
 				break;
-			case 18 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:114: NOT_EQUAL
+			case 24 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:164: NOT_EQUAL
 				{
 				mNOT_EQUAL(); 
 
 				}
 				break;
-			case 19 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:124: LESS_THAN_EQUAL
+			case 25 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:174: LESS_THAN_EQUAL
 				{
 				mLESS_THAN_EQUAL(); 
 
 				}
 				break;
-			case 20 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:140: LESS_THAN
+			case 26 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:190: LESS_THAN
 				{
 				mLESS_THAN(); 
 
 				}
 				break;
-			case 21 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:150: GREATER_THAN_EQUAL
+			case 27 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:200: GREATER_THAN_EQUAL
 				{
 				mGREATER_THAN_EQUAL(); 
 
 				}
 				break;
-			case 22 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:169: GREATER_THAN
+			case 28 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:219: GREATER_THAN
 				{
 				mGREATER_THAN(); 
 
 				}
 				break;
-			case 23 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:182: IDENT
+			case 29 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:232: IDENT
 				{
 				mIDENT(); 
 
 				}
 				break;
-			case 24 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:188: WS
+			case 30 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:238: WS
 				{
 				mWS(); 
 
 				}
 				break;
-			case 25 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:191: INTEGER
+			case 31 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:241: INTEGER
 				{
 				mINTEGER(); 
 
 				}
 				break;
-			case 26 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:199: COMMENT
+			case 32 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:249: COMMENT
 				{
 				mCOMMENT(); 
 
 				}
 				break;
-			case 27 :
-				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:207: STRING_LITERAL
+			case 33 :
+				// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:1:257: STRING_LITERAL
 				{
 				mSTRING_LITERAL(); 
 
@@ -1509,110 +1920,138 @@ public class SQLLexer extends Lexer {
 
 	protected DFA7 dfa7 = new DFA7(this);
 	static final String DFA7_eotS =
-		"\1\uffff\11\22\6\uffff\1\42\1\44\5\uffff\3\22\1\52\6\22\4\uffff\1\22\1"+
-		"\62\3\22\1\uffff\2\22\1\70\1\71\3\22\1\uffff\1\75\4\22\2\uffff\1\22\1"+
-		"\103\1\22\1\uffff\1\105\4\22\1\uffff\1\112\2\uffff\1\22\1\114\1\115\4"+
-		"\uffff";
+		"\1\uffff\13\25\7\uffff\1\51\1\53\5\uffff\3\25\1\61\1\25\1\63\10\25\4\uffff"+
+		"\1\25\1\76\3\25\1\uffff\1\25\1\uffff\3\25\1\106\1\107\5\25\1\uffff\1\115"+
+		"\6\25\2\uffff\1\25\1\125\3\25\1\uffff\1\131\6\25\2\uffff\1\25\1\141\3"+
+		"\uffff\1\25\1\uffff\1\143\1\144\5\uffff";
 	static final String DFA7_eofS =
-		"\116\uffff";
+		"\145\uffff";
 	static final String DFA7_minS =
-		"\1\11\1\105\1\122\1\110\1\122\1\116\1\101\1\116\1\120\1\105\6\uffff\2"+
-		"\75\5\uffff\1\114\1\117\1\105\1\60\1\123\1\114\1\104\1\103\1\104\1\123"+
-		"\4\uffff\1\105\1\60\1\115\1\122\1\105\1\uffff\1\105\1\125\2\60\1\101\1"+
-		"\123\1\103\1\uffff\1\60\1\105\2\122\1\105\2\uffff\1\124\1\60\1\124\1\uffff"+
-		"\1\60\1\40\1\124\1\123\1\105\1\uffff\1\60\2\uffff\1\40\2\60\4\uffff";
+		"\1\11\1\105\1\122\1\110\2\116\1\101\1\116\1\120\2\105\1\111\7\uffff\2"+
+		"\75\5\uffff\1\114\1\117\1\105\1\60\1\124\1\60\1\116\1\114\1\104\1\103"+
+		"\1\104\1\123\1\106\1\107\4\uffff\1\105\1\60\1\115\1\122\1\105\1\uffff"+
+		"\1\105\1\uffff\2\105\1\125\2\60\1\101\1\123\1\124\1\110\1\103\1\uffff"+
+		"\1\60\1\105\4\122\1\105\2\uffff\1\124\1\60\1\40\2\124\1\uffff\1\60\2\40"+
+		"\1\124\1\40\1\123\1\105\2\uffff\1\40\1\60\3\uffff\1\40\1\uffff\2\60\5"+
+		"\uffff";
 	static final String DFA7_maxS =
-		"\1\172\1\145\1\162\1\150\1\162\1\156\1\141\1\163\1\160\1\145\6\uffff\1"+
-		"\76\1\75\5\uffff\1\164\1\157\1\145\1\172\1\163\1\154\1\144\1\143\1\144"+
-		"\1\163\4\uffff\1\145\1\172\1\155\1\162\1\145\1\uffff\1\145\1\165\2\172"+
-		"\1\141\2\143\1\uffff\1\172\1\145\2\162\1\145\2\uffff\1\164\1\172\1\164"+
-		"\1\uffff\1\172\1\40\1\164\1\163\1\145\1\uffff\1\172\2\uffff\1\40\2\172"+
-		"\4\uffff";
+		"\1\172\1\145\1\162\1\150\1\165\1\156\1\141\1\163\1\160\2\145\1\151\7\uffff"+
+		"\1\76\1\75\5\uffff\1\164\1\157\1\145\1\172\1\164\1\172\1\163\1\154\1\144"+
+		"\1\143\1\144\1\163\1\146\1\147\4\uffff\1\145\1\172\1\155\1\162\1\145\1"+
+		"\uffff\1\145\1\uffff\2\145\1\165\2\172\1\141\1\143\1\164\1\150\1\143\1"+
+		"\uffff\1\172\1\145\4\162\1\145\2\uffff\1\164\1\172\1\40\2\164\1\uffff"+
+		"\1\172\2\40\1\164\1\40\1\163\1\145\2\uffff\1\40\1\172\3\uffff\1\40\1\uffff"+
+		"\2\172\5\uffff";
 	static final String DFA7_acceptS =
-		"\12\uffff\1\15\1\16\1\17\1\20\1\21\1\22\2\uffff\1\27\1\30\1\31\1\32\1"+
-		"\33\12\uffff\1\23\1\24\1\25\1\26\5\uffff\1\10\7\uffff\1\12\5\uffff\1\7"+
-		"\1\13\3\uffff\1\2\5\uffff\1\14\1\uffff\1\3\1\4\3\uffff\1\1\1\5\1\6\1\11";
+		"\14\uffff\1\22\1\23\1\24\1\25\1\26\1\27\1\30\2\uffff\1\35\1\36\1\37\1"+
+		"\40\1\41\16\uffff\1\31\1\32\1\33\1\34\5\uffff\1\10\1\uffff\1\21\12\uffff"+
+		"\1\12\7\uffff\1\7\1\13\5\uffff\1\2\7\uffff\1\14\1\17\2\uffff\1\3\1\4\1"+
+		"\16\1\uffff\1\15\2\uffff\1\20\1\1\1\5\1\6\1\11";
 	static final String DFA7_specialS =
-		"\116\uffff}>";
+		"\145\uffff}>";
 	static final String[] DFA7_transitionS = {
-			"\2\23\1\uffff\2\23\22\uffff\1\23\1\17\5\uffff\1\26\1\12\1\13\2\uffff"+
-			"\1\14\1\25\2\uffff\12\24\1\uffff\1\15\1\20\1\16\1\21\2\uffff\1\7\2\22"+
-			"\1\11\1\22\1\2\2\22\1\5\5\22\1\4\3\22\1\1\1\22\1\10\1\6\1\3\3\22\6\uffff"+
-			"\1\7\2\22\1\11\1\22\1\2\2\22\1\5\5\22\1\4\3\22\1\1\1\22\1\10\1\6\1\3"+
-			"\3\22",
-			"\1\27\37\uffff\1\27",
-			"\1\30\37\uffff\1\30",
-			"\1\31\37\uffff\1\31",
+			"\2\26\1\uffff\2\26\22\uffff\1\26\1\22\5\uffff\1\31\1\15\1\16\2\uffff"+
+			"\1\17\1\30\1\14\1\uffff\12\27\1\uffff\1\20\1\23\1\21\1\24\2\uffff\1\7"+
+			"\2\25\1\11\1\25\1\2\2\25\1\5\2\25\1\12\2\25\1\4\2\25\1\13\1\1\1\25\1"+
+			"\10\1\6\1\3\3\25\6\uffff\1\7\2\25\1\11\1\25\1\2\2\25\1\5\2\25\1\12\2"+
+			"\25\1\4\2\25\1\13\1\1\1\25\1\10\1\6\1\3\3\25",
 			"\1\32\37\uffff\1\32",
 			"\1\33\37\uffff\1\33",
 			"\1\34\37\uffff\1\34",
-			"\1\35\4\uffff\1\36\32\uffff\1\35\4\uffff\1\36",
-			"\1\37\37\uffff\1\37",
+			"\1\37\3\uffff\1\35\2\uffff\1\36\30\uffff\1\37\3\uffff\1\35\2\uffff\1"+
+			"\36",
 			"\1\40\37\uffff\1\40",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"\1\41\1\17",
-			"\1\43",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"\1\45\7\uffff\1\46\27\uffff\1\45\7\uffff\1\46",
+			"\1\41\37\uffff\1\41",
+			"\1\42\4\uffff\1\43\32\uffff\1\42\4\uffff\1\43",
+			"\1\44\37\uffff\1\44",
+			"\1\45\37\uffff\1\45",
+			"\1\46\37\uffff\1\46",
 			"\1\47\37\uffff\1\47",
-			"\1\50\37\uffff\1\50",
-			"\12\22\7\uffff\3\22\1\51\26\22\6\uffff\3\22\1\51\26\22",
-			"\1\53\37\uffff\1\53",
-			"\1\54\37\uffff\1\54",
-			"\1\55\37\uffff\1\55",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"\1\50\1\22",
+			"\1\52",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"\1\54\7\uffff\1\55\27\uffff\1\54\7\uffff\1\55",
 			"\1\56\37\uffff\1\56",
 			"\1\57\37\uffff\1\57",
-			"\1\60\37\uffff\1\60",
-			"",
-			"",
-			"",
-			"",
-			"\1\61\37\uffff\1\61",
-			"\12\22\7\uffff\32\22\6\uffff\32\22",
-			"\1\63\37\uffff\1\63",
-			"\1\64\37\uffff\1\64",
-			"\1\65\37\uffff\1\65",
-			"",
+			"\12\25\7\uffff\3\25\1\60\26\25\6\uffff\3\25\1\60\26\25",
+			"\1\62\37\uffff\1\62",
+			"\12\25\7\uffff\32\25\6\uffff\32\25",
+			"\1\65\4\uffff\1\64\32\uffff\1\65\4\uffff\1\64",
 			"\1\66\37\uffff\1\66",
 			"\1\67\37\uffff\1\67",
-			"\12\22\7\uffff\32\22\6\uffff\32\22",
-			"\12\22\7\uffff\32\22\6\uffff\32\22",
+			"\1\70\37\uffff\1\70",
+			"\1\71\37\uffff\1\71",
 			"\1\72\37\uffff\1\72",
-			"\1\73\17\uffff\1\73",
+			"\1\73\37\uffff\1\73",
 			"\1\74\37\uffff\1\74",
 			"",
-			"\12\22\7\uffff\32\22\6\uffff\32\22",
-			"\1\76\37\uffff\1\76",
+			"",
+			"",
+			"",
+			"\1\75\37\uffff\1\75",
+			"\12\25\7\uffff\32\25\6\uffff\32\25",
 			"\1\77\37\uffff\1\77",
 			"\1\100\37\uffff\1\100",
 			"\1\101\37\uffff\1\101",
 			"",
-			"",
 			"\1\102\37\uffff\1\102",
-			"\12\22\7\uffff\32\22\6\uffff\32\22",
+			"",
+			"\1\103\37\uffff\1\103",
 			"\1\104\37\uffff\1\104",
-			"",
-			"\12\22\7\uffff\32\22\6\uffff\32\22",
-			"\1\106",
-			"\1\107\37\uffff\1\107",
+			"\1\105\37\uffff\1\105",
+			"\12\25\7\uffff\32\25\6\uffff\32\25",
+			"\12\25\7\uffff\32\25\6\uffff\32\25",
 			"\1\110\37\uffff\1\110",
-			"\1\111\37\uffff\1\111",
+			"\1\111\17\uffff\1\111",
+			"\1\112\37\uffff\1\112",
+			"\1\113\37\uffff\1\113",
+			"\1\114\37\uffff\1\114",
 			"",
-			"\12\22\7\uffff\32\22\6\uffff\32\22",
+			"\12\25\7\uffff\32\25\6\uffff\32\25",
+			"\1\116\37\uffff\1\116",
+			"\1\117\37\uffff\1\117",
+			"\1\120\37\uffff\1\120",
+			"\1\121\37\uffff\1\121",
+			"\1\122\37\uffff\1\122",
+			"\1\123\37\uffff\1\123",
 			"",
 			"",
-			"\1\113",
-			"\12\22\7\uffff\32\22\6\uffff\32\22",
-			"\12\22\7\uffff\32\22\6\uffff\32\22",
+			"\1\124\37\uffff\1\124",
+			"\12\25\7\uffff\32\25\6\uffff\32\25",
+			"\1\126",
+			"\1\127\37\uffff\1\127",
+			"\1\130\37\uffff\1\130",
+			"",
+			"\12\25\7\uffff\32\25\6\uffff\32\25",
+			"\1\132",
+			"\1\133",
+			"\1\134\37\uffff\1\134",
+			"\1\135",
+			"\1\136\37\uffff\1\136",
+			"\1\137\37\uffff\1\137",
+			"",
+			"",
+			"\1\140",
+			"\12\25\7\uffff\32\25\6\uffff\32\25",
+			"",
+			"",
+			"",
+			"\1\142",
+			"",
+			"\12\25\7\uffff\32\25\6\uffff\32\25",
+			"\12\25\7\uffff\32\25\6\uffff\32\25",
+			"",
 			"",
 			"",
 			"",
@@ -1650,7 +2089,7 @@ public class SQLLexer extends Lexer {
 		}
 		@Override
 		public String getDescription() {
-			return "1:1: Tokens : ( SELECT | FROM | WHERE | ORDER_BY | INSERT_INTO | VALUES | AND | OR | UPDATE | SET | ASC | DESC | LPAREN | RPAREN | COMMA | SEMI | EQUAL | NOT_EQUAL | LESS_THAN_EQUAL | LESS_THAN | GREATER_THAN_EQUAL | GREATER_THAN | IDENT | WS | INTEGER | COMMENT | STRING_LITERAL );";
+			return "1:1: Tokens : ( SELECT | FROM | WHERE | ORDER_BY | INSERT_INTO | VALUES | AND | OR | UPDATE | SET | ASC | DESC | INNER_JOIN | OUTER_JOIN | LEFT_JOIN | RIGHT_JOIN | ON | DOT | LPAREN | RPAREN | COMMA | SEMI | EQUAL | NOT_EQUAL | LESS_THAN_EQUAL | LESS_THAN | GREATER_THAN_EQUAL | GREATER_THAN | IDENT | WS | INTEGER | COMMENT | STRING_LITERAL );";
 		}
 	}
 
