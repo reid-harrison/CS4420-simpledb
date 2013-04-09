@@ -123,6 +123,9 @@ joinClause
 	
 onClause
 	:	ON^ onSearchConditions
+		{
+			//need to check for prior existence of a join taking place
+		}
 	;
 
 onTable
