@@ -104,7 +104,7 @@ public class FileManager {
         if (!blockFile.exists()) {
             return null;
         }
-
+       
         Block block = blockSerializer.deserialize(fileReader.read(blockFile));
 
         //Cast all row data appropriately
