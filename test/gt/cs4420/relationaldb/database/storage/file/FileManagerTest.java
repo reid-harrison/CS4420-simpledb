@@ -91,6 +91,7 @@ public class FileManagerTest {
         int usersBlockSize = 4;
 
         Row row1 = new Row();
+        row1.setPrimaryKey(0);
         Map<Attribute, Object> user1Attrs = Maps.newHashMap();
         user1Attrs.put(userAttrs[0], 0);
         user1Attrs.put(userAttrs[1], "reid");
@@ -99,6 +100,7 @@ public class FileManagerTest {
         row1.setRowData(user1Attrs);
 
         Row row2 = new Row();
+        row2.setPrimaryKey(1);
         Map<Attribute, Object> user2Attrs = Maps.newHashMap();
         user2Attrs.put(userAttrs[0], 1);
         user2Attrs.put(userAttrs[1], "phil");
@@ -107,6 +109,7 @@ public class FileManagerTest {
         row2.setRowData(user2Attrs);
 
         Row row3 = new Row();
+        row3.setPrimaryKey(2);
         Map<Attribute, Object> user3Attrs = Maps.newHashMap();
         user3Attrs.put(userAttrs[0], 3);
         user3Attrs.put(userAttrs[1], "bruce");

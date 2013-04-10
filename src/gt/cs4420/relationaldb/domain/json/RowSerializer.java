@@ -14,6 +14,10 @@ public class RowSerializer implements JsonSerializer<Row> {
     public JSONObject serialize(final Row row) {
         JSONObject rowJson = new JSONObject();
 
+        if (row.getPrimaryKey() == null) {
+            throw new IllegalArgumentException("Rows must have primary keys set to be serialized");
+        }
+
         rowJson.put("primaryKey", row.getPrimaryKey());
         rowJson.put("attributes", serialize(row.getRowData()));
 
