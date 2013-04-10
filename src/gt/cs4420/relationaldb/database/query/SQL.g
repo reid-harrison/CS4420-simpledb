@@ -13,6 +13,7 @@ options {
 	int numTables = 0;
 	Table table1 = new Table();
 	Table table2 = new Table();
+	boolean isJoin = false;
 	List<String> tables = Lists.newArrayList();
 	List<Attribute> table1Attributes = Lists.newArrayList();
 	List<Object> insertVals = Lists.newArrayList();
@@ -119,31 +120,20 @@ tableClause
 	
 joinClause
 	:	table (joinOperator^ table)+
+		{
+			isJoin = true;
+		}
 	;
 	
+// Should only occur when preceded by a JOIN
 onClause
-	:	ON^ onSearchConditions
-		{
-			//need to check for prior existence of a join taking place
-		}
-	;
-
-onTable
-	:	IDENT
-		{
-			if (!tables.contains($IDENT.text))
+	:	{
+			if(!isJoin)
 			{
-				throw new IllegalArgumentException("'" + $IDENT.text + "' is not a table from which items are being queried.");
+				throw new IllegalArgumentException("Expecting previous join clause.");
 			}
 		}
-	;
-
-joinOperator
-	:	INNER_JOIN
-	|	OUTER_JOIN
-	|	LEFT_JOIN
-	|	RIGHT_JOIN
-	|	JOIN
+		ON^ onSearchConditions	
 	;
 
 whereClause
@@ -183,11 +173,23 @@ table
 			//table1.setDescription(storageManager.getTableDescription($IDENT.text));
 		}
 	;
+	
+// Requires different logic than table
+onTable
+	:	IDENT
+		{
+			if (!tables.contains($IDENT.text))
+			{
+				throw new IllegalArgumentException("'" + $IDENT.text + "' is not a table from which items are being queried.");
+			}
+		}
+	;
 
 columns
 	:	(column (COMMA! column)*)
 	;
-	
+
+// Matches an attribute in a query
 column
 	:	IDENT
 		{
@@ -196,6 +198,8 @@ column
 		}
 	;
 
+// This is where more data type support can be added
+// numVals is incremented to ensure the number of values matches the number of attributes in the INSERT
 value
 	:	STRING_LITERAL
 		{
@@ -212,18 +216,20 @@ value
 values
 	:	(value (COMMA! value)*)
 		{
+			// Number of values must match number of attribues in INSERT
 			if (!(numVals == numCols))
 			{
 				throw new IllegalArgumentException(numCols + " columns specified and " + numVals + " values entered.");
 			}	
 			
+			// Once attributes and values are parsed, put them in a map for validation
 			for(int i = 0; i < table1Attributes.size(); i++) {
 				attrVals.put(table1Attributes.get(i), insertVals.get(i));			
 			}
 			
 			//storageManager.validateValueTypes(attrVals, table1);
 		}
-	; //catch [ValidationException e]{}
+	;
 	
 order
 	:	ASC
@@ -238,22 +244,28 @@ assignment
 	:	column EQUAL^ value
 	;
 	
+// WHERE clause conditions
 searchConditions
 	:	searchCondition (logicalOperator^ searchCondition)*
 	;
 	
 searchCondition
 	:	column comparisonOperator^ value
-		//Possibly validate type of value against column type?
+		{
+			//TODO Possibly validate type of value against column type?
+		}
 	;
 	
+// ON clause conditions when performing a JOIN
 onSearchConditions
 	:	onSearchCondition (logicalOperator^ onSearchCondition)*
 	;
 
 onSearchCondition
 	:	onTable DOT! column comparisonOperator^ value
-		//Possibly validate type of value against column type?
+		{
+			//TODO Possibly validate type of value against column type?
+		}
 	;
 	
 
@@ -272,15 +284,23 @@ comparisonOperator
 	;
 	
 logicalOperator
-	:	AND^
-	|	OR^
+	:	AND
+	|	OR
 	;
 	
-
+joinOperator
+	:	INNER_JOIN
+	|	OUTER_JOIN
+	|	LEFT_JOIN
+	|	RIGHT_JOIN
+	|	JOIN
+	;
 
 
 
 /* Tokens */
+
+// Reserved words are accepted in any lowercase, uppercase, or any combination of the two
 SELECT : ('s' | 'S')('e' | 'E' )('l' | 'L')('e' | 'E')('c' | 'C')('t' | 'T') ;
 FROM : ('f' |'F')('r' | 'R')('o' | 'O')('m' | 'M') ;
 WHERE : ('w' | 'W')('h' | 'H')('e' | 'E')('r' | 'R')('e' | 'E') ;
@@ -316,7 +336,9 @@ GREATER_THAN : '>' ;
 fragment LETTER : ('a'..'z' | 'A'..'Z') ;
 fragment DIGIT : ('0'..'9') ;
 IDENT : LETTER (LETTER | DIGIT)* ;
-WS : (' ' | '\t' | '\n' | '\r' | '\f')+ {$channel = HIDDEN;} ;
 INTEGER : DIGIT+;
-COMMENT : '--' .* ('\r' | '\n') {$channel = HIDDEN;} ;
 STRING_LITERAL : '\'' .* '\'' ;
+
+// Ignore comments and whitespace when parsing
+COMMENT : '--' .* ('\r' | '\n') {$channel = HIDDEN;} ;
+WS : (' ' | '\t' | '\n' | '\r' | '\f')+ {$channel = HIDDEN;} ;
