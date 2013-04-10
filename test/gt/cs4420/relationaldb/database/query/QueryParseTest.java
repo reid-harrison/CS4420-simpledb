@@ -1,6 +1,8 @@
 package gt.cs4420.relationaldb.database.query;
 
 import org.antlr.runtime.RecognitionException;
+import org.antlr.runtime.tree.DOTTreeGenerator;
+import org.antlr.stringtemplate.StringTemplate;
 
 public class QueryParseTest {
 
@@ -28,11 +30,11 @@ public class QueryParseTest {
 		
 		QueryParser parsed = new QueryParser(query);
 
-        //TODO These two classes no longer exist in Antlr 4
-		//DOTTreeGenerator gen = new DOTTreeGenerator();
-		//StringTemplate st = gen.toDOT(parsed.getQueryTree());
+       
+		DOTTreeGenerator gen = new DOTTreeGenerator();
+		StringTemplate st = gen.toDOT(parsed.getQueryTree());
 		
 		// This prints out a DOT Tree declaration for the query tree. Use GraphViz to view it.
-		//System.out.println(st);
+		System.out.println(st);
 	}
 }
