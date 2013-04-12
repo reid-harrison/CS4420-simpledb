@@ -49,6 +49,10 @@ public class Index {
         return blockIndex;
     }
 
+    public boolean primaryKeyExists(final Integer primaryKey) {
+        return index.containsKey(primaryKey);
+    }
+
     /**
      * Returns true if both Indexes have the same index mapping primaryKeys -> block ID.
      *

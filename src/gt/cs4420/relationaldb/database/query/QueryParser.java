@@ -12,7 +12,7 @@ public class QueryParser {
 
 	
 	private CommonTree queryTree;
-	
+
 	public QueryParser(final String query) throws RecognitionException {
 		CharStream charStream = new ANTLRStringStream(query);
 		SQLLexer lexer = new SQLLexer(charStream);

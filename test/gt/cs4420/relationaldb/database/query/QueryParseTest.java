@@ -9,7 +9,7 @@ public class QueryParseTest {
 	public static void main(String[] args) throws RecognitionException {
 		
 		String query = "";
-		int choice = 0;
+		int choice = 2;
 		
 		switch(choice)
 		{
@@ -22,7 +22,7 @@ public class QueryParseTest {
 				break;
 				
 			case 2:
-				query = "UPDATE users SET firstName = 'phil', lastName = 'oliver' WHERE userID = 1;";
+				query = "UPDATE users SET firstName = 'phil', lastName = 'oliver' WHERE userID = 1 OR lastName = 'oliver';";
 				break;
 			default:
 				break;
