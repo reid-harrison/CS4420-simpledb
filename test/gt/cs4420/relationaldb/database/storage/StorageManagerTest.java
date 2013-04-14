@@ -82,7 +82,7 @@ public class StorageManagerTest {
 
     private void testDropTable(final Integer tableId) {
         try {
-            manager.dropTable(tableId);
+            manager.dropTable(manager.getTableName(tableId));
         } catch (ValidationException e) {
             e.printStackTrace();
             throw new TestFailedException("Drop table");
@@ -92,7 +92,7 @@ public class StorageManagerTest {
 
         //Try again to make sure this fails because table was dropped
         try {
-            manager.dropTable(tableId);
+            manager.dropTable(manager.getTableName(tableId));
         } catch (ValidationException e) {
             dropValidationSuccess = true;
         } finally {
@@ -108,7 +108,7 @@ public class StorageManagerTest {
             Row row = new Row();
             row.setRowData(attributes);
 
-            manager.insert(tableId, row);
+            manager.insert(manager.getTableName(tableId), row);
         } catch (final ValidationException ve) {
             ve.printStackTrace();
             throw new TestFailedException("Insert");

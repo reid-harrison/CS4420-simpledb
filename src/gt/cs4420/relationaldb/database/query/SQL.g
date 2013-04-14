@@ -170,7 +170,7 @@ table
 			table1.setName($IDENT.text);
 			tables.add($IDENT.text);
 			//storageManager.validateTableExists(table1.getName());
-			//table1.setDescription(storageManager.getTableDescription($IDENT.text));
+			//table1.setDescription(storageManager.getTable($IDENT.text).getDescription());
 		}
 	;
 	

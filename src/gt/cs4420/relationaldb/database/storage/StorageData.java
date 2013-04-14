@@ -5,7 +5,9 @@ import com.google.common.collect.Maps;
 import gt.cs4420.relationaldb.database.storage.block.Block;
 import gt.cs4420.relationaldb.database.storage.block.BlockManager;
 import gt.cs4420.relationaldb.database.storage.file.FileManager;
+import gt.cs4420.relationaldb.database.storage.index.Index;
 import gt.cs4420.relationaldb.database.storage.index.IndexManager;
+import gt.cs4420.relationaldb.domain.Attribute;
 import gt.cs4420.relationaldb.domain.Description;
 import gt.cs4420.relationaldb.domain.Row;
 import gt.cs4420.relationaldb.domain.Table;
@@ -131,6 +133,10 @@ class StorageData {
         return tableNames.containsKey(tableName);
     }
 
+    protected Integer getTableId(final String tableName) {
+        return tableNames.get(tableName);
+    }
+
     protected Table getTable(final Integer tableId) {
         return tables.get(tableId);
     }
@@ -164,6 +170,21 @@ class StorageData {
         dirtyCheck();
     }
 
+    protected void update(final Integer tableId, final Row row) throws ValidationException {
+        Row currentRow = getRow(tableId, row.getPrimaryKey());
+
+        if (currentRow == null) {
+            insert(tableId, row);
+            return;
+        }
+
+        Map<Attribute, Object> rowData = row.getRowData();
+
+        currentRow.getRowData().putAll(rowData);
+
+        dirtyCheck();
+    }
+
     protected Integer getNextTableId() {
         return nextId;
     }
@@ -190,16 +211,22 @@ class StorageData {
     }
 
     private Row getRow(final Integer tableId, final Integer primaryKey) {
-        Integer blockId = indexManager.getIndex(tableId).getBlockId(primaryKey);
+        Index index = indexManager.getIndex(tableId);
 
-        if (blockId == null) {
-            throw new NullPointerException("Primary key: " + primaryKey + " does not exist for table ID: " + tableId);
+        if (!index.primaryKeyExists(primaryKey)) {
+            return null;
         }
 
         Row row = tableData.get(tableId).get(primaryKey);
 
         //Try to find the data on disk if it isn't in memory already
         if (row == null || row.getRowData() == null || row.getRowData().isEmpty()) {
+            Integer blockId = indexManager.getIndex(tableId).getBlockId(primaryKey);
+
+            if (blockId == null) {
+                return null;
+            }
+
             Block block = fileManager.importTableBlock(tableId, blockId, tables.get(tableId).getDescription());
             List<Row> rowData = block.getBlockData();
 
@@ -217,6 +244,16 @@ class StorageData {
         }
 
         return row;
+    }
+
+    public List<Row> getAllRows(final Integer tableId) {
+        List<Row> rows = Lists.newArrayList();
+
+        for (Integer primaryKey : indexManager.getIndex(tableId).getPrimaryKeySet()) {
+            rows.add(getRow(tableId, primaryKey));
+        }
+
+        return rows;
     }
 
     /**

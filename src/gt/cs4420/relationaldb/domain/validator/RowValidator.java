@@ -30,4 +30,23 @@ public class RowValidator implements Validator<Row> {
         //Validate the the row data is populated with valid data
         attributeValidator.validate(row.getRowData(), table);
     }
+
+    /**
+     * Currently just here to check that the primary key is not null or -1
+     *
+     * @param row
+     * @param row
+     * @throws ValidationException
+     */
+    public void validatePrimaryKey(final Row row) throws ValidationException {
+        if (row == null) {
+            throw new ValidationException("Null Row");
+        }
+
+        Integer primaryKey = row.getPrimaryKey();
+
+        if (primaryKey == null || primaryKey == -1) {
+            throw new ValidationException("Invalid primary key for given Row");
+        }
+    }
 }

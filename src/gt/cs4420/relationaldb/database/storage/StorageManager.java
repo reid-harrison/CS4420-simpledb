@@ -1,23 +1,22 @@
 package gt.cs4420.relationaldb.database.storage;
 
-import java.util.Map;
-
 import gt.cs4420.relationaldb.domain.Attribute;
-import gt.cs4420.relationaldb.domain.Description;
 import gt.cs4420.relationaldb.domain.Row;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
+import gt.cs4420.relationaldb.domain.query.Constraint;
 import gt.cs4420.relationaldb.domain.validator.AttributeValidator;
 import gt.cs4420.relationaldb.domain.validator.RowValidator;
 import gt.cs4420.relationaldb.domain.validator.TableValidator;
+
+import java.util.List;
 
 /**
  * The point of interaction for the Storage Engine. Use the provided methods to perform database operations.
  *
  * TODO:
  * -Implement more database operations and management functionality
- * * * SELECT ( WHERE )
- * * * UPDATE
+ * * * WHERE
  * * * DELETE
  * * * JOIN
  * * * ORDER BY
@@ -59,9 +58,19 @@ public class StorageManager {
     public Table getTable(final String tableName) {
         return storageData.getTable(tableName);
     }
-    
-    public Description getTableDescription(final String tableName) {
-    	return storageData.getTableDescription(tableName);
+
+    public String getTableName(final Integer tableId) {
+        return getTable(tableId).getName();
+    }
+
+    /**
+     * Returns the Integer ID of the table with the given table name. Returns null if no table exists with the given name.
+     *
+     * @param tableName
+     * @return Integer ID of the table or null if no table exists with the given name
+     */
+    public Integer getTableId(final String tableName) {
+        return storageData.getTableId(tableName);
     }
 
     /**
@@ -83,25 +92,39 @@ public class StorageManager {
     }
 
     /**
-     * Removes the table with the given ID from existence.
+     * Removes the table with the given name from existence.
      *
-     * @param tableId the ID of the table to drop
+     * @param tableName the name of the table to drop
      * @throws ValidationException if the table doesn't exist
      */
-    public void dropTable(final Integer tableId) throws ValidationException {
+    public void dropTable(final String tableName) throws ValidationException {
+        Integer tableId = storageData.getTableId(tableName);
         validateTableExists(tableId);
 
         storageData.removeTable(tableId);
     }
 
     /**
+     * TODO Implement WHERE clauses
+     * Selects and returns the rows from the table with the given name.
+     *
+     * @param tableName
+     * @param whereConstraint Constraint to limit results of the select
+     * @return List<Row> All of the Rows that exist in tableName
+     */
+    public List<Row> select(final String tableName, final Constraint whereConstraint) {
+        return storageData.getAllRows(getTableId(tableName));
+    }
+
+    /**
      * Inserts the given attribute data mapping into the given table.
      *
-     * @param tableId the ID of the table
+     * @param tableName the name of the table
      * @param row the row to insert (with the primary key at least populated in the row's data)
      * @throws ValidationException if a row already exists with the private key or the data is not valid for the table's description
      */
-    public void insert(final Integer tableId, Row row) throws ValidationException {
+    public void insert(final String tableName, Row row) throws ValidationException {
+        Integer tableId = storageData.getTableId(tableName);
         validateTableExists(tableId);
 
         //Validate the the row data is populated with valid data
@@ -118,6 +141,29 @@ public class StorageManager {
     }
 
     /**
+     * TODO Implement WHERE clauses
+     * Updates a table's Row based on the given Row's primary key by modifying the attributes specified in the given
+     * Row's row data.
+     * @param tableName
+     * @param row
+     * @param whereConstraint Constraint to limit rows that are updated
+     * @throws ValidationException
+     */
+    public void update(final String tableName, final Row row, final Constraint whereConstraint) throws ValidationException {
+        Integer tableId = storageData.getTableId(tableName);
+        validateTableExists(tableId);
+
+        //Validate the the row data is populated with valid data
+        rowValidator.validatePrimaryKey(row);
+        rowValidator.validate(row, storageData.getTable(tableId));
+
+        //TODO Implement more update validation?
+
+        storageData.update(tableId, row);
+    }
+
+
+    /**
      * Throws a ValidationException if the given tableId does not correspond to an existing table.
      *
      * @param tableId
@@ -128,7 +174,7 @@ public class StorageManager {
             throw new ValidationException("Table does not exist with ID: " + tableId);
         }
     }
-    
+
     /**
      * Throws a ValidationException if the given tableName does not correspond to an existing table.
      *
@@ -140,25 +186,5 @@ public class StorageManager {
             throw new ValidationException("Table does not exist with name: " + tableName);
         }
     }
-    
-    /**
-     * Throws a ValidationException if the given tableName does not correspond to an existing table.
-     *
-     * @param tableName
-     * @throws ValidationException
-     */
-    public void validateAttributeExists(final Attribute[] attributes, Table table) throws ValidationException {
-    	attrValidator.validate(attributes, table);
-    }
-    
-    /**
-     * Throws a ValidationException if the given attributes contain invalid attributes or value types for the given table description.
-     *
-     * @param attributes
-     * @param table
-     * @throws ValidationException
-     */
-    public void validateValueTypes(final Map<Attribute, Object> attributes, Table table) throws ValidationException {
-    	attrValidator.validate(attributes, table);
-    }
+
 }
