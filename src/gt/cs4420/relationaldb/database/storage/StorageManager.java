@@ -4,6 +4,7 @@ import gt.cs4420.relationaldb.domain.Attribute;
 import gt.cs4420.relationaldb.domain.Row;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
+import gt.cs4420.relationaldb.domain.query.Constraint;
 import gt.cs4420.relationaldb.domain.validator.AttributeValidator;
 import gt.cs4420.relationaldb.domain.validator.RowValidator;
 import gt.cs4420.relationaldb.domain.validator.TableValidator;
@@ -108,9 +109,10 @@ public class StorageManager {
      * Selects and returns the rows from the table with the given name.
      *
      * @param tableName
+     * @param whereConstraint Constraint to limit results of the select
      * @return List<Row> All of the Rows that exist in tableName
      */
-    public List<Row> select(final String tableName) {
+    public List<Row> select(final String tableName, final Constraint whereConstraint) {
         return storageData.getAllRows(getTableId(tableName));
     }
 
@@ -144,9 +146,10 @@ public class StorageManager {
      * Row's row data.
      * @param tableName
      * @param row
+     * @param whereConstraint Constraint to limit rows that are updated
      * @throws ValidationException
      */
-    public void update(final String tableName, final Row row) throws ValidationException {
+    public void update(final String tableName, final Row row, final Constraint whereConstraint) throws ValidationException {
         Integer tableId = storageData.getTableId(tableName);
         validateTableExists(tableId);
 
