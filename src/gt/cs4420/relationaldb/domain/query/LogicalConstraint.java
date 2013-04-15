@@ -1,21 +1,19 @@
 package gt.cs4420.relationaldb.domain.query;
 
-import gt.cs4420.relationaldb.domain.Attribute;
-
 public class LogicalConstraint implements Constraint {
 
-    private Operator operator;
+    private LogicalOperator operator;
 
     private Constraint leftConstraint;
     private Constraint rightConstraint;
 
-    public LogicalConstraint(final Operator operator, final Constraint leftConstraint, final Constraint rightConstraint) {
+    public LogicalConstraint(final LogicalOperator operator, final Constraint leftConstraint, final Constraint rightConstraint) {
         this.operator = operator;
         this.leftConstraint = leftConstraint;
         this.rightConstraint = rightConstraint;
     }
 
-    public Operator getOperator() {
+    public LogicalOperator getOperator() {
         return operator;
     }
 
@@ -27,31 +25,27 @@ public class LogicalConstraint implements Constraint {
         return  rightConstraint;
     }
 
-
-    public enum Operator {
-
-        AND("AND"),
-        OR("OR");
-
-        private final String stringRepresentation;
-
-        private Operator(final String stringRepresentation) {
-            this.stringRepresentation = stringRepresentation;
+    @Override
+    public boolean equals(final Object other) {
+        if (!(other instanceof LogicalConstraint)) {
+            return false;
         }
 
-        public String getStringRepresentation() {
-            return stringRepresentation;
+        LogicalConstraint otherConstraint = (LogicalConstraint) other;
+
+        if (!this.operator.equals(otherConstraint.getOperator())) {
+            return false;
         }
 
-        public static Operator getByStringRepresentation(final String stringRepresentation) {
-            for (Operator operator : Operator.values()) {
-                if (operator.getStringRepresentation().equalsIgnoreCase(stringRepresentation)) {
-                    return operator;
-                }
-            }
-
-            return null;
+        if (!this.leftConstraint.equals(otherConstraint.getLeftConstraint())) {
+            return false;
         }
 
+        if (!this.rightConstraint.equals(otherConstraint.getRightConstraint())) {
+            return false;
+        }
+
+        return true;
     }
+
 }

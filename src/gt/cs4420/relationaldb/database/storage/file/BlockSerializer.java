@@ -62,6 +62,13 @@ class BlockSerializer implements JsonSerializer<Block> {
         return block;
     }
 
+    public Row deserializeRow(final JSONObject json, final int blockIndex) {
+        JSONObject blockJson = json.getJSONObject("block");
+        JSONArray dataArray = blockJson.getJSONArray("data");
+
+        return rowSerializer.deserialize(dataArray.getJSONObject(blockIndex));
+    }
+
     public JSONObject serializeBlockMetaData(final List<Block> metaBlocks) {
         JSONObject metaJson = new JSONObject();
         JSONArray metaArray = new JSONArray();

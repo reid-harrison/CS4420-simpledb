@@ -9,44 +9,70 @@ import java.util.Set;
 
 public class Index {
 
-    //For now, just a Map from primary keys to block ids
+    //A Map from primary keys to block ids
     private Map<Integer, Integer> index;
 
+    //Map from primary keys to their index within the block
+    private Map<Integer, Integer> blockIndex;
+
     //The index of blocks to the primary keys they contain
-    private Map<Integer, List<Integer>> blockIndex;
+    private Map<Integer, List<Integer>> reverseIndex;
     
 
     public Index() {
         index = Maps.newHashMap();
         blockIndex = Maps.newHashMap();
+        reverseIndex = Maps.newHashMap();
     }
 
     public Set<Integer> getPrimaryKeySet() {
         return index.keySet();
     }
 
+    public Set<Integer> getBlockIdSet() {
+        return reverseIndex.keySet();
+    }
+
     public Integer getBlockId(final Integer primaryKey) {
         return index.get(primaryKey);
     }
 
-    public void addIndexEntry(final Integer primaryKey, final Integer blockId) {
+    public void addIndexEntry(final Integer primaryKey, final Integer blockId, final Integer blockIndex) {
         index.put(primaryKey, blockId);
+        this.blockIndex.put(primaryKey, blockIndex);
 
-        if (blockIndex.get(blockId) == null) {
-            blockIndex.put(blockId, new ArrayList<Integer>());
+        if (reverseIndex.get(blockId) == null) {
+            reverseIndex.put(blockId, new ArrayList<Integer>());
         }
 
-        blockIndex.get(blockId).add(primaryKey);
+        reverseIndex.get(blockId).add(primaryKey);
     }
 
-    public void removeIndexEntry(final Integer primaryKey, final Integer blockId) {
+    public void removeIndexEntry(final Integer primaryKey, final Integer blockId, final Integer blockIndex) {
         index.remove(primaryKey);
-
-        blockIndex.get(blockId).remove(primaryKey);
+        this.blockIndex.remove(blockIndex);
+        reverseIndex.get(blockId).remove(primaryKey);
     }
 
-    public Map<Integer, List<Integer>> getBlockIndex() {
-        return blockIndex;
+    /**
+     * Returns the index of block IDs to the List of primary keys they contain.
+     *
+     * @return Map<Integer, List<Integer>>
+     */
+    public Map<Integer, List<Integer>> getReverseIndex() {
+        return reverseIndex;
+    }
+
+    public int getBlockIndex(final Integer primaryKey) {
+        return blockIndex.get(primaryKey);
+    }
+
+    public int getNextBlockIndex(final Integer blockId) {
+        if (reverseIndex.get(blockId) == null) {
+            return 0;
+        }
+
+        return reverseIndex.get(blockId).size();
     }
 
     public boolean primaryKeyExists(final Integer primaryKey) {

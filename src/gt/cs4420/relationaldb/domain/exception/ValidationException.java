@@ -45,4 +45,15 @@ public class ValidationException extends Exception {
         addMessages(ve.getMessages());
     }
 
+    public String getMessage() {
+        StringBuilder message = new StringBuilder();
+
+        for (String m : messages) {
+            message.append(" // ");
+            message.append(m);
+        }
+
+        return message.toString();
+    }
+
 }

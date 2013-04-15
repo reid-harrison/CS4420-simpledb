@@ -127,6 +127,11 @@ public class FileManagerTest {
         /**
          * Test exporting and importing table blocks
          */
+        List<Block> metaData = Lists.newArrayList();
+        metaData.add(new Block(0, usersBlockSize * 2));
+        metaData.add(new Block(1, usersBlockSize));
+        testExportBlockMetaData(usersTable.getId(), metaData);
+
         testExportTableBlock(usersTable.getId(), 0, usersBlockSize * 2, block1);
         testImportTableBlock(usersTable.getId(), 0, usersTable.getDescription(), block1);
 
@@ -142,9 +147,9 @@ public class FileManagerTest {
         indexManager.createIndex(postsTable.getId());
         indexManager.createIndex(followersTable.getId());
 
-        indexManager.addIndexEntry(usersTable.getId(), (Integer) block1.get(0).getRowData().get(userAttrs[0]), 0);
-        indexManager.addIndexEntry(usersTable.getId(), (Integer) block1.get(1).getRowData().get(userAttrs[0]), 0);
-        indexManager.addIndexEntry(usersTable.getId(), (Integer) block2.get(0).getRowData().get(userAttrs[0]), 1);
+        indexManager.addIndexEntry(usersTable.getId(), (Integer) block1.get(0).getRowData().get(userAttrs[0]), 0, 0);
+        indexManager.addIndexEntry(usersTable.getId(), (Integer) block1.get(1).getRowData().get(userAttrs[0]), 0, 1);
+        indexManager.addIndexEntry(usersTable.getId(), (Integer) block2.get(0).getRowData().get(userAttrs[0]), 1, 0);
 
         IndexManager importIndex = new IndexManager();
         importIndex.createIndex(usersTable.getId());
@@ -179,6 +184,10 @@ public class FileManagerTest {
             }
         }
 
+    }
+
+    private void testExportBlockMetaData(final Integer tableId, final List<Block> metaBlocks) {
+        manager.exportBlockMetaData(tableId, metaBlocks);
     }
 
     private void testExportTableBlock(final Integer tableId, final Integer blockId, final int blockSize, final List<Row> rowData) {

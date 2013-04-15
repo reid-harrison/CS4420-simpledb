@@ -62,6 +62,6 @@ public class Attribute {
             return false;
         }
 
-        return name.equals(otherName);
+        return name.equalsIgnoreCase(otherName);
     }
 }

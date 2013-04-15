@@ -4,11 +4,11 @@ import gt.cs4420.relationaldb.domain.Attribute;
 
 public class ValueConstraint implements Constraint {
 
-    private Operator operator;
+    private ValueOperator operator;
     private Attribute attribute;
     private Object value;
 
-    public ValueConstraint(final Attribute attribute, final Object value, final Operator operator) {
+    public ValueConstraint(final Attribute attribute, final Object value, final ValueOperator operator) {
         this.attribute = attribute;
         this.value = value;
         this.operator = operator;
@@ -30,41 +30,35 @@ public class ValueConstraint implements Constraint {
         this.value = value;
     }
 
-    public Operator getOperator() {
+    public ValueOperator getOperator() {
         return operator;
     }
 
-    public void setOperator(Operator operator) {
+    public void setOperator(ValueOperator operator) {
         this.operator = operator;
     }
 
-    public enum Operator {
-
-        EQUALS("="),
-        NOT_EQUALS("!="),
-        LESS_THAN("<"),
-        GREATER_THAN(">");
-
-        private final String stringRepresentation;
-
-        private Operator(final String stringRepresentation) {
-            this.stringRepresentation = stringRepresentation;
+    @Override
+    public boolean equals(final Object other) {
+        if (!(other instanceof ValueConstraint)) {
+            return false;
         }
 
-        public String getStringRepresentation() {
-            return stringRepresentation;
+        ValueConstraint otherConstraint = (ValueConstraint) other;
+
+        if (!this.operator.equals(otherConstraint.getOperator())) {
+            return false;
         }
 
-        public static Operator getByStringRepresentation(final String stringRepresentation) {
-            for (Operator operator : Operator.values()) {
-                if (operator.getStringRepresentation().equalsIgnoreCase(stringRepresentation)) {
-                    return operator;
-                }
-            }
-
-            return null;
+        if (!this.attribute.equals(otherConstraint.getAttribute())) {
+            return false;
         }
 
+        if (!this.value.equals(otherConstraint.getValue())) {
+            return false;
+        }
+
+        return true;
     }
 
 }

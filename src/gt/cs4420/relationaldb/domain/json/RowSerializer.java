@@ -1,11 +1,15 @@
 package gt.cs4420.relationaldb.domain.json;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import gt.cs4420.relationaldb.database.storage.block.Block;
 import gt.cs4420.relationaldb.domain.Attribute;
 import gt.cs4420.relationaldb.domain.Row;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.Map;
 
 public class RowSerializer implements JsonSerializer<Row> {
@@ -50,7 +54,7 @@ public class RowSerializer implements JsonSerializer<Row> {
         JSONObject attrJson = new JSONObject();
 
         for (Attribute attr : attributes.keySet()) {
-            attrJson.put(attr.getName(), serialize(attr, attributes.get(attr)));
+            attrJson.put(attr.getName(), attributes.get(attr));
         }
 
         return attrJson;
