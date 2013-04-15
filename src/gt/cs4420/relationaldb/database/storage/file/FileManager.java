@@ -133,6 +133,14 @@ public class FileManager {
         return block;
     }
 
+    public List<Row> importTableBlockWithConstraint(final Integer tableId, final Integer blockId, final Description tableDescription, final Constraint whereConstraint) {
+        Block block = importTableBlock(tableId, blockId, tableDescription);
+
+        BlockFilter filter = new BlockFilter(whereConstraint);
+
+        return filter.filterRows(block);
+    }
+
     public Row importRow(final Integer tableId, final Integer blockId, final int blockIndex) {
         File blockFile = new File(DB_ROOT_DIRECTORY + tableId + "/blocks/" + blockId + ".json");
 

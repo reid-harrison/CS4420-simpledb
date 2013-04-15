@@ -29,6 +29,10 @@ public class Index {
         return index.keySet();
     }
 
+    public Set<Integer> getBlockIdSet() {
+        return reverseIndex.keySet();
+    }
+
     public Integer getBlockId(final Integer primaryKey) {
         return index.get(primaryKey);
     }
@@ -50,6 +54,11 @@ public class Index {
         reverseIndex.get(blockId).remove(primaryKey);
     }
 
+    /**
+     * Returns the index of block IDs to the List of primary keys they contain.
+     *
+     * @return Map<Integer, List<Integer>>
+     */
     public Map<Integer, List<Integer>> getReverseIndex() {
         return reverseIndex;
     }

@@ -120,7 +120,7 @@ public class StorageManager {
      * @return List<Row> All of the Rows that exist in tableName
      */
     public List<Row> select(final String tableName, final Constraint whereConstraint) {
-        return storageData.getAllRows(getTableId(tableName));
+        return storageData.select(getTableId(tableName), whereConstraint);
     }
 
     /**
@@ -152,21 +152,20 @@ public class StorageManager {
      * Updates a table's Row based on the given Row's primary key by modifying the attributes specified in the given
      * Row's row data.
      * @param tableName
-     * @param row
+     * @param updateDataRow
      * @param whereConstraint Constraint to limit rows that are updated
      * @throws ValidationException
      */
-    public void update(final String tableName, final Row row, final Constraint whereConstraint) throws ValidationException {
+    public void update(final String tableName, final Row updateDataRow, final Constraint whereConstraint) throws ValidationException {
         Integer tableId = storageData.getTableId(tableName);
         validateTableExists(tableId);
 
         //Validate the the row data is populated with valid data
-        rowValidator.validatePrimaryKey(row);
-        rowValidator.validate(row, storageData.getTable(tableId));
+        rowValidator.validate(updateDataRow, storageData.getTable(tableId));
 
         //TODO Implement more update validation?
 
-        storageData.update(tableId, row);
+        storageData.update(tableId, updateDataRow, whereConstraint);
     }
 
 

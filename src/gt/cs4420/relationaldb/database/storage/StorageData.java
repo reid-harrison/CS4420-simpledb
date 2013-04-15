@@ -175,6 +175,13 @@ class StorageData {
         dirtyCheck();
     }
 
+    /**
+     * Inserts the given attribute data mapping into the given table.
+     *
+     * @param tableId
+     * @param row the row to insert (with the primary key at least populated in the row's data)
+     * @throws ValidationException if a row already exists with the private key or the data is not valid for the table's description
+     */
     protected void insert(final Integer tableId, final Row row) throws ValidationException {
         addRow(tableId, row);
 
@@ -186,17 +193,24 @@ class StorageData {
         dirtyCheck();
     }
 
-    protected void update(final Integer tableId, final Row row) throws ValidationException {
-        Row currentRow = getRow(tableId, row.getPrimaryKey());
+    /**
+     * Updates a table's Row based on the given Row's primary key by modifying the attributes specified in the given
+     * Row's row data.
+     *
+     * @param tableId
+     * @param updateDataRow Row populated with the data that will replace the old row's corresponding data
+     * @param whereConstraint Constraint to limit rows that are updated
+     * @throws ValidationException
+     */
+    protected void update(final Integer tableId, final Row updateDataRow, final Constraint whereConstraint) throws ValidationException {
+        //TODO Don't select the entire row since only the primary key is needed
+        List<Row> affectedRows = select(tableId, whereConstraint);
 
-        if (currentRow == null) {
-            insert(tableId, row);
-            return;
+        Map<Attribute, Object> updateData = updateDataRow.getRowData();
+
+        for (Row affectedRow : affectedRows) {
+            tableData.get(tableId).get(affectedRow.getPrimaryKey()).getRowData().putAll(updateData);
         }
-
-        Map<Attribute, Object> rowData = row.getRowData();
-
-        currentRow.getRowData().putAll(rowData);
 
         dirtyCheck();
     }
@@ -238,19 +252,25 @@ class StorageData {
         //Try to find the data on disk if it isn't in memory already
         if (row == null || row.getRowData() == null || row.getRowData().isEmpty()) {
             Integer blockId = indexManager.getIndex(tableId).getBlockId(primaryKey);
-            Integer blockIndex = indexManager.getIndex(tableId).getBlockIndex(primaryKey);
 
             if (blockId == null) {
                 return null;
             }
 
-            row = fileManager.importRow(tableId, blockId, blockIndex);
+            Block block = fileManager.importTableBlock(tableId, blockId, tables.get(tableId).getDescription());
+            List<Row> rowData = block.getBlockData();
 
-            try {
-                addRow(tableId, row);
-            } catch (final ValidationException ve) {
-                //Row must have already been added
+            for (Row currRow : rowData) {
+                if (primaryKey.equals(currRow.getPrimaryKey())) {
+                    row = currRow;
+                }
             }
+
+            if (row == null || row.getRowData() == null || row.getRowData().isEmpty()) {
+                return null;
+            }
+
+            addBlock(tableId, block);
         }
 
         return row;
@@ -266,10 +286,24 @@ class StorageData {
         return rows;
     }
 
-    public List<Row> getRows(final Integer tableId, final Constraint whereConstraint) {
+    public List<Row> select(final Integer tableId, final Constraint whereConstraint) {
         //TODO add special handling if constraint involves primary key
-        //TODO implement getRows
-        return null;
+        List<Row> rows = Lists.newArrayList();
+
+        Index index = indexManager.getIndex(tableId);
+
+        if (tables.get(tableId) == null) {
+            return null;
+        }
+
+        Description description = tables.get(tableId).getDescription();
+
+        for (Integer blockId : index.getBlockIdSet()) {
+            //TODO decide what to do about caching these blocks in memory
+            rows = fileManager.importTableBlockWithConstraint(tableId, blockId, description, whereConstraint);
+        }
+
+        return rows;
     }
 
     /**
