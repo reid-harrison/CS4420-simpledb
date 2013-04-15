@@ -36,7 +36,12 @@ public class BlockFilter {
         if (constraint instanceof LogicalConstraint) {
             LogicalConstraint lc = (LogicalConstraint) constraint;
 
-            return rowMeetsConstraint(row, lc.getLeftConstraint()) && rowMeetsConstraint(row, lc.getRightConstraint());
+            switch (lc.getOperator()) {
+                case AND:
+                    return rowMeetsConstraint(row, lc.getLeftConstraint()) && rowMeetsConstraint(row, lc.getRightConstraint());
+                case OR:
+                    return rowMeetsConstraint(row, lc.getLeftConstraint()) || rowMeetsConstraint(row, lc.getRightConstraint());
+            }
         }
 
         if (constraint instanceof ValueConstraint) {
