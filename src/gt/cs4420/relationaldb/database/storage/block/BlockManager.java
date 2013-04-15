@@ -1,6 +1,7 @@
 package gt.cs4420.relationaldb.database.storage.block;
 
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 import java.util.Map;
 import java.util.Set;
@@ -15,7 +16,7 @@ public class BlockManager {
     //The maximum amount of attributes to store in a single block
     private final int MAX_BLOCK_SIZE = 16;
 
-    //Table ID -> (Block ID -> Block)
+    //Table ID -> (Block ID -> Block meta-data)
     private Map<Integer, Map<Integer, Block>> tableBlocks;
     //Table ID -> Block ID
     private Map<Integer, Integer> nextBlockIds;
@@ -26,7 +27,13 @@ public class BlockManager {
     }
     
     public Set<Integer> getBlockIdSet(final Integer tableId) {
-        return tableBlocks.get(tableId).keySet();
+        Map<Integer, Block> blocks = tableBlocks.get(tableId);
+
+        if (blocks == null) {
+            return Sets.newHashSet();
+        }
+
+        return blocks.keySet();
     }
 
     public Block getBlock(final Integer tableId, final Integer blockId) {
@@ -76,10 +83,16 @@ public class BlockManager {
     }
 
     public Integer getBlockSize(final Integer tableId, final Integer blockId) {
-        Integer blockSize = tableBlocks.get(tableId).get(blockId).getBlockSize();
+        Map<Integer, Block> blocksForTable = tableBlocks.get(tableId);
+
+        if (blocksForTable == null || blocksForTable.get(blockId) == null) {
+            return 0;
+        }
+
+        Integer blockSize = blocksForTable.get(blockId).getBlockSize();
 
         if (blockSize == null) {
-            throw new IllegalArgumentException("No block with ID: " + blockId + " has been allocated for table with ID: " + tableId);
+            return 0;
         }
 
         return blockSize;

@@ -29,12 +29,12 @@ public class IndexManager {
         indexes.put(tableId, index);
     }
 
-    public void addIndexEntry(final Integer tableId, final Integer primaryKey, final Integer blockId) {
+    public void addIndexEntry(final Integer tableId, final Integer primaryKey, final Integer blockId, final Integer blockIndex) {
         if (indexes.get(tableId) == null) {
             createIndex(tableId);
         }
 
-        indexes.get(tableId).addIndexEntry(primaryKey, blockId);
+        indexes.get(tableId).addIndexEntry(primaryKey, blockId, blockIndex);
     }
 
     public Set<Integer> getTableIdSet() {

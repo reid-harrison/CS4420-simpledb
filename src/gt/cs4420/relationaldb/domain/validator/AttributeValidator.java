@@ -9,6 +9,7 @@ import gt.cs4420.relationaldb.domain.exception.ValidationException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class AttributeValidator implements Validator<Attribute> {
 
@@ -77,7 +78,16 @@ public class AttributeValidator implements Validator<Attribute> {
         ValidationException ve = new ValidationException();
 
         try {
-            validate((Attribute[]) Lists.newArrayList(attributes.keySet()).toArray(), table);
+            Set<Attribute> attrSet = attributes.keySet();
+            Attribute[] attrArr = new Attribute[attrSet.size()];
+            int i = 0;
+
+            for (Attribute attr : attrSet) {
+                attrArr[i] = attr;
+                i++;
+            }
+
+            validate(attrArr, table);
         } catch (final ValidationException v) {
             ve.addException(v);
         }

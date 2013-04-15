@@ -30,8 +30,8 @@ public class StorageManager {
     private AttributeValidator attrValidator;
     
 
-    public StorageManager() {
-        storageData = StorageData.getInstance();
+    public StorageManager(final String dbRootDirectory) {
+        storageData = StorageData.getInstance(dbRootDirectory);
         tableValidator = new TableValidator();
         rowValidator = new RowValidator();
         attrValidator = new AttributeValidator();
@@ -60,7 +60,13 @@ public class StorageManager {
     }
 
     public String getTableName(final Integer tableId) {
-        return getTable(tableId).getName();
+        Table table = getTable(tableId);
+
+        if (table == null) {
+            return null;
+        }
+
+        return table.getName();
     }
 
     /**
@@ -84,6 +90,7 @@ public class StorageManager {
         if (storageData.tableExists(table.getName())) {
             throw new ValidationException("A table with the name " + table.getName() + " already exists");
         }
+
         Integer id = storageData.getNextTableId();
         table.setId(id);
 

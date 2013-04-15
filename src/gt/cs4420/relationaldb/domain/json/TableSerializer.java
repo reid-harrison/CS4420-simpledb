@@ -57,6 +57,10 @@ public class TableSerializer implements JsonSerializer<Table> {
     public Set<Table> deserializeTableSet(final JSONObject jsonTables) {
         Set<Table> tables = Sets.newHashSet();
 
+        if (jsonTables.length() <= 0) {
+            return Sets.newHashSet();
+        }
+
         JSONArray tableArray = jsonTables.getJSONArray("tables");
 
         for (int i = 0; i < tableArray.length(); i++) {

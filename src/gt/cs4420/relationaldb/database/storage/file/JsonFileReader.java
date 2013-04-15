@@ -10,6 +10,10 @@ public class JsonFileReader {
     private BufferedReader reader;
 
     public JSONObject read(final File file) {
+        if (!file.exists() || file.length() <= 0) {
+            return new JSONObject();
+        }
+
         try {
             reader = new BufferedReader(new FileReader(file));
         } catch (FileNotFoundException e) {

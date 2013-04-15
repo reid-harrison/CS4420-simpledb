@@ -1,5 +1,7 @@
 package gt.cs4420.relationaldb.test;
 
+import java.util.List;
+
 public class TestFailedException extends RuntimeException {
 
     public TestFailedException(String testName) {
