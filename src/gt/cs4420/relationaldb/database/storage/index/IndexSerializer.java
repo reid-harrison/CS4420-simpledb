@@ -45,7 +45,7 @@ public class IndexSerializer implements JsonSerializer<Index> {
             Integer primaryKey = Integer.parseInt((String) entry.keys().next());
             Integer blockId = entry.getInt(primaryKey.toString());
 
-            index.addIndexEntry(primaryKey, blockId);
+            index.addIndexEntry(primaryKey, blockId, i);
         }
 
         return index;

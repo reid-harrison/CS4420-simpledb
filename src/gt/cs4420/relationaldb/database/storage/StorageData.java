@@ -12,7 +12,9 @@ import gt.cs4420.relationaldb.domain.Description;
 import gt.cs4420.relationaldb.domain.Row;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
+import gt.cs4420.relationaldb.domain.query.Constraint;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,16 +38,16 @@ class StorageData {
      *
      * @return StorageData singleton instance
      */
-    protected static StorageData getInstance() {
+    protected static StorageData getInstance(final String dbRootDirectory) {
         if (instance == null) {
-            instance = new StorageData();
+            instance = new StorageData(dbRootDirectory);
         }
 
         return instance;
     }
 
     //The root directory relative to run-time directory where the database files are kept (this will be moved elsewhere later)
-    private final String DB_ROOT_DIRECTORY = "database";
+    private final String DB_ROOT_DIRECTORY;
 
     //The amount of dirty operations to allow before dirtied data is flushed
     private final int DIRTY_COUNT_LIMIT = 10;
@@ -55,6 +57,7 @@ class StorageData {
     //Control flags for exporting data to file that are useful for testing
     protected static boolean ignoreDirty = false;
     protected static boolean exportDisabled = false;
+    protected static boolean forceFlush = false;
 
     //Table name -> Table ID
     private Map<String, Integer> tableNames;
@@ -73,7 +76,9 @@ class StorageData {
     //Random necessary data
     private Integer nextId;
 
-    private StorageData() {
+    private StorageData(final String dbRootDirectory) {
+        DB_ROOT_DIRECTORY = dbRootDirectory;
+
         tableNames = Maps.newHashMap();
         tables = Maps.newHashMap();
         tableData = Maps.newHashMap();
@@ -118,6 +123,10 @@ class StorageData {
         for (Integer tableId : indexManager.getTableIdSet()) {
             List<Block> blockSizes = fileManager.importBlockMetaData(tableId);
 
+            if (blockSizes == null) {
+                return;
+            }
+
             for (Block block : blockSizes) {
                 blockManager.setBlockSize(tableId, block.getBlockId(), block.getBlockSize());
             }
@@ -152,35 +161,56 @@ class StorageData {
     protected void addTable(final Table table) {
         tables.put(table.getId(), table);
         tableNames.put(table.getName(), table.getId());
+        tableData.put(table.getId(), new HashMap<Integer, Row>());
+        indexManager.createIndex(table.getId());
         dirtyCheck();
     }
 
+    /**
+     * TODO Actually drop table from disk and remove description
+     * @param tableId
+     */
     protected void removeTable(final Integer tableId) {
         tables.remove(tableId);
         dirtyCheck();
     }
 
+    /**
+     * Inserts the given attribute data mapping into the given table.
+     *
+     * @param tableId
+     * @param row the row to insert (with the primary key at least populated in the row's data)
+     * @throws ValidationException if a row already exists with the private key or the data is not valid for the table's description
+     */
     protected void insert(final Integer tableId, final Row row) throws ValidationException {
         addRow(tableId, row);
 
-        Integer blockIndex = blockManager.allocateBlockSpace(tableId, row.getRowData().size());
+        Integer blockId = blockManager.allocateBlockSpace(tableId, row.getRowData().size());
+        Integer blockIndex = indexManager.getIndex(tableId).getNextBlockIndex(blockId);
 
-        indexManager.addIndexEntry(tableId, row.getPrimaryKey(), blockIndex);
+        indexManager.addIndexEntry(tableId, row.getPrimaryKey(), blockId, blockIndex);
 
         dirtyCheck();
     }
 
-    protected void update(final Integer tableId, final Row row) throws ValidationException {
-        Row currentRow = getRow(tableId, row.getPrimaryKey());
+    /**
+     * Updates a table's Row based on the given Row's primary key by modifying the attributes specified in the given
+     * Row's row data.
+     *
+     * @param tableId
+     * @param updateDataRow Row populated with the data that will replace the old row's corresponding data
+     * @param whereConstraint Constraint to limit rows that are updated
+     * @throws ValidationException
+     */
+    protected void update(final Integer tableId, final Row updateDataRow, final Constraint whereConstraint) throws ValidationException {
+        //TODO Don't select the entire row since only the primary key is needed
+        List<Row> affectedRows = select(tableId, whereConstraint);
 
-        if (currentRow == null) {
-            insert(tableId, row);
-            return;
+        Map<Attribute, Object> updateData = updateDataRow.getRowData();
+
+        for (Row affectedRow : affectedRows) {
+            tableData.get(tableId).get(affectedRow.getPrimaryKey()).getRowData().putAll(updateData);
         }
-
-        Map<Attribute, Object> rowData = row.getRowData();
-
-        currentRow.getRowData().putAll(rowData);
 
         dirtyCheck();
     }
@@ -256,6 +286,26 @@ class StorageData {
         return rows;
     }
 
+    public List<Row> select(final Integer tableId, final Constraint whereConstraint) {
+        //TODO add special handling if constraint involves primary key
+        List<Row> rows = Lists.newArrayList();
+
+        Index index = indexManager.getIndex(tableId);
+
+        if (tables.get(tableId) == null) {
+            return null;
+        }
+
+        Description description = tables.get(tableId).getDescription();
+
+        for (Integer blockId : index.getBlockIdSet()) {
+            //TODO decide what to do about caching these blocks in memory
+            rows = fileManager.importTableBlockWithConstraint(tableId, blockId, description, whereConstraint);
+        }
+
+        return rows;
+    }
+
     /**
      * Adds a table data block to in-memory storage.
      *
@@ -273,7 +323,7 @@ class StorageData {
 
         dirtyCount++;
 
-        if (dirtyCount < DIRTY_COUNT_LIMIT) {
+        if (dirtyCount < DIRTY_COUNT_LIMIT && !forceFlush) {
             return;
         }
 
@@ -311,7 +361,7 @@ class StorageData {
 
     private void exportBlockRowData() {
         for (Integer tableId : indexManager.getTableIdSet()) {
-            Map<Integer, List<Integer>> blockIndex = indexManager.getIndex(tableId).getBlockIndex();
+            Map<Integer, List<Integer>> blockIndex = indexManager.getIndex(tableId).getReverseIndex();
 
             for (Integer blockId : blockIndex.keySet()) {
                 List<Integer> primaryKeys = blockIndex.get(blockId);
@@ -319,7 +369,13 @@ class StorageData {
                 List<Row> rows = Lists.newArrayList();
 
                 for (Integer primaryKey : primaryKeys) {
-                    rows.add(tableData.get(tableId).get(primaryKey));
+                    if (tableData.get(tableId) != null) {
+                        Row row = tableData.get(tableId).get(primaryKey);
+
+                        if (row != null) {
+                            rows.add(tableData.get(tableId).get(primaryKey));
+                        }
+                    }
                 }
 
                 int blockSize = blockManager.getBlockSize(tableId, blockId);

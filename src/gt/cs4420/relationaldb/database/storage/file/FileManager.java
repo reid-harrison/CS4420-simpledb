@@ -10,6 +10,7 @@ import gt.cs4420.relationaldb.domain.Description;
 import gt.cs4420.relationaldb.domain.Row;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.json.TableSerializer;
+import gt.cs4420.relationaldb.domain.query.Constraint;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -132,6 +133,24 @@ public class FileManager {
         return block;
     }
 
+    public List<Row> importTableBlockWithConstraint(final Integer tableId, final Integer blockId, final Description tableDescription, final Constraint whereConstraint) {
+        Block block = importTableBlock(tableId, blockId, tableDescription);
+
+        BlockFilter filter = new BlockFilter(whereConstraint);
+
+        return filter.filterRows(block);
+    }
+
+    public Row importRow(final Integer tableId, final Integer blockId, final int blockIndex) {
+        File blockFile = new File(DB_ROOT_DIRECTORY + tableId + "/blocks/" + blockId + ".json");
+
+        if (!blockFile.exists()) {
+            return null;
+        }
+
+        return blockSerializer.deserializeRow(fileReader.read(blockFile), blockIndex);
+    }
+
     public void exportTableBlock(final Integer tableId, final Integer blockId, final int blockSize, final List<Row> rows) {
         File blockFile = new File(DB_ROOT_DIRECTORY + tableId + "/blocks/" + blockId + ".json");
         blockFile.getParentFile().mkdirs();
@@ -182,4 +201,5 @@ public class FileManager {
             fileWriter.write(indexFile, indexJson);
         }
     }
+
 }

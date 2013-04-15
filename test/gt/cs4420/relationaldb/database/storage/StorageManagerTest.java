@@ -1,5 +1,6 @@
 package gt.cs4420.relationaldb.database.storage;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import gt.cs4420.relationaldb.domain.*;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
@@ -13,6 +14,8 @@ import java.util.Map;
  */
 public class StorageManagerTest {
 
+    private final String DB_ROOT_DIRECTORY = "database/test/";
+
     public static void main(String[] args) {
         StorageManagerTest test = new StorageManagerTest();
         test.run();
@@ -21,14 +24,22 @@ public class StorageManagerTest {
     private final StorageManager manager;
 
     private StorageManagerTest() {
-        manager = new StorageManager();
+        manager = new StorageManager(DB_ROOT_DIRECTORY);
 
-        //Currently disable exporting as only in-memory db is currently being tested
-        StorageData.exportDisabled = true;
-        StorageData.ignoreDirty = true;
+        //Currently force exporting to test in-memory and on-disk
+        StorageData.exportDisabled = false;
+        StorageData.ignoreDirty = false;
+        StorageData.forceFlush = true;
     }
 
     private void run() {
+
+        try {
+            //Drop the old test table if it already exists
+            manager.dropTable("users");
+        } catch (final ValidationException e) {
+            //Users table didn't already exist
+        }
 
         //Test createTable
         Attribute[] userAttrs = new Attribute[4];
@@ -65,7 +76,7 @@ public class StorageManagerTest {
             manager.createTable(table);
         } catch (ValidationException e) {
             e.printStackTrace();
-            throw new TestFailedException("Create table");
+            throw new TestFailedException("Create table", e.getMessage());
         }
     }
 
@@ -92,7 +103,13 @@ public class StorageManagerTest {
 
         //Try again to make sure this fails because table was dropped
         try {
-            manager.dropTable(manager.getTableName(tableId));
+            String tableName = manager.getTableName(tableId);
+
+            if (Strings.isNullOrEmpty(tableName)) {
+                dropValidationSuccess = true;
+            } else {
+                manager.dropTable(tableName);
+            }
         } catch (ValidationException e) {
             dropValidationSuccess = true;
         } finally {
