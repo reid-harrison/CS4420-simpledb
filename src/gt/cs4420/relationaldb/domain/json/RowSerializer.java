@@ -54,7 +54,7 @@ public class RowSerializer implements JsonSerializer<Row> {
         JSONObject attrJson = new JSONObject();
 
         for (Attribute attr : attributes.keySet()) {
-            attrJson.put(attr.getName(), serialize(attr, attributes.get(attr)));
+            attrJson.put(attr.getName(), attributes.get(attr));
         }
 
         return attrJson;
