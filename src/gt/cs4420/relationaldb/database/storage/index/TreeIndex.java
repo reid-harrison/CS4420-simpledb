@@ -1,5 +1,7 @@
 package gt.cs4420.relationaldb.database.storage.index;
 
+import java.io.FileNotFoundException;
+
 import gt.cs4420.relationaldb.domain.IndexNode;
 
 public class TreeIndex<T extends Comparable<T>, E extends Comparable<E>> {
@@ -17,12 +19,20 @@ public class TreeIndex<T extends Comparable<T>, E extends Comparable<E>> {
 		size = 1;
 	}
 	
+	public int getSize(){
+		return this.size;
+	}
+	
+	public IndexNode<T,E> getRoot(){
+		return this.root;
+	}
+	
 	public boolean isEmpty(){
 		return size == 0;
 	}
 	
 	public boolean contains(T indexID){
-		return get(indexID) != null;
+		return (get(indexID) != null);
 	}
 	
 	public E get(T indexID){
@@ -33,7 +43,7 @@ public class TreeIndex<T extends Comparable<T>, E extends Comparable<E>> {
 		if(in == null)
 			return null;
 		int cmp = in.getIndexId().compareTo(indexID);
-		if(cmp < 0)
+		if(cmp > 0)
 			return get(in.getLeft(),indexID);
 		else if(cmp == 0)
 				return in.getBlockID();
@@ -65,7 +75,12 @@ public class TreeIndex<T extends Comparable<T>, E extends Comparable<E>> {
 	}
 	
 	public void delete(T indexID){
-		assert contains(indexID);
+		if(contains(indexID) == false)
+			try {
+				throw new FileNotFoundException();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
 		root = delete(root,indexID);
 		--size;
 		return;
@@ -85,10 +100,10 @@ public class TreeIndex<T extends Comparable<T>, E extends Comparable<E>> {
 				return in.getRight();
 			if(in.getRight() == null)
 				return in.getLeft();
-			IndexNode<T, E> tmp = in;
+			IndexNode<T,E> tmp = in;
 			in = min(tmp.getRight());
-			in.setLeft(tmp.getLeft());
 			in.setRight(deleteMin(tmp.getRight()));
+			in.setLeft(tmp.getLeft());
 		}
 		return in;
 	}
@@ -97,10 +112,7 @@ public class TreeIndex<T extends Comparable<T>, E extends Comparable<E>> {
 		// TODO Auto-generated method stub
 		if(in.getLeft() == null)
 			return in.getRight();			
-		IndexNode<T,E> tmp = in;
-		while(tmp.getLeft().getLeft() != null)
-			tmp = tmp.getLeft();
-		tmp.setLeft(null);
+		in.setLeft(deleteMin(in.getLeft()));
 		return in;
 	}
 
@@ -108,10 +120,9 @@ public class TreeIndex<T extends Comparable<T>, E extends Comparable<E>> {
 		// TODO Auto-generated method stub
 		if(isEmpty())
 			return null;
-		IndexNode<T, E> tmp = in;
-		while(tmp.getLeft() != null){
-			tmp = tmp.getLeft();
+		while(in.getLeft() != null){
+			in = in.getLeft();
 		}
-		return tmp;
+		return in;
 	}	
 }
