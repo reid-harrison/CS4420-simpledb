@@ -29,6 +29,10 @@ public class IndexManager {
         indexes.put(tableId, index);
     }
 
+    public void removeIndex(final Integer tableId) {
+        indexes.remove(tableId);
+    }
+
     public void addIndexEntry(final Integer tableId, final Integer primaryKey, final Integer blockId, final Integer blockIndex) {
         if (indexes.get(tableId) == null) {
             createIndex(tableId);

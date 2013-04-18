@@ -167,11 +167,20 @@ class StorageData {
     }
 
     /**
-     * TODO Actually drop table from disk (remove description and block data)
+     * Removes all references to and data for the given table from memory and disk.
      * @param tableId
      */
     protected void removeTable(final Integer tableId) {
+
+        //Remove all table data in memory
         tables.remove(tableId);
+        tableData.remove(tableId);
+        indexManager.removeIndex(tableId);
+        blockManager.removeAllBlocks(tableId);
+
+        //Remove all table data on disk
+        fileManager.removeTableRowData(tableId);
+        dirtyCount = DIRTY_COUNT_LIMIT;
         dirtyCheck();
     }
 
@@ -330,7 +339,7 @@ class StorageData {
 
         dirtyCount++;
 
-        if (dirtyCount < DIRTY_COUNT_LIMIT && !forceFlush) {
+        if (dirtyCount < DIRTY_COUNT_LIMIT || forceFlush) {
             return;
         }
 

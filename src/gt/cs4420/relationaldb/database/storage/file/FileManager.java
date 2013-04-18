@@ -11,6 +11,7 @@ import gt.cs4420.relationaldb.domain.Row;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.json.TableSerializer;
 import gt.cs4420.relationaldb.domain.query.Constraint;
+import org.apache.commons.io.FileUtils;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -234,6 +235,16 @@ public class FileManager {
 
             JSONObject indexJson = indexSerializer.serialize(indexManager.getIndex(tableId));
             fileWriter.write(indexFile, indexJson);
+        }
+    }
+
+    public void removeTableRowData(final Integer tableId) {
+        File tableRootDirectory = new File(DB_ROOT_DIRECTORY + tableId);
+
+        try {
+            FileUtils.deleteDirectory(tableRootDirectory);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
