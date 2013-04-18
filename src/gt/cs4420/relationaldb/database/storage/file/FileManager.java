@@ -151,6 +151,15 @@ public class FileManager {
         return blockSerializer.deserializeRow(fileReader.read(blockFile), blockIndex);
     }
 
+    /**
+     * Fresh export of the given rows to the given block. Any data currently stored on disk in that block will be completely
+     * overwritten with the given rows.
+     *
+     * @param tableId
+     * @param blockId
+     * @param blockSize
+     * @param rows
+     */
     public void exportTableBlock(final Integer tableId, final Integer blockId, final int blockSize, final List<Row> rows) {
         File blockFile = new File(DB_ROOT_DIRECTORY + tableId + "/blocks/" + blockId + ".json");
         blockFile.getParentFile().mkdirs();
@@ -164,6 +173,32 @@ public class FileManager {
         Block block = new Block(blockId, rows, blockSize);
 
         fileWriter.write(blockFile, blockSerializer.serialize(block));
+    }
+
+    /**
+     * Merges the given List of Rows with those already stored in the Block on disk. Primary keys that exist on disk will
+     * have their attribute data replaced by what is provided and new primary keys will be added to the end of the block.
+     *
+     * @param tableId
+     * @param blockId
+     * @param blockSize
+     * @param rows
+     */
+    public void exportTableBlockMerge(final Integer tableId, final Integer blockId, final int blockSize, final List<Row> rows) {
+        File blockFile = new File(DB_ROOT_DIRECTORY + tableId + "/blocks/" + blockId + ".json");
+        blockFile.getParentFile().mkdirs();
+
+        try {
+            blockFile.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        JSONObject previousBlockJson = fileReader.read(blockFile);
+
+        Block newBlockData = new Block(blockId, rows, blockSize);
+
+        fileWriter.write(blockFile, blockSerializer.mergeSerialize(previousBlockJson, newBlockData));
     }
 
     /**
