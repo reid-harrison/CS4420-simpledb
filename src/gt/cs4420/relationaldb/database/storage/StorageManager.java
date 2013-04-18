@@ -16,8 +16,6 @@ import java.util.List;
  *
  * TODO:
  * -Implement more database operations and management functionality
- * * * WHERE
- * * * DELETE
  * * * JOIN
  * * * ORDER BY
  */
@@ -112,7 +110,6 @@ public class StorageManager {
     }
 
     /**
-     * TODO Implement WHERE clauses
      * Selects and returns the rows from the table with the given name.
      *
      * @param tableName
@@ -148,7 +145,6 @@ public class StorageManager {
     }
 
     /**
-     * TODO Implement WHERE clauses
      * Updates a table's Row based on the given Row's primary key by modifying the attributes specified in the given
      * Row's row data.
      * @param tableName

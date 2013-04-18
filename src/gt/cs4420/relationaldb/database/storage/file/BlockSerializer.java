@@ -104,4 +104,53 @@ class BlockSerializer implements JsonSerializer<Block> {
         return blocks;
     }
 
+    /**
+     * Serializes the given Block and merges it with a prior block JSONObject.
+     *
+     * @param json
+     * @param block
+     * @return
+     */
+    public JSONObject mergeSerialize(final JSONObject json, final Block block) {
+        JSONObject mergedJson = new JSONObject();
+        JSONArray mergedArray = new JSONArray();
+        List<Row> mergeRows = block.getBlockData();
+        int mergedRowCount = 0;
+
+        JSONObject previousBlockJson = json.getJSONObject("block");
+        JSONArray previousArray = previousBlockJson.getJSONArray("data");
+
+        List<Integer> mergePrimaryKeys = Lists.newArrayList();
+
+        for (Row row : mergeRows) {
+            mergePrimaryKeys.add(row.getPrimaryKey());
+        }
+
+        for (int i = 0; i < previousArray.length(); i++) {
+            JSONObject previousRow = previousArray.getJSONObject(i);
+            Integer currentPreviousPrimaryKey = previousRow.getInt("primaryKey");
+
+            if (mergePrimaryKeys.contains(currentPreviousPrimaryKey)) {
+                mergedArray.put(i, rowSerializer.serialize(mergeRows.get(mergedRowCount)));
+                mergedRowCount++;
+            } else {
+                mergedArray.put(i, previousArray.get(i));
+            }
+        }
+
+        while (mergedRowCount < mergeRows.size()) {
+            mergedArray.put(rowSerializer.serialize(mergeRows.get(mergedRowCount)));
+            mergedRowCount++;
+        }
+
+        JSONObject mergedBlockJson = new JSONObject();
+        mergedBlockJson.put("blockId", block.getBlockId());
+        mergedBlockJson.put("size", block.getBlockSize());
+        mergedBlockJson.put("data", mergedArray);
+
+        mergedJson.put("block", mergedBlockJson);
+
+        return mergedJson;
+    }
+
 }
