@@ -167,11 +167,20 @@ class StorageData {
     }
 
     /**
-     * TODO Actually drop table from disk and remove description
+     * Removes all references to and data for the given table from memory and disk.
      * @param tableId
      */
     protected void removeTable(final Integer tableId) {
+
+        //Remove all table data in memory
         tables.remove(tableId);
+        tableData.remove(tableId);
+        indexManager.removeIndex(tableId);
+        blockManager.removeAllBlocks(tableId);
+
+        //Remove all table data on disk
+        fileManager.removeTableRowData(tableId);
+        dirtyCount = DIRTY_COUNT_LIMIT;
         dirtyCheck();
     }
 
@@ -189,6 +198,7 @@ class StorageData {
         Integer blockIndex = indexManager.getIndex(tableId).getNextBlockIndex(blockId);
 
         indexManager.addIndexEntry(tableId, row.getPrimaryKey(), blockId, blockIndex);
+        indexManager.getIndex(tableId).addDirtyPrimaryKey(blockId, row.getPrimaryKey());
 
         dirtyCheck();
     }
@@ -206,10 +216,16 @@ class StorageData {
         //TODO Don't select the entire row since only the primary key is needed
         List<Row> affectedRows = select(tableId, whereConstraint);
 
+        Index tableIndex = indexManager.getIndex(tableId);
+
         Map<Attribute, Object> updateData = updateDataRow.getRowData();
 
         for (Row affectedRow : affectedRows) {
-            tableData.get(tableId).get(affectedRow.getPrimaryKey()).getRowData().putAll(updateData);
+            Integer affectedPrimaryKey = affectedRow.getPrimaryKey();
+            Integer affectedBlockId = tableIndex.getBlockId(affectedPrimaryKey);
+
+            tableData.get(tableId).get(affectedPrimaryKey).getRowData().putAll(updateData);
+            tableIndex.addDirtyPrimaryKey(affectedPrimaryKey, affectedBlockId);
         }
 
         dirtyCheck();
@@ -323,7 +339,7 @@ class StorageData {
 
         dirtyCount++;
 
-        if (dirtyCount < DIRTY_COUNT_LIMIT && !forceFlush) {
+        if (dirtyCount < DIRTY_COUNT_LIMIT || forceFlush) {
             return;
         }
 
@@ -333,8 +349,6 @@ class StorageData {
     }
 
     private void export() {
-        //TODO Make a smart export (only export modified data)
-        //TODO Currently, block data will get overwritten if it hasn't been imported yet
         if (!exportDisabled) {
             exportBlocks();
             exportIndexes();
@@ -361,10 +375,10 @@ class StorageData {
 
     private void exportBlockRowData() {
         for (Integer tableId : indexManager.getTableIdSet()) {
-            Map<Integer, List<Integer>> blockIndex = indexManager.getIndex(tableId).getReverseIndex();
+            Map<Integer, List<Integer>> dirtyBlockIndex = indexManager.getIndex(tableId).getDirtyPrimaryKeys();
 
-            for (Integer blockId : blockIndex.keySet()) {
-                List<Integer> primaryKeys = blockIndex.get(blockId);
+            for (Integer blockId : dirtyBlockIndex.keySet()) {
+                List<Integer> primaryKeys = dirtyBlockIndex.get(blockId);
 
                 List<Row> rows = Lists.newArrayList();
 
@@ -379,8 +393,10 @@ class StorageData {
                 }
 
                 int blockSize = blockManager.getBlockSize(tableId, blockId);
-                fileManager.exportTableBlock(tableId, blockId, blockSize, rows);
+                fileManager.exportTableBlockMerge(tableId, blockId, blockSize, rows);
             }
+
+            indexManager.getIndex(tableId).clearAllDirtyPrimaryKeys();
         }
     }
 

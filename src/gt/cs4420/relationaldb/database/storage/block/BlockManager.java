@@ -117,6 +117,11 @@ public class BlockManager {
         blocks.put(blockId, new Block(blockId, blockSize));
     }
 
+    public void removeAllBlocks(final Integer tableId) {
+        tableBlocks.remove(tableId);
+        nextBlockIds.remove(tableId);
+    }
+
     private Integer addBlock(final Integer tableId) {
         Integer nextBlockId = getNextBlockId(tableId);
         tableBlocks.get(tableId).put(nextBlockId, new Block(nextBlockId));

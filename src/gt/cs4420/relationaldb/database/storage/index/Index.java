@@ -1,5 +1,6 @@
 package gt.cs4420.relationaldb.database.storage.index;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import java.util.ArrayList;
@@ -17,12 +18,15 @@ public class Index {
 
     //The index of blocks to the primary keys they contain
     private Map<Integer, List<Integer>> reverseIndex;
-    
+
+    //The lists that keep track of which rows have been modified in each block;
+    private Map<Integer, List<Integer>> dirtyPrimaryKeys;
 
     public Index() {
         index = Maps.newHashMap();
         blockIndex = Maps.newHashMap();
         reverseIndex = Maps.newHashMap();
+        dirtyPrimaryKeys = Maps.newHashMap();
     }
 
     public Set<Integer> getPrimaryKeySet() {
@@ -52,6 +56,39 @@ public class Index {
         index.remove(primaryKey);
         this.blockIndex.remove(blockIndex);
         reverseIndex.get(blockId).remove(primaryKey);
+    }
+
+    public Map<Integer, List<Integer>> getDirtyPrimaryKeys() {
+        return dirtyPrimaryKeys;
+    }
+
+    public void addDirtyPrimaryKey(final Integer blockId, final Integer primaryKey) {
+        List<Integer> dirtyKeys = dirtyPrimaryKeys.get(blockId);
+
+        if (dirtyKeys == null) {
+            dirtyKeys = Lists.newArrayList();
+            dirtyPrimaryKeys.put(blockId, dirtyKeys);
+        }
+
+        if (dirtyKeys.contains(primaryKey)) {
+            return;
+        }
+
+        dirtyKeys.add(primaryKey);
+    }
+
+    public void removeDirtyPrimaryKey(final Integer blockId, final Integer primaryKey) {
+        List<Integer> dirtyKeys = dirtyPrimaryKeys.get(blockId);
+
+        if (dirtyKeys == null || !dirtyKeys.contains(primaryKey)) {
+            return;
+        }
+
+        dirtyKeys.remove(blockId);
+    }
+
+    public void clearAllDirtyPrimaryKeys() {
+        dirtyPrimaryKeys.clear();
     }
 
     /**
