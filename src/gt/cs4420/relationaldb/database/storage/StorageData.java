@@ -2,7 +2,9 @@ package gt.cs4420.relationaldb.database.storage;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import gt.cs4420.relationaldb.database.storage.block.Block;
+import gt.cs4420.relationaldb.database.storage.block.BlockFilter;
 import gt.cs4420.relationaldb.database.storage.block.BlockManager;
 import gt.cs4420.relationaldb.database.storage.file.FileManager;
 import gt.cs4420.relationaldb.database.storage.index.Index;
@@ -14,10 +16,7 @@ import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
 import gt.cs4420.relationaldb.domain.query.Constraint;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * StorageData
@@ -273,6 +272,7 @@ class StorageData {
                 return null;
             }
 
+
             Block block = fileManager.importTableBlock(tableId, blockId, tables.get(tableId).getDescription());
             List<Row> rowData = block.getBlockData();
 
@@ -303,8 +303,8 @@ class StorageData {
     }
 
     public List<Row> select(final Integer tableId, final Constraint whereConstraint) {
-        //TODO add special handling if constraint involves primary key
         List<Row> rows = Lists.newArrayList();
+        BlockFilter filter = new BlockFilter(whereConstraint);
 
         Index index = indexManager.getIndex(tableId);
 
@@ -313,10 +313,50 @@ class StorageData {
         }
 
         Description description = tables.get(tableId).getDescription();
+        Map<Integer, Row> tableDataMap = tableData.get(tableId);
 
         for (Integer blockId : index.getBlockIdSet()) {
+            List<Row> blockRows = Lists.newArrayList();
+            Set<Integer> cachedPrimaryKeys = Sets.newHashSet();
+
+            //Select the row from memory if it already exists there
+            for (Integer primaryKey : index.getReverseIndex().get(blockId)) {
+                Row cachedRow = tableDataMap.get(primaryKey);
+
+                if (cachedRow != null) {
+                    //If this row is cached and meets the where constraints, select it
+                    if (filter.rowMeetsConstraints(cachedRow)) {
+                        blockRows.add(cachedRow);
+                        cachedPrimaryKeys.add(primaryKey);
+                    }
+                }
+            }
+
             //TODO decide what to do about caching these blocks in memory
-            rows = fileManager.importTableBlockWithConstraint(tableId, blockId, description, whereConstraint);
+            //Import the remaining (not cached) row data from disk
+            blockRows.addAll(fileManager.importTableBlockWithConstraint(tableId, blockId, description, whereConstraint, cachedPrimaryKeys));
+
+            //Sort the rows selected from the current block by primary key
+            Collections.sort(blockRows, new Comparator<Row>() {
+                @Override
+                public int compare(Row o1, Row o2) {
+                    Integer pk1 = o1.getPrimaryKey();
+                    Integer pk2 = o2.getPrimaryKey();
+
+                    if (pk1 == null) {
+                        if (pk2 == null) {
+                            return 0;
+                        }
+
+                        return pk2;
+                    }
+
+                    return pk1.compareTo(pk2);
+                }
+            });
+
+            rows.addAll(blockRows);
+
         }
 
         return rows;

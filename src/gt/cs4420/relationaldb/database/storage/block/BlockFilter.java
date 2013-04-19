@@ -1,4 +1,4 @@
-package gt.cs4420.relationaldb.database.storage.file;
+package gt.cs4420.relationaldb.database.storage.block;
 
 import com.google.common.collect.Lists;
 import gt.cs4420.relationaldb.database.storage.block.Block;
@@ -28,7 +28,7 @@ public class BlockFilter {
         return filteredRows;
     }
 
-    private boolean rowMeetsConstraints(final Row row) {
+    public boolean rowMeetsConstraints(final Row row) {
         return rowMeetsConstraint(row, this.constraint);
     }
 
