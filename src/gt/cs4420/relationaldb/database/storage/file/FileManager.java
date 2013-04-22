@@ -2,6 +2,8 @@ package gt.cs4420.relationaldb.database.storage.file;
 
 import com.google.common.collect.Maps;
 import gt.cs4420.relationaldb.database.storage.block.Block;
+import gt.cs4420.relationaldb.database.storage.block.BlockFilter;
+import gt.cs4420.relationaldb.database.storage.block.BlockSerializer;
 import gt.cs4420.relationaldb.database.storage.index.Index;
 import gt.cs4420.relationaldb.database.storage.index.IndexManager;
 import gt.cs4420.relationaldb.database.storage.index.IndexSerializer;
@@ -87,6 +89,13 @@ public class FileManager {
         return blockSerializer.deserializeBlockMetaData(fileReader.read(blockMetaFile));
     }
 
+    /**
+     * Imports all meta-data for blocks for the given table. This does not import any row data, just meta-data such as
+     * block size.
+     *
+     * @param tableId
+     * @param metaBlocks
+     */
     public void exportBlockMetaData(final Integer tableId, final List<Block> metaBlocks) {
         File blockMetaFile = new File(DB_ROOT_DIRECTORY + tableId + "/blocks/meta.json");
         blockMetaFile.getParentFile().mkdirs();
@@ -101,13 +110,27 @@ public class FileManager {
     }
 
     public Block importTableBlock(final Integer tableId, final Integer blockId, final Description tableDescription) {
+        return importTableBlock(tableId, blockId, tableDescription, null);
+    }
+
+    /**
+     * Imports all non-cached row data for a given table block. Any primary key in the cached primary keys set will not
+     * be imported along with the rest of the non-cached block.
+     *
+     * @param tableId
+     * @param blockId
+     * @param tableDescription
+     * @param cachedPrimaryKeys
+     * @return
+     */
+    public Block importTableBlock(final Integer tableId, final Integer blockId, final Description tableDescription, final Set<Integer> cachedPrimaryKeys) {
         File blockFile = new File(DB_ROOT_DIRECTORY + tableId + "/blocks/" + blockId + ".json");
 
         if (!blockFile.exists()) {
             return null;
         }
-       
-        Block block = blockSerializer.deserialize(fileReader.read(blockFile));
+
+        Block block = blockSerializer.deserialize(fileReader.read(blockFile), cachedPrimaryKeys);
 
         //Cast all row data appropriately
         for (Row row : block.getBlockData()) {
@@ -134,8 +157,19 @@ public class FileManager {
         return block;
     }
 
-    public List<Row> importTableBlockWithConstraint(final Integer tableId, final Integer blockId, final Description tableDescription, final Constraint whereConstraint) {
-        Block block = importTableBlock(tableId, blockId, tableDescription);
+    /**
+     * Imports non-cached row data that meets the given where constraint for a given table block. Any primary key in
+     * the cached primary keys set will not be imported along with the rest of the non-cached block.
+     *
+     * @param tableId
+     * @param blockId
+     * @param tableDescription
+     * @param whereConstraint
+     * @param cachedPrimaryKeys
+     * @return
+     */
+    public List<Row> importTableBlockWithConstraint(final Integer tableId, final Integer blockId, final Description tableDescription, final Constraint whereConstraint, final Set<Integer> cachedPrimaryKeys) {
+        Block block = importTableBlock(tableId, blockId, tableDescription, cachedPrimaryKeys);
 
         BlockFilter filter = new BlockFilter(whereConstraint);
 

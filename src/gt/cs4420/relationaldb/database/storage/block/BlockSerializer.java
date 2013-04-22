@@ -1,6 +1,7 @@
-package gt.cs4420.relationaldb.database.storage.file;
+package gt.cs4420.relationaldb.database.storage.block;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import gt.cs4420.relationaldb.database.storage.block.Block;
 import gt.cs4420.relationaldb.domain.Row;
 import gt.cs4420.relationaldb.domain.json.AttributeSerializer;
@@ -10,8 +11,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Set;
 
-class BlockSerializer implements JsonSerializer<Block> {
+public class BlockSerializer implements JsonSerializer<Block> {
 
     private AttributeSerializer attributeSerializer;
     private RowSerializer rowSerializer;
@@ -53,6 +55,35 @@ class BlockSerializer implements JsonSerializer<Block> {
         List<Row> rows = Lists.newArrayList();
 
         for (int i = 0; i < dataArray.length(); i++) {
+            Row rowData = rowSerializer.deserialize(dataArray.getJSONObject(i));
+            rows.add(rowData);
+        }
+
+        block.setRowData(rows);
+
+        return block;
+    }
+
+    public Block deserialize(final JSONObject json, final Set<Integer> cachedPrimaryKeys) {
+        Block block = new Block();
+
+        JSONObject blockJson = json.getJSONObject("block");
+
+        block.setBlockSize(blockJson.getInt("size"));
+        block.setBlockId(blockJson.getInt("blockId"));
+
+        JSONArray dataArray = blockJson.getJSONArray("data");
+
+        List<Row> rows = Lists.newArrayList();
+
+        for (int i = 0; i < dataArray.length(); i++) {
+            JSONObject rowJson = dataArray.getJSONObject(i);
+
+            //Don't pull cached items off disk
+            if (cachedPrimaryKeys != null && cachedPrimaryKeys.contains(rowJson.getInt("primaryKey"))) {
+                continue;
+            }
+
             Row rowData = rowSerializer.deserialize(dataArray.getJSONObject(i));
             rows.add(rowData);
         }
