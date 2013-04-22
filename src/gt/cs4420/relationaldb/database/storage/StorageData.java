@@ -7,7 +7,7 @@ import gt.cs4420.relationaldb.database.storage.block.Block;
 import gt.cs4420.relationaldb.database.storage.block.BlockFilter;
 import gt.cs4420.relationaldb.database.storage.block.BlockManager;
 import gt.cs4420.relationaldb.database.storage.file.FileManager;
-import gt.cs4420.relationaldb.database.storage.index.Index;
+import gt.cs4420.relationaldb.database.storage.index.HashIndex;
 import gt.cs4420.relationaldb.database.storage.index.IndexManager;
 import gt.cs4420.relationaldb.domain.Attribute;
 import gt.cs4420.relationaldb.domain.Description;
@@ -215,7 +215,7 @@ class StorageData {
         //TODO Don't select the entire row since only the primary key is needed
         List<Row> affectedRows = select(tableId, whereConstraint);
 
-        Index tableIndex = indexManager.getIndex(tableId);
+        HashIndex tableIndex = indexManager.getIndex(tableId);
 
         Map<Attribute, Object> updateData = updateDataRow.getRowData();
 
@@ -256,7 +256,7 @@ class StorageData {
     }
 
     private Row getRow(final Integer tableId, final Integer primaryKey) {
-        Index index = indexManager.getIndex(tableId);
+        HashIndex index = indexManager.getIndex(tableId);
 
         if (!index.primaryKeyExists(primaryKey)) {
             return null;
@@ -306,7 +306,7 @@ class StorageData {
         List<Row> rows = Lists.newArrayList();
         BlockFilter filter = new BlockFilter(whereConstraint);
 
-        Index index = indexManager.getIndex(tableId);
+        HashIndex index = indexManager.getIndex(tableId);
 
         if (tables.get(tableId) == null) {
             return null;

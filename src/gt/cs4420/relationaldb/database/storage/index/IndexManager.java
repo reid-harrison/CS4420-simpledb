@@ -7,25 +7,25 @@ import java.util.Set;
 
 public class IndexManager {
 	//Table ID -> Index
-    private Map<Integer, Index> indexes;
+    private Map<Integer, HashIndex> indexes;
 
     public IndexManager() {
         indexes = Maps.newHashMap();
     }
 
     public void createIndex(final Integer tableId) {
-        indexes.put(tableId, new Index());
+        indexes.put(tableId, new HashIndex());
     }
 
-    public Index getIndex(final Integer tableId) {
+    public HashIndex getIndex(final Integer tableId) {
         if (indexes.get(tableId) == null) {
-            indexes.put(tableId, new Index());
+            indexes.put(tableId, new HashIndex());
         }
 
         return indexes.get(tableId);
     }
 
-    public void addIndex(final Integer tableId, final Index index) {
+    public void addIndex(final Integer tableId, final HashIndex index) {
         indexes.put(tableId, index);
     }
 

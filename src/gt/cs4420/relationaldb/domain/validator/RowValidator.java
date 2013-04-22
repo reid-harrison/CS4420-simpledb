@@ -1,6 +1,5 @@
 package gt.cs4420.relationaldb.domain.validator;
 
-import gt.cs4420.relationaldb.domain.Description;
 import gt.cs4420.relationaldb.domain.Row;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;

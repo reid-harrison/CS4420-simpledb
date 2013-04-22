@@ -1,10 +1,13 @@
 package gt.cs4420.relationaldb.database.storage.index;
 
-import java.io.FileNotFoundException;
-
 import gt.cs4420.relationaldb.domain.IndexNode;
 
-public class TreeIndex<T extends Comparable<T>, E extends Comparable<E>> {
+import java.io.FileNotFoundException;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+public class TreeIndex<T extends Comparable<T>, E extends Comparable<E>> extends AbstractIndex {
 	
 	private IndexNode<T,E> root;
 	private int size;
@@ -124,5 +127,53 @@ public class TreeIndex<T extends Comparable<T>, E extends Comparable<E>> {
 			in = in.getLeft();
 		}
 		return in;
-	}	
+	}
+
+    @Override
+    public Set<Integer> getPrimaryKeySet() {
+        //TODO Implement getPrimaryKeySet
+        return null;
+    }
+
+    @Override
+    public Set<Integer> getBlockIdSet() {
+        //TODO Implement getBlockIdSet
+        return null;
+    }
+
+    @Override
+    public Integer getBlockId(Integer primaryKey) {
+        //TODO Implement getBlockId
+        return null;
+    }
+
+    @Override
+    public void addIndexEntry(Integer primaryKey, Integer blockId, Integer blockIndex) {
+        //TODO Implement addIndexEntry
+
+    }
+
+    @Override
+    public void removeIndexEntry(Integer primaryKey, Integer blockId, Integer blockIndex) {
+        //TODO Implement removeIndexEntry
+
+    }
+
+    @Override
+    public int getBlockIndex(Integer primaryKey) {
+        //TODO Implement getBlockIndex
+        return 0;
+    }
+
+    @Override
+    public int getNextBlockIndex(Integer blockId) {
+        //TODO Implement getNextBlockIndex
+        return 0;
+    }
+
+    @Override
+    public boolean primaryKeyExists(Integer primaryKey) {
+        //TODO Implement primaryKeyExists
+        return false;
+    }
 }

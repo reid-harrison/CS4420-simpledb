@@ -2,7 +2,6 @@ package gt.cs4420.relationaldb.database.query;
 
 import com.google.common.base.Strings;
 import gt.cs4420.relationaldb.database.query.SQLParser.statement_return;
-
 import gt.cs4420.relationaldb.domain.Attribute;
 import gt.cs4420.relationaldb.domain.query.*;
 import org.antlr.runtime.ANTLRStringStream;
@@ -11,9 +10,6 @@ import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.Tree;
-import org.w3c.dom.Attr;
-
-import java.util.List;
 
 public class QueryParser {
 
