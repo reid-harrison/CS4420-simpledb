@@ -1,8 +1,6 @@
 package gt.cs4420.relationaldb.database.storage.block;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import gt.cs4420.relationaldb.database.storage.block.Block;
 import gt.cs4420.relationaldb.domain.Row;
 import gt.cs4420.relationaldb.domain.json.AttributeSerializer;
 import gt.cs4420.relationaldb.domain.json.JsonSerializer;

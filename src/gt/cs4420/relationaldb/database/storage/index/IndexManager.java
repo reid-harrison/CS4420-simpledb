@@ -14,12 +14,12 @@ public class IndexManager {
     }
 
     public void createIndex(final Integer tableId) {
-        indexes.put(tableId, new Index());
+        indexes.put(tableId, new HashIndex());
     }
 
     public Index getIndex(final Integer tableId) {
         if (indexes.get(tableId) == null) {
-            indexes.put(tableId, new Index());
+            indexes.put(tableId, new HashIndex());
         }
 
         return indexes.get(tableId);

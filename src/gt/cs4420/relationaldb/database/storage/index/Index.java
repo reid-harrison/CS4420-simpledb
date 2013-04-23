@@ -1,148 +1,108 @@
 package gt.cs4420.relationaldb.database.storage.index;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class Index {
+public interface Index {
 
-    //A Map from primary keys to block ids
-    private Map<Integer, Integer> index;
+    /**
+     * Returns the set of primary keys that this index tracks.
+     *
+     * @return Set<Integer>
+     */
+    Set<Integer> getPrimaryKeySet();
 
-    //Map from primary keys to their index within the block
-    private Map<Integer, Integer> blockIndex;
+    /**
+     * Returns the set of block IDs that this index tracks.
+     *
+     * @return Set<Integer>
+     */
+    Set<Integer> getBlockIdSet();
 
-    //The index of blocks to the primary keys they contain
-    private Map<Integer, List<Integer>> reverseIndex;
+    /**
+     * Returns the ID for the block where the row with the given primary key resides on disk.
+     *
+     * @param primaryKey
+     * @return Integer
+     */
+    Integer getBlockId(Integer primaryKey);
 
-    //The lists that keep track of which rows have been modified in each block;
-    private Map<Integer, List<Integer>> dirtyPrimaryKeys;
+    /**
+     * Adds the given primary key -> block id pair to the index. The block index is used to know where on the block
+     * the row is stored.
+     *
+     * @param primaryKey
+     * @param blockId
+     * @param blockIndex
+     */
+    void addIndexEntry(Integer primaryKey, Integer blockId, Integer blockIndex);
 
-    public Index() {
-        index = Maps.newHashMap();
-        blockIndex = Maps.newHashMap();
-        reverseIndex = Maps.newHashMap();
-        dirtyPrimaryKeys = Maps.newHashMap();
-    }
+    /**
+     * Removes the given primary key from the index.
+     *
+     * @param primaryKey
+     */
+    void removeIndexEntry(Integer primaryKey);
 
-    public Set<Integer> getPrimaryKeySet() {
-        return index.keySet();
-    }
+    /**
+     * Returns the mapping of block ids to a list of dirty primary keys.
+     *
+     * @return Map<Integer, List<Integer>>
+     */
+    Map<Integer, List<Integer>> getDirtyPrimaryKeys();
 
-    public Set<Integer> getBlockIdSet() {
-        return reverseIndex.keySet();
-    }
+    /**
+     * Adds the given primary key to the set of dirty keys for the given block.
+     *
+     * @param blockId
+     * @param primaryKey
+     */
+    void addDirtyPrimaryKey(Integer blockId, Integer primaryKey);
 
-    public Integer getBlockId(final Integer primaryKey) {
-        return index.get(primaryKey);
-    }
+    /**
+     * Removes the given primary key from the set of dirty primary keys for the given block.
+     *
+     * @param blockId
+     * @param primaryKey
+     */
+    void removeDirtyPrimaryKey(Integer blockId, Integer primaryKey);
 
-    public void addIndexEntry(final Integer primaryKey, final Integer blockId, final Integer blockIndex) {
-        index.put(primaryKey, blockId);
-        this.blockIndex.put(primaryKey, blockIndex);
-
-        if (reverseIndex.get(blockId) == null) {
-            reverseIndex.put(blockId, new ArrayList<Integer>());
-        }
-
-        reverseIndex.get(blockId).add(primaryKey);
-    }
-
-    public void removeIndexEntry(final Integer primaryKey, final Integer blockId, final Integer blockIndex) {
-        index.remove(primaryKey);
-        this.blockIndex.remove(blockIndex);
-        reverseIndex.get(blockId).remove(primaryKey);
-    }
-
-    public Map<Integer, List<Integer>> getDirtyPrimaryKeys() {
-        return dirtyPrimaryKeys;
-    }
-
-    public void addDirtyPrimaryKey(final Integer blockId, final Integer primaryKey) {
-        List<Integer> dirtyKeys = dirtyPrimaryKeys.get(blockId);
-
-        if (dirtyKeys == null) {
-            dirtyKeys = Lists.newArrayList();
-            dirtyPrimaryKeys.put(blockId, dirtyKeys);
-        }
-
-        if (dirtyKeys.contains(primaryKey)) {
-            return;
-        }
-
-        dirtyKeys.add(primaryKey);
-    }
-
-    public void removeDirtyPrimaryKey(final Integer blockId, final Integer primaryKey) {
-        List<Integer> dirtyKeys = dirtyPrimaryKeys.get(blockId);
-
-        if (dirtyKeys == null || !dirtyKeys.contains(primaryKey)) {
-            return;
-        }
-
-        dirtyKeys.remove(blockId);
-    }
-
-    public void clearAllDirtyPrimaryKeys() {
-        dirtyPrimaryKeys.clear();
-    }
+    /**
+     * Clears the current set of dirty primary keys. This should be called when the cache has been cleared of dirty data.
+     */
+    void clearAllDirtyPrimaryKeys();
 
     /**
      * Returns the index of block IDs to the List of primary keys they contain.
      *
      * @return Map<Integer, List<Integer>>
      */
-    public Map<Integer, List<Integer>> getReverseIndex() {
-        return reverseIndex;
-    }
-
-    public int getBlockIndex(final Integer primaryKey) {
-        return blockIndex.get(primaryKey);
-    }
-
-    public int getNextBlockIndex(final Integer blockId) {
-        if (reverseIndex.get(blockId) == null) {
-            return 0;
-        }
-
-        return reverseIndex.get(blockId).size();
-    }
-
-    public boolean primaryKeyExists(final Integer primaryKey) {
-        return index.containsKey(primaryKey);
-    }
+    Map<Integer, List<Integer>> getReverseIndex();
 
     /**
-     * Returns true if both Indexes have the same index mapping primaryKeys -> block ID.
+     * Returns the index of the row with the given primary key within its block. For example, the first primary key in
+     * the block will have a block index of 0 and the last primary key will be at block index (totalRowCount - 1).
      *
-     * @param object
-     * @return
+     * @param primaryKey
+     * @return int
      */
-    @Override
-    public boolean equals(final Object object) {
-        if (object == null || !(object instanceof Index)) {
-            return false;
-        }
+    int getBlockIndex(Integer primaryKey);
 
-        Index other = (Index) object;
-        Set<Integer> otherSet = other.getPrimaryKeySet();
-        Set<Integer> thisSet = getPrimaryKeySet();
+    /**
+     * Returns the next index available for a given block.
+     *
+     * @param blockId
+     * @return int
+     */
+    int getNextBlockIndex(Integer blockId);
 
-        if (!otherSet.equals(thisSet)) {
-            return false;
-        }
-
-        for (Integer primaryKey : thisSet) {
-            if (!index.get(primaryKey).equals(other.getBlockId(primaryKey))) {
-                return false;
-            }
-        }
-
-        return true;
-    }
+    /**
+     * Returns whether or not of this index holds an entry for the given primary key.
+     *
+     * @param primaryKey
+     * @return boolean
+     */
+    boolean primaryKeyExists(Integer primaryKey);
 
 }

@@ -7,22 +7,18 @@
 ///////////////////////////////////////////////////////////////////
 
 package gt.cs4420.relationaldb.database.query;
-import gt.cs4420.relationaldb.domain.Table;
-import gt.cs4420.relationaldb.domain.Attribute;
-import gt.cs4420.relationaldb.domain.exception.ValidationException;
-import gt.cs4420.relationaldb.database.storage.StorageManager;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
-import java.util.Map;
-
-
+import gt.cs4420.relationaldb.domain.Attribute;
+import gt.cs4420.relationaldb.domain.Table;
 import org.antlr.runtime.*;
-import java.util.Stack;
-import java.util.List;
-import java.util.ArrayList;
+import org.antlr.runtime.tree.CommonTree;
+import org.antlr.runtime.tree.CommonTreeAdaptor;
+import org.antlr.runtime.tree.TreeAdaptor;
 
-import org.antlr.runtime.tree.*;
+import java.util.List;
+import java.util.Map;
 
 
 @SuppressWarnings("all")

@@ -1,10 +1,12 @@
 package gt.cs4420.relationaldb.database.storage.block;
 
 import com.google.common.collect.Lists;
-import gt.cs4420.relationaldb.database.storage.block.Block;
 import gt.cs4420.relationaldb.domain.Attribute;
 import gt.cs4420.relationaldb.domain.Row;
-import gt.cs4420.relationaldb.domain.query.*;
+import gt.cs4420.relationaldb.domain.query.Constraint;
+import gt.cs4420.relationaldb.domain.query.LogicalConstraint;
+import gt.cs4420.relationaldb.domain.query.ValueConstraint;
+import gt.cs4420.relationaldb.domain.query.ValueOperator;
 
 import java.util.List;
 
