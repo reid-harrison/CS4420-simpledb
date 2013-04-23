@@ -6,10 +6,10 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 
-public class IndexSerializer implements JsonSerializer<HashIndex> {
+public class IndexSerializer implements JsonSerializer<Index> {
 
     @Override
-    public JSONObject serialize(HashIndex index) {
+    public JSONObject serialize(Index index) {
         JSONObject indexJson = new JSONObject();
         JSONArray indexArray = new JSONArray();
 
@@ -24,8 +24,8 @@ public class IndexSerializer implements JsonSerializer<HashIndex> {
     }
 
     @Override
-    public HashIndex deserialize(JSONObject json) {
-        HashIndex index = new HashIndex();
+    public Index deserialize(JSONObject json) {
+        Index index = new HashIndex();
 
         if (json.get("index") == null) {
             throw new IllegalArgumentException("Index JSON object must have a root key 'index'");

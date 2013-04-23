@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class IndexManager {
 	//Table ID -> Index
-    private Map<Integer, HashIndex> indexes;
+    private Map<Integer, Index> indexes;
 
     public IndexManager() {
         indexes = Maps.newHashMap();
@@ -17,7 +17,7 @@ public class IndexManager {
         indexes.put(tableId, new HashIndex());
     }
 
-    public HashIndex getIndex(final Integer tableId) {
+    public Index getIndex(final Integer tableId) {
         if (indexes.get(tableId) == null) {
             indexes.put(tableId, new HashIndex());
         }
@@ -25,7 +25,7 @@ public class IndexManager {
         return indexes.get(tableId);
     }
 
-    public void addIndex(final Integer tableId, final HashIndex index) {
+    public void addIndex(final Integer tableId, final Index index) {
         indexes.put(tableId, index);
     }
 

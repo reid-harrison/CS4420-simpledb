@@ -4,7 +4,7 @@ import com.google.common.collect.Maps;
 import gt.cs4420.relationaldb.database.storage.block.Block;
 import gt.cs4420.relationaldb.database.storage.block.BlockFilter;
 import gt.cs4420.relationaldb.database.storage.block.BlockSerializer;
-import gt.cs4420.relationaldb.database.storage.index.HashIndex;
+import gt.cs4420.relationaldb.database.storage.index.Index;
 import gt.cs4420.relationaldb.database.storage.index.IndexManager;
 import gt.cs4420.relationaldb.database.storage.index.IndexSerializer;
 import gt.cs4420.relationaldb.domain.Attribute;
@@ -250,7 +250,7 @@ public class FileManager {
             }
 
             JSONObject indexJson = fileReader.read(indexFile);
-            HashIndex index = indexSerializer.deserialize(indexJson);
+            Index index = indexSerializer.deserialize(indexJson);
 
             indexManager.addIndex(tableId, index);
         }

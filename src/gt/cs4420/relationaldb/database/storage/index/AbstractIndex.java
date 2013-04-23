@@ -114,7 +114,7 @@ public abstract class AbstractIndex implements Index {
      */
     @Override
     public boolean equals(final Object object) {
-        if (object == null || !(object instanceof HashIndex)) {
+        if (object == null || !(object instanceof Index)) {
             return false;
         }
 

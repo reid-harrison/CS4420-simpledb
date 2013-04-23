@@ -7,7 +7,7 @@ import gt.cs4420.relationaldb.database.storage.block.Block;
 import gt.cs4420.relationaldb.database.storage.block.BlockFilter;
 import gt.cs4420.relationaldb.database.storage.block.BlockManager;
 import gt.cs4420.relationaldb.database.storage.file.FileManager;
-import gt.cs4420.relationaldb.database.storage.index.HashIndex;
+import gt.cs4420.relationaldb.database.storage.index.Index;
 import gt.cs4420.relationaldb.database.storage.index.IndexManager;
 import gt.cs4420.relationaldb.domain.Attribute;
 import gt.cs4420.relationaldb.domain.Description;
@@ -211,7 +211,7 @@ class StorageData {
     protected void update(final Integer tableId, final Row updateDataRow, final Constraint whereConstraint) throws ValidationException {
         List<Row> affectedRows = select(tableId, whereConstraint);
 
-        HashIndex tableIndex = indexManager.getIndex(tableId);
+        Index tableIndex = indexManager.getIndex(tableId);
 
         Map<Attribute, Object> updateData = updateDataRow.getRowData();
 
@@ -252,7 +252,7 @@ class StorageData {
     }
 
     private Row getRow(final Integer tableId, final Integer primaryKey) {
-        HashIndex index = indexManager.getIndex(tableId);
+        Index index = indexManager.getIndex(tableId);
 
         if (!index.primaryKeyExists(primaryKey)) {
             return null;
@@ -302,7 +302,7 @@ class StorageData {
         List<Row> rows = Lists.newArrayList();
         BlockFilter filter = new BlockFilter(whereConstraint);
 
-        HashIndex index = indexManager.getIndex(tableId);
+        Index index = indexManager.getIndex(tableId);
 
         if (tables.get(tableId) == null) {
             return null;
