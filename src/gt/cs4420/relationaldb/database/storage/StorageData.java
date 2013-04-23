@@ -9,12 +9,11 @@ import gt.cs4420.relationaldb.database.storage.block.BlockManager;
 import gt.cs4420.relationaldb.database.storage.file.FileManager;
 import gt.cs4420.relationaldb.database.storage.index.Index;
 import gt.cs4420.relationaldb.database.storage.index.IndexManager;
-import gt.cs4420.relationaldb.domain.Attribute;
-import gt.cs4420.relationaldb.domain.Description;
-import gt.cs4420.relationaldb.domain.Row;
-import gt.cs4420.relationaldb.domain.Table;
+import gt.cs4420.relationaldb.domain.*;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
 import gt.cs4420.relationaldb.domain.query.Constraint;
+import gt.cs4420.relationaldb.domain.query.JoinConstraint;
+import gt.cs4420.relationaldb.domain.query.ValueOperator;
 
 import java.util.*;
 
@@ -367,6 +366,51 @@ class StorageData {
         return rows;
     }
 
+    public List<JoinedRow> joinSelect(final Integer leftTableId, final Integer rightTableId, final JoinConstraint joinConstraint, final Constraint whereConstraint) throws ValidationException {
+        List<JoinedRow> rows = Lists.newArrayList();
+
+        ValueOperator joinOperator = joinConstraint.getOperator();
+        Attribute leftAttribute = joinConstraint.getLeftAttribute();
+        Attribute rightAttribute = joinConstraint.getRightAttribute();
+
+        DataType leftDataType = tables.get(leftTableId).getDescription().getAttribute(leftAttribute.getName()).getType();
+        DataType rightDataType = tables.get(rightTableId).getDescription().getAttribute(rightAttribute.getName()).getType();
+
+        if (leftDataType != rightDataType) {
+            throw new ValidationException("Data types for join constraints must be the same");
+        }
+
+        //TODO support more than just inner join
+        JoinConstraint.JoinType joinType = joinConstraint.getJoinType();
+
+        //TODO Check where constraint against table descriptions to see which table they are valid for
+
+        List<Row> leftRows = select(leftTableId, whereConstraint);
+        List<Row> rightRows = select(rightTableId, whereConstraint);
+
+        for (Row leftRow : leftRows) {
+            Object leftValue = leftRow.getRowData().get(leftAttribute);
+
+            for (Row rightRow : rightRows) {
+                Object rightValue = rightRow.getRowData().get(rightAttribute);
+
+                if (valuesMeetJoinConstraint(leftDataType, leftValue, rightValue, joinOperator)) {
+                    JoinedRow joinedRow = new JoinedRow();
+
+                    joinedRow.setLeftPrimaryKey(leftRow.getPrimaryKey());
+                    joinedRow.setLeftRow(leftRow);
+
+                    joinedRow.setRightPrimaryKey(rightRow.getPrimaryKey());
+                    joinedRow.setRightRow(rightRow);
+
+                    rows.add(joinedRow);
+                }
+            }
+        }
+
+        return rows;
+    }
+
     /**
      * Adds a table data block to in-memory storage.
      *
@@ -447,6 +491,93 @@ class StorageData {
 
     private void exportIndexes() {
         fileManager.exportIndexes(indexManager);
+    }
+
+    private boolean valuesMeetJoinConstraint(final DataType dataType, final Object leftValue, final Object rightValue, final ValueOperator joinOperator) {
+
+        if (leftValue == null) {
+            if (joinOperator == ValueOperator.EQUALS) {
+                return rightValue == null;
+            }
+
+            if (joinOperator == ValueOperator.NOT_EQUALS) {
+                return rightValue != null;
+            }
+
+            return false;
+        }
+
+        if (rightValue == null) {
+            if (joinOperator == ValueOperator.EQUALS) {
+                return leftValue == null;
+            }
+
+            if (joinOperator == ValueOperator.NOT_EQUALS) {
+                return leftValue != null;
+            }
+
+            return false;
+        }
+
+        switch (dataType) {
+            case INT:
+
+                //Probably an integer, let's make sure
+                int leftValueInt;
+                int rightValueInt;
+
+                try {
+                    leftValueInt = Integer.parseInt(leftValue.toString());
+                    rightValueInt = Integer.parseInt (rightValue.toString());
+                } catch (final NumberFormatException nfe) {
+                    //Hmm, wasn't an integer
+                    throw nfe;
+                } catch (final ClassCastException cce) {
+                    //Well damn, this doesn't work;
+                    throw cce;
+                }
+
+                switch (joinOperator) {
+                    case EQUALS:
+                        return leftValueInt == rightValueInt;
+                    case NOT_EQUALS:
+                        return leftValueInt != rightValueInt;
+                    case GREATER_THAN:
+                        return leftValueInt > rightValueInt;
+                    case GREATER_THAN_EQUAL_TO:
+                        return leftValueInt >= rightValueInt;
+                    case LESS_THAN:
+                        return leftValueInt < rightValueInt;
+                    case LESS_THAN_EQUAL_TO:
+                        return leftValueInt <= rightValueInt;
+                }
+
+                return false;
+
+            case STRING:
+
+                String leftValueString = leftValue.toString();
+                String rightValueString = rightValue.toString();
+
+                switch (joinOperator) {
+                    case EQUALS:
+                        return leftValueString.equals(rightValueString);
+                    case NOT_EQUALS:
+                        return !leftValueString.equals(rightValueString);
+                    case GREATER_THAN:
+                        return leftValueString.compareTo(rightValueString) > 0;
+                    case GREATER_THAN_EQUAL_TO:
+                        return leftValueString.compareTo(rightValueString) >= 0;
+                    case LESS_THAN:
+                        return leftValueString.compareTo(rightValueString) < 0;
+                    case LESS_THAN_EQUAL_TO:
+                        return leftValueString.compareTo(rightValueString) <= 0;
+                }
+
+                return false;
+        }
+
+        return false;
     }
 
 }

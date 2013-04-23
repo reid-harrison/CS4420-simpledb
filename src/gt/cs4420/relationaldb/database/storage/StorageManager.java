@@ -1,10 +1,12 @@
 package gt.cs4420.relationaldb.database.storage;
 
 import gt.cs4420.relationaldb.domain.Attribute;
+import gt.cs4420.relationaldb.domain.JoinedRow;
 import gt.cs4420.relationaldb.domain.Row;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
 import gt.cs4420.relationaldb.domain.query.Constraint;
+import gt.cs4420.relationaldb.domain.query.JoinConstraint;
 import gt.cs4420.relationaldb.domain.validator.AttributeValidator;
 import gt.cs4420.relationaldb.domain.validator.RowValidator;
 import gt.cs4420.relationaldb.domain.validator.TableValidator;
@@ -118,6 +120,13 @@ public class StorageManager {
      */
     public List<Row> select(final String tableName, final Constraint whereConstraint) {
         return storageData.select(getTableId(tableName), whereConstraint);
+    }
+
+    public List<JoinedRow> selectJoin(final String leftTableName, final String rightTableName, final JoinConstraint joinConstraint, final Constraint whereConstraint) {
+        Integer leftTableId = getTableId(leftTableName);
+        Integer rightTableId = getTableId(rightTableName);
+
+        return storageData.selectJoin(leftTableId, rightTableId, joinConstraint, whereConstraint);
     }
 
     /**
