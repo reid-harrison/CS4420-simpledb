@@ -126,7 +126,7 @@ public class StorageManager {
         Integer leftTableId = getTableId(leftTableName);
         Integer rightTableId = getTableId(rightTableName);
 
-        return storageData.selectJoin(leftTableId, rightTableId, joinConstraint, whereConstraint);
+        return null; //storageData.selectJoin(leftTableId, rightTableId, joinConstraint, whereConstraint);
     }
 
     /**
