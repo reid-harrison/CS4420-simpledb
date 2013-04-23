@@ -23,9 +23,6 @@ import java.util.*;
  *
  * Maintains state information about data in the database including a cache of recently accessed data. StorageData is best
  * kept as a singleton so that data remains consistent.
- *
- * TODO:
- * -More database functionality for StorageManager
  */
 class StorageData {
 
@@ -212,7 +209,6 @@ class StorageData {
      * @throws ValidationException
      */
     protected void update(final Integer tableId, final Row updateDataRow, final Constraint whereConstraint) throws ValidationException {
-        //TODO Don't select the entire row since only the primary key is needed
         List<Row> affectedRows = select(tableId, whereConstraint);
 
         HashIndex tableIndex = indexManager.getIndex(tableId);
@@ -332,9 +328,18 @@ class StorageData {
                 }
             }
 
-            //TODO decide what to do about caching these blocks in memory
             //Import the remaining (not cached) row data from disk
-            blockRows.addAll(fileManager.importTableBlockWithConstraint(tableId, blockId, description, whereConstraint, cachedPrimaryKeys));
+            List<Row> importedRows = fileManager.importTableBlockWithConstraint(tableId, blockId, description, whereConstraint, cachedPrimaryKeys);
+
+            for (Row row : importedRows) {
+                try {
+                    addRow(tableId, row);
+                } catch (ValidationException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            blockRows.addAll(importedRows);
 
             //Sort the rows selected from the current block by primary key
             Collections.sort(blockRows, new Comparator<Row>() {
