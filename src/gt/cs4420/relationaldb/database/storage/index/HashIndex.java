@@ -2,8 +2,6 @@ package gt.cs4420.relationaldb.database.storage.index;
 
 import com.google.common.collect.Maps;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -35,18 +33,15 @@ public class HashIndex extends AbstractIndex {
         index.put(primaryKey, blockId);
         this.blockIndex.put(primaryKey, blockIndex);
 
-        if (getReverseIndex().get(blockId) == null) {
-            getReverseIndex().put(blockId, new ArrayList<Integer>());
-        }
-
-        getReverseIndex().get(blockId).add(primaryKey);
+        super.addIndexEntry(primaryKey, blockId, blockIndex);
     }
 
     @Override
-    public void removeIndexEntry(final Integer primaryKey, final Integer blockId, final Integer blockIndex) {
+    public void removeIndexEntry(final Integer primaryKey) {
+        super.removeIndexEntry(primaryKey);
+
         index.remove(primaryKey);
-        this.blockIndex.remove(blockIndex);
-        getReverseIndex().get(blockId).remove(primaryKey);
+        this.blockIndex.remove(primaryKey);
     }
 
     @Override

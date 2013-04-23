@@ -3,8 +3,6 @@ package gt.cs4420.relationaldb.database.storage.index;
 import gt.cs4420.relationaldb.domain.IndexNode;
 
 import java.io.FileNotFoundException;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class TreeIndex<T extends Comparable<T>, E extends Comparable<E>> extends AbstractIndex {
@@ -136,12 +134,6 @@ public class TreeIndex<T extends Comparable<T>, E extends Comparable<E>> extends
     }
 
     @Override
-    public Set<Integer> getBlockIdSet() {
-        //TODO Implement getBlockIdSet
-        return null;
-    }
-
-    @Override
     public Integer getBlockId(Integer primaryKey) {
         //TODO Implement getBlockId
         return null;
@@ -151,23 +143,19 @@ public class TreeIndex<T extends Comparable<T>, E extends Comparable<E>> extends
     public void addIndexEntry(Integer primaryKey, Integer blockId, Integer blockIndex) {
         //TODO Implement addIndexEntry
 
+        super.addIndexEntry(primaryKey, blockId, blockIndex);
     }
 
     @Override
-    public void removeIndexEntry(Integer primaryKey, Integer blockId, Integer blockIndex) {
-        //TODO Implement removeIndexEntry
+    public void removeIndexEntry(Integer primaryKey) {
+        super.removeIndexEntry(primaryKey);
 
+        //TODO Implement removeIndexEntry
     }
 
     @Override
     public int getBlockIndex(Integer primaryKey) {
         //TODO Implement getBlockIndex
-        return 0;
-    }
-
-    @Override
-    public int getNextBlockIndex(Integer blockId) {
-        //TODO Implement getNextBlockIndex
         return 0;
     }
 
