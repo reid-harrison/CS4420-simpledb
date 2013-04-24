@@ -206,7 +206,7 @@ class StorageData {
      * @throws ValidationException
      */
     protected void update(final Integer tableId, final Row updateDataRow, final Constraint whereConstraint) throws ValidationException {
-        List<Row> affectedRows = select(tableId, whereConstraint);
+        List<Row> affectedRows = select(tableId, whereConstraint, null);
 
         Index tableIndex = indexManager.getIndex(tableId);
 
@@ -295,7 +295,7 @@ class StorageData {
         return rows;
     }
 
-    public List<Row> select(final Integer tableId, final Constraint whereConstraint) {
+    public List<Row> select(final Integer tableId, final Constraint whereConstraint, final OrderConstraint orderConstraint) {
         List<Row> rows = Lists.newArrayList();
         BlockFilter filter = new BlockFilter(whereConstraint);
 
@@ -338,33 +338,22 @@ class StorageData {
 
             blockRows.addAll(importedRows);
 
-            //Sort the rows selected from the current block by primary key
-            Collections.sort(blockRows, new Comparator<Row>() {
-                @Override
-                public int compare(Row o1, Row o2) {
-                    Integer pk1 = o1.getPrimaryKey();
-                    Integer pk2 = o2.getPrimaryKey();
-
-                    if (pk1 == null) {
-                        if (pk2 == null) {
-                            return 0;
-                        }
-
-                        return pk2;
-                    }
-
-                    return pk1.compareTo(pk2);
-                }
-            });
-
             rows.addAll(blockRows);
 
+        }
+
+        // Sort the rows depending on the order by clause
+        if (orderConstraint == null) {
+            OrderConstraint primaryKeyOrder = new OrderConstraint(description.getPrimaryKeyAttribute(), OrderConstraint.Direction.ASCENDING);
+            sortRows(rows, primaryKeyOrder);
+        } else {
+            sortRows(rows, orderConstraint);
         }
 
         return rows;
     }
 
-    public List<JoinedRow> joinSelect(final Integer leftTableId, final Integer rightTableId, final JoinConstraint joinConstraint, final Constraint whereConstraint) throws ValidationException {
+    public List<JoinedRow> selectJoin(final Integer leftTableId, final Integer rightTableId, final JoinConstraint joinConstraint, final Constraint whereConstraint, final OrderConstraint orderConstraint) throws ValidationException {
         List<JoinedRow> rows = Lists.newArrayList();
 
         ValueOperator joinOperator = joinConstraint.getOperator();
@@ -384,8 +373,8 @@ class StorageData {
         Constraint leftWhereConstraint = removeIrrelevantConstraints(whereConstraint, leftTableId);
         Constraint rightWhereConstraint = removeIrrelevantConstraints(whereConstraint, leftTableId);
 
-        List<Row> leftRows = select(leftTableId, leftWhereConstraint);
-        List<Row> rightRows = select(rightTableId, rightWhereConstraint);
+        List<Row> leftRows = select(leftTableId, leftWhereConstraint, orderConstraint);
+        List<Row> rightRows = select(rightTableId, rightWhereConstraint, orderConstraint);
 
         for (Row leftRow : leftRows) {
             Object leftValue = leftRow.getRowData().get(leftAttribute);
@@ -619,6 +608,64 @@ class StorageData {
         }
 
         return false;
+    }
+
+    private void sortRows(final List<Row> unsortedRows, final OrderConstraint orderConstraint) {
+        Collections.sort(unsortedRows, new Comparator<Row>() {
+            @Override
+            public int compare(Row row1, Row row2) {
+                Attribute attribute = orderConstraint.getAttribute();
+                OrderConstraint.Direction direction = orderConstraint.getDirection();
+
+                Object row1Data = row1.getRowData().get(attribute);
+                Object row2Data = row2.getRowData().get(attribute);
+
+                if (row1Data == null) {
+                    if (row2Data == null) {
+                        return 0;
+                    }
+
+                    return -1;
+                }
+
+                if (row2Data == null) {
+                    return 1;
+                }
+
+                switch (attribute.getType()) {
+                    case INT:
+
+                        Integer int1 =  (Integer) row1Data;
+                        Integer int2 =  (Integer) row2Data;
+
+                        switch (direction) {
+                            case ASCENDING:
+                                return int1.compareTo(int2);
+                            case DESCENDING:
+                                return int2.compareTo(int1);
+                        }
+
+                        break;
+
+                    case STRING:
+
+                        String str1 =  (String) row1Data;
+                        String str2 =  (String) row2Data;
+
+                        switch (direction) {
+                            case ASCENDING:
+                                return str1.compareTo(str2);
+                            case DESCENDING:
+                                return str2.compareTo(str1);
+                        }
+
+                        break;
+
+                }
+
+                return 0;
+            }
+        });
     }
 
 }

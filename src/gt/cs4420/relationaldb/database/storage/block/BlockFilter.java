@@ -35,6 +35,10 @@ public class BlockFilter {
     }
 
     private boolean rowMeetsConstraint(final Row row, final Constraint constraint) {
+        if (constraint == null) {
+            return true;
+        }
+
         if (constraint instanceof LogicalConstraint) {
             LogicalConstraint lc = (LogicalConstraint) constraint;
 
