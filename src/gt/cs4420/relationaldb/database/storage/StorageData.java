@@ -333,10 +333,11 @@ class StorageData {
                 Row cachedRow = tableDataMap.get(primaryKey);
 
                 if (cachedRow != null) {
+                    cachedPrimaryKeys.add(primaryKey);
+                    
                     //If this row is cached and meets the where constraints, select it
                     if (filter.rowMeetsConstraints(cachedRow)) {
                         blockRows.add(cachedRow);
-                        cachedPrimaryKeys.add(primaryKey);
                     }
                 }
             }
@@ -345,6 +346,7 @@ class StorageData {
             List<Row> importedRows = fileManager.importTableBlockWithConstraint(tableId, blockId, description, whereConstraint, cachedPrimaryKeys);
 
             for (Row row : importedRows) {
+
                 try {
                     addRow(tableId, row);
                 } catch (ValidationException e) {

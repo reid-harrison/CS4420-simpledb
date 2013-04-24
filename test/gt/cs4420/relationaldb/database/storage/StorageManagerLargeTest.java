@@ -235,6 +235,7 @@ public class StorageManagerLargeTest {
         int expectedRemovedRowCount = 0;
         int expectedAddedRowCount = 0;
         Constraint whereConstraint = null;
+        Constraint newConstraint = null;
 
         //TODO Test more complex where constraints
         for (int i = 0; i < NUMBER_OF_UPDATE_TESTS; i++) {
@@ -257,6 +258,7 @@ public class StorageManagerLargeTest {
                     expectedRemovedRowCount = tableStringUsage.get(attribute)[nextInt];
 
                     nextInt = random.nextInt(strings.length);
+                    newConstraint = new ValueConstraint(attribute, "'" + strings[nextInt] + "'", ValueOperator.EQUALS);
                     updateRowData.put(attribute, strings[nextInt]);
                     tableStringUsage.get(attribute)[nextInt]++;
                     expectedAddedRowCount = tableStringUsage.get(attribute)[nextInt];
@@ -269,6 +271,7 @@ public class StorageManagerLargeTest {
                     expectedRemovedRowCount = tableIntUsage.get(attribute)[nextInt];
 
                     nextInt = random.nextInt(MAX_INT);
+                    newConstraint = new ValueConstraint(attribute, nextInt, ValueOperator.EQUALS);
                     updateRowData.put(attribute, nextInt);
                     tableIntUsage.get(attribute)[nextInt]++;
                     expectedAddedRowCount = tableIntUsage.get(attribute)[nextInt];
@@ -287,7 +290,7 @@ public class StorageManagerLargeTest {
             }
 
             try {
-                testSelect(table.getName(), whereConstraint, expectedAddedRowCount);
+                testSelect(table.getName(), newConstraint, expectedAddedRowCount);
             } catch (final TestFailedException e) {
                 throw new TestFailedException("Update", "Some rows were not updated with the new data that they should have now");
             }
