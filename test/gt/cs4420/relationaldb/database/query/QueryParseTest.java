@@ -14,7 +14,7 @@ public class QueryParseTest {
         QueryParseTest test = new QueryParseTest();
 
         try {
-            test.runTest(0);
+            test.runTest(3);
 
            /* for (int i = 0; i < 3; i++) {
                 test.runTest(i);
@@ -55,6 +55,11 @@ public class QueryParseTest {
                 expectedConstraint = vc;
 
                 break;
+            
+            case 3:
+            	query = "CREATE TABLE names (nameID int FOREIGN KEY, name int);";
+            	break;
+            
             default:
                 break;
         }

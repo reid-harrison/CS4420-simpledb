@@ -47,7 +47,7 @@ options {
 @lexer::members {
 	@Override
     public void reportError(RecognitionException e) {
-        throw new RuntimeException(e);
+        throw new RuntimeException(e.getMessage());
     }
 
 }
@@ -96,7 +96,7 @@ statement
 
 /* query statements */
 create
-	:	CREATE_TABLE createTable LPAREN! RPAREN! SEMI!
+	:	createClause^ LPAREN! columnConstraints RPAREN! SEMI!
 	;
 	
 select
@@ -116,6 +116,10 @@ update
 	
 	
 /* Query clauses */
+createClause
+	:	CREATE_TABLE^ createTable
+	;
+
 selectClause
 	:	SELECT^ columns
 	;
@@ -211,9 +215,27 @@ createTable
 			table1 = storageManager.getTable($IDENT.text);
 			if(table1 != null)
 			{
-				throw new ValidationException("Table with name " + $IDENT.text + " already exists.");
+				throw new ValidationException("Table with name '" + $IDENT.text + "' already exists.");
 			}
+			System.out.println(table1);
 		}
+	;
+	
+columnConstraints
+	:	columnConstraint (COMMA! columnConstraint)*
+	;
+
+columnConstraint
+	:	column dataType constraint?
+	;
+	
+dataType
+	:	'int'
+	|	'varchar(10000)'
+	;
+
+constraint
+	:	FOREIGN_KEY
 	;
 
 columns
@@ -356,7 +378,7 @@ joinOperator
 /* Tokens */
 
 // Reserved words are accepted in any lowercase, uppercase, or any combination of the two
-CREATE_TABLE : ('c' | 'C')('r' | 'R')('e' | 'E')('a' | 'A')('t' | 'T')('e | E')' ' ('t' | 'T')('a' | 'A')('b' | 'B')('l' | 'L')('e' | 'E') ;
+CREATE_TABLE : ('c' | 'C')('r' | 'R')('e' | 'E')('a' | 'A')('t' | 'T')('e | E')' '('t' | 'T')('a' | 'A')('b' | 'B')('l' | 'L')('e' | 'E') ;
 SELECT : ('s' | 'S')('e' | 'E' )('l' | 'L')('e' | 'E')('c' | 'C')('t' | 'T') ;
 FROM : ('f' |'F')('r' | 'R')('o' | 'O')('m' | 'M') ;
 WHERE : ('w' | 'W')('h' | 'H')('e' | 'E')('r' | 'R')('e' | 'E') ;
@@ -368,6 +390,7 @@ OR : ('o' | 'O')('r' | 'R') ;
 UPDATE : ('u' | 'U')('p' | 'P')('d' | 'D')('a' | 'A')('t' | 'T')('e' | 'E') ;
 SET : ('s' | 'S')('e' | 'E')('t' | 'T') ;
 ASC : ('a' | 'A')('s' | 'S')('c' | 'C') ;
+FOREIGN_KEY : ('f' | 'F')('o' | 'O')('r' | 'R')('e' | 'E')('i' | 'I')('g' | 'G')('n' | 'N')' '('k' | 'K')('e' | 'E')('y' | 'Y') ;	
 DESC: ('d' | 'D')('e' | 'E')('s' | 'S')('c' | 'S') ;
 fragment JOIN : ('j' | 'J')('o' | 'O')('i' | 'I')('n' | 'N') ;
 INNER_JOIN: ('i' | 'I')('n' | 'N')('n' | 'N')('e' | 'E')('r' | 'R')(' ')JOIN ;
