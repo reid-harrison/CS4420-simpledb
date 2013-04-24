@@ -12,8 +12,8 @@ import org.junit.Test;
 public class QueryParseTest {
 
     @Test
-    public void testQueryParse_createQuery() {
-        String query = "CREATE TABLE persons (id int, name string);";
+    public void testQueryParse_creationQuery() {
+        String query = "CREATE TABLE persons (id int, name varchar(100));";
         QueryParser parser;
 
         try {
@@ -33,7 +33,7 @@ public class QueryParseTest {
         QueryParseTest test = new QueryParseTest();
 
         try {
-            test.runTest(1);
+            test.runTest(3);
 
            /* for (int i = 0; i < 3; i++) {
                 test.runTest(i);
