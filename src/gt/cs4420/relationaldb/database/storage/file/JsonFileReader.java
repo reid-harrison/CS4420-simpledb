@@ -28,6 +28,8 @@ public class JsonFileReader {
             while ((lineString = reader.readLine()) != null) {
                 jsonString.append(lineString);
             }
+
+            reader.close();
         } catch (final IOException e) {
             e.printStackTrace();
             return null;

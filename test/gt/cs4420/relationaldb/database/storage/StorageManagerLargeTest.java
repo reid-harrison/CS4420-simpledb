@@ -152,7 +152,7 @@ public class StorageManagerLargeTest {
                                 break;
                             case STRING:
                                 nextInt = random.nextInt(strings.length);
-                                data = strings[random.nextInt(strings.length)];
+                                data = strings[nextInt];
 
                                 int[] stringCounts = tableStringUsage.get(attr);
                                 stringCounts[nextInt]++;
@@ -188,8 +188,6 @@ public class StorageManagerLargeTest {
 
             //TODO Test more complex where constraints
             for (int i = 0; i < NUMBER_OF_SELECTION_TESTS; i++) {
-                System.out.println("Select test " + i);
-
                 int nextInt = random.nextInt(attributes.length);
 
                 Attribute attribute = attributes[nextInt];
@@ -203,6 +201,12 @@ public class StorageManagerLargeTest {
                     case INT:
                         nextInt = random.nextInt(MAX_INT);
                         whereConstraint = new ValueConstraint(attribute, nextInt, ValueOperator.EQUALS);
+
+                        if (table.getDescription().getPrimaryKeyAttribute().equals(attribute)) {
+                            expectedRowCount = 1;
+                            break;
+                        }
+
                         expectedRowCount = tableIntUsage.get(attribute)[nextInt];
                         break;
                 }
