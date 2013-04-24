@@ -1,4 +1,4 @@
-// $ANTLR 3.5 C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g 2013-04-10 03:08:50
+// $ANTLR 3.5 C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g 2013-04-24 00:39:17
 
 ///////////////////////////////////////////////////////////////////
 //                                                               //
@@ -1383,7 +1383,7 @@ public class SQLParser extends Parser {
 						table1.setName((IDENT50!=null?IDENT50.getText():null));
 						tables.add((IDENT50!=null?IDENT50.getText():null));
 						//storageManager.validateTableExists(table1.getName());
-						//table1.setDescription(storageManager.getTableDescription((IDENT50!=null?IDENT50.getText():null)));
+						//table1.setDescription(storageManager.getTable((IDENT50!=null?IDENT50.getText():null)).getDescription());
 					
 			}
 
