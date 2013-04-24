@@ -1,4 +1,4 @@
-// $ANTLR 3.5 C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g 2013-04-24 15:52:35
+// $ANTLR 3.5 C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g 2013-04-24 19:12:42
 
 ///////////////////////////////////////////////////////////////////
 //                                                               //
@@ -7,23 +7,21 @@
 ///////////////////////////////////////////////////////////////////
 
 package gt.cs4420.relationaldb.database.query;
-import gt.cs4420.relationaldb.domain.Table;
-import gt.cs4420.relationaldb.domain.Attribute;
-import gt.cs4420.relationaldb.domain.exception.ValidationException;
-import gt.cs4420.relationaldb.domain.validator.AttributeValidator;
-import gt.cs4420.relationaldb.database.storage.StorageManager;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
-import java.util.Map;
-
-
+import gt.cs4420.relationaldb.database.storage.StorageManager;
+import gt.cs4420.relationaldb.domain.Attribute;
+import gt.cs4420.relationaldb.domain.Table;
+import gt.cs4420.relationaldb.domain.exception.ValidationException;
+import gt.cs4420.relationaldb.domain.validator.AttributeValidator;
 import org.antlr.runtime.*;
-import java.util.Stack;
-import java.util.List;
-import java.util.ArrayList;
+import org.antlr.runtime.tree.CommonTree;
+import org.antlr.runtime.tree.CommonTreeAdaptor;
+import org.antlr.runtime.tree.TreeAdaptor;
 
-import org.antlr.runtime.tree.*;
+import java.util.List;
+import java.util.Map;
 
 
 @SuppressWarnings("all")
@@ -119,7 +117,7 @@ public class SQLParser extends Parser {
 		List<String> tableNames = Lists.newArrayList();
 		List<Attribute> table1Attributes = Lists.newArrayList();
 		List<Object> insertVals = Lists.newArrayList();
-		Map<Attribute, Object> attrVals = Maps.newHashMap();
+		
 		AttributeValidator attrValidator = new AttributeValidator();
 		StorageManager storageManager = new StorageManager();
 		
@@ -131,6 +129,7 @@ public class SQLParser extends Parser {
 	    }
 	    
 	    private void validateAttrVals(Table table) throws ValidationException {
+	    	Map<Attribute, Object> attrVals = Maps.newHashMap();
 	    	for(int i = 0; i < table1Attributes.size(); i++) {
 					attrVals.put(table1Attributes.get(i), insertVals.get(i));			
 				}
@@ -147,7 +146,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "statement"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:89:1: statement : ( select | create | insert | update | dropTable );
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:90:1: statement : ( select | create | insert | update | dropTable );
 	public final SQLParser.statement_return statement() throws RecognitionException {
 		SQLParser.statement_return retval = new SQLParser.statement_return();
 		retval.start = input.LT(1);
@@ -162,7 +161,7 @@ public class SQLParser extends Parser {
 
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:90:2: ( select | create | insert | update | dropTable )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:91:2: ( select | create | insert | update | dropTable )
 			int alt1=5;
 			switch ( input.LA(1) ) {
 			case SELECT:
@@ -197,7 +196,7 @@ public class SQLParser extends Parser {
 			}
 			switch (alt1) {
 				case 1 :
-					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:90:4: select
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:91:4: select
 					{
 					root_0 = (CommonTree)adaptor.nil();
 
@@ -211,7 +210,7 @@ public class SQLParser extends Parser {
 					}
 					break;
 				case 2 :
-					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:91:4: create
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:92:4: create
 					{
 					root_0 = (CommonTree)adaptor.nil();
 
@@ -225,7 +224,7 @@ public class SQLParser extends Parser {
 					}
 					break;
 				case 3 :
-					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:92:4: insert
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:93:4: insert
 					{
 					root_0 = (CommonTree)adaptor.nil();
 
@@ -239,7 +238,7 @@ public class SQLParser extends Parser {
 					}
 					break;
 				case 4 :
-					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:93:4: update
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:94:4: update
 					{
 					root_0 = (CommonTree)adaptor.nil();
 
@@ -253,7 +252,7 @@ public class SQLParser extends Parser {
 					}
 					break;
 				case 5 :
-					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:94:4: dropTable
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:95:4: dropTable
 					{
 					root_0 = (CommonTree)adaptor.nil();
 
@@ -295,7 +294,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "create"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:99:1: create : createClause SEMI !;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:100:1: create : createClause SEMI !;
 	public final SQLParser.create_return create() throws RecognitionException {
 		SQLParser.create_return retval = new SQLParser.create_return();
 		retval.start = input.LT(1);
@@ -308,8 +307,8 @@ public class SQLParser extends Parser {
 		CommonTree SEMI7_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:100:2: ( createClause SEMI !)
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:100:4: createClause SEMI !
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:101:2: ( createClause SEMI !)
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:101:4: createClause SEMI !
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
@@ -350,7 +349,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "select"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:103:1: select : selectClause fromClause ( onClause )? ( whereClause )? ( orderByClause )? SEMI !;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:104:1: select : selectClause fromClause ( onClause )? ( whereClause )? ( orderByClause )? SEMI !;
 	public final SQLParser.select_return select() throws RecognitionException {
 		SQLParser.select_return retval = new SQLParser.select_return();
 		retval.start = input.LT(1);
@@ -367,8 +366,8 @@ public class SQLParser extends Parser {
 		CommonTree SEMI13_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:104:2: ( selectClause fromClause ( onClause )? ( whereClause )? ( orderByClause )? SEMI !)
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:104:4: selectClause fromClause ( onClause )? ( whereClause )? ( orderByClause )? SEMI !
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:105:2: ( selectClause fromClause ( onClause )? ( whereClause )? ( orderByClause )? SEMI !)
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:105:4: selectClause fromClause ( onClause )? ( whereClause )? ( orderByClause )? SEMI !
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
@@ -385,7 +384,7 @@ public class SQLParser extends Parser {
 
 			adaptor.addChild(root_0, fromClause9.getTree());
 
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:104:28: ( onClause )?
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:105:28: ( onClause )?
 			int alt2=2;
 			int LA2_0 = input.LA(1);
 			if ( (LA2_0==ON) ) {
@@ -393,7 +392,7 @@ public class SQLParser extends Parser {
 			}
 			switch (alt2) {
 				case 1 :
-					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:104:29: onClause
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:105:29: onClause
 					{
 					pushFollow(FOLLOW_onClause_in_select140);
 					onClause10=onClause();
@@ -406,7 +405,7 @@ public class SQLParser extends Parser {
 
 			}
 
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:104:40: ( whereClause )?
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:105:40: ( whereClause )?
 			int alt3=2;
 			int LA3_0 = input.LA(1);
 			if ( (LA3_0==WHERE) ) {
@@ -414,7 +413,7 @@ public class SQLParser extends Parser {
 			}
 			switch (alt3) {
 				case 1 :
-					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:104:41: whereClause
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:105:41: whereClause
 					{
 					pushFollow(FOLLOW_whereClause_in_select145);
 					whereClause11=whereClause();
@@ -427,7 +426,7 @@ public class SQLParser extends Parser {
 
 			}
 
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:104:55: ( orderByClause )?
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:105:55: ( orderByClause )?
 			int alt4=2;
 			int LA4_0 = input.LA(1);
 			if ( (LA4_0==ORDER_BY) ) {
@@ -435,7 +434,7 @@ public class SQLParser extends Parser {
 			}
 			switch (alt4) {
 				case 1 :
-					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:104:56: orderByClause
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:105:56: orderByClause
 					{
 					pushFollow(FOLLOW_orderByClause_in_select150);
 					orderByClause12=orderByClause();
@@ -478,7 +477,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "insert"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:107:1: insert : insertClause valuesClause SEMI !;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:108:1: insert : insertClause valuesClause SEMI !;
 	public final SQLParser.insert_return insert() throws RecognitionException {
 		SQLParser.insert_return retval = new SQLParser.insert_return();
 		retval.start = input.LT(1);
@@ -492,8 +491,8 @@ public class SQLParser extends Parser {
 		CommonTree SEMI16_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:108:2: ( insertClause valuesClause SEMI !)
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:108:4: insertClause valuesClause SEMI !
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:109:2: ( insertClause valuesClause SEMI !)
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:109:4: insertClause valuesClause SEMI !
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
@@ -540,7 +539,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "update"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:111:1: update : updateClause setClause whereClause SEMI !;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:112:1: update : updateClause setClause whereClause SEMI !;
 	public final SQLParser.update_return update() throws RecognitionException {
 		SQLParser.update_return retval = new SQLParser.update_return();
 		retval.start = input.LT(1);
@@ -555,8 +554,8 @@ public class SQLParser extends Parser {
 		CommonTree SEMI20_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:112:2: ( updateClause setClause whereClause SEMI !)
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:112:4: updateClause setClause whereClause SEMI !
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:113:2: ( updateClause setClause whereClause SEMI !)
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:113:4: updateClause setClause whereClause SEMI !
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
@@ -609,7 +608,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "dropTable"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:115:1: dropTable : DROP_TABLE ^ table SEMI !;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:116:1: dropTable : DROP_TABLE ^ table SEMI !;
 	public final SQLParser.dropTable_return dropTable() throws RecognitionException {
 		SQLParser.dropTable_return retval = new SQLParser.dropTable_return();
 		retval.start = input.LT(1);
@@ -624,8 +623,8 @@ public class SQLParser extends Parser {
 		CommonTree SEMI23_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:116:2: ( DROP_TABLE ^ table SEMI !)
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:116:4: DROP_TABLE ^ table SEMI !
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:117:2: ( DROP_TABLE ^ table SEMI !)
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:117:4: DROP_TABLE ^ table SEMI !
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
@@ -670,7 +669,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "createClause"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:124:1: createClause : CREATE_TABLE ^ createTable ;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:125:1: createClause : CREATE_TABLE ^ createTable ;
 	public final SQLParser.createClause_return createClause() throws RecognitionException {
 		SQLParser.createClause_return retval = new SQLParser.createClause_return();
 		retval.start = input.LT(1);
@@ -683,8 +682,8 @@ public class SQLParser extends Parser {
 		CommonTree CREATE_TABLE24_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:125:2: ( CREATE_TABLE ^ createTable )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:125:4: CREATE_TABLE ^ createTable
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:126:2: ( CREATE_TABLE ^ createTable )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:126:4: CREATE_TABLE ^ createTable
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
@@ -728,7 +727,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "selectClause"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:128:1: selectClause : SELECT ^ columns ;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:129:1: selectClause : SELECT ^ columns ;
 	public final SQLParser.selectClause_return selectClause() throws RecognitionException {
 		SQLParser.selectClause_return retval = new SQLParser.selectClause_return();
 		retval.start = input.LT(1);
@@ -741,8 +740,8 @@ public class SQLParser extends Parser {
 		CommonTree SELECT26_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:129:2: ( SELECT ^ columns )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:129:4: SELECT ^ columns
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:130:2: ( SELECT ^ columns )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:130:4: SELECT ^ columns
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
@@ -786,7 +785,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "insertClause"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:132:1: insertClause : INSERT_INTO ^ insertParams ;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:133:1: insertClause : INSERT_INTO ^ insertParams ;
 	public final SQLParser.insertClause_return insertClause() throws RecognitionException {
 		SQLParser.insertClause_return retval = new SQLParser.insertClause_return();
 		retval.start = input.LT(1);
@@ -799,8 +798,8 @@ public class SQLParser extends Parser {
 		CommonTree INSERT_INTO28_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:133:2: ( INSERT_INTO ^ insertParams )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:133:4: INSERT_INTO ^ insertParams
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:134:2: ( INSERT_INTO ^ insertParams )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:134:4: INSERT_INTO ^ insertParams
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
@@ -844,7 +843,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "updateClause"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:136:1: updateClause : UPDATE ^ table ;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:137:1: updateClause : UPDATE ^ table ;
 	public final SQLParser.updateClause_return updateClause() throws RecognitionException {
 		SQLParser.updateClause_return retval = new SQLParser.updateClause_return();
 		retval.start = input.LT(1);
@@ -857,8 +856,8 @@ public class SQLParser extends Parser {
 		CommonTree UPDATE30_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:137:2: ( UPDATE ^ table )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:137:4: UPDATE ^ table
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:138:2: ( UPDATE ^ table )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:138:4: UPDATE ^ table
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
@@ -902,7 +901,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "fromClause"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:140:1: fromClause : FROM ^ tableClause ;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:141:1: fromClause : FROM ^ tableClause ;
 	public final SQLParser.fromClause_return fromClause() throws RecognitionException {
 		SQLParser.fromClause_return retval = new SQLParser.fromClause_return();
 		retval.start = input.LT(1);
@@ -915,8 +914,8 @@ public class SQLParser extends Parser {
 		CommonTree FROM32_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:141:2: ( FROM ^ tableClause )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:141:4: FROM ^ tableClause
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:142:2: ( FROM ^ tableClause )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:142:4: FROM ^ tableClause
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
@@ -960,7 +959,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "tableClause"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:144:1: tableClause : ( table | joinClause );
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:145:1: tableClause : ( table | joinClause );
 	public final SQLParser.tableClause_return tableClause() throws RecognitionException {
 		SQLParser.tableClause_return retval = new SQLParser.tableClause_return();
 		retval.start = input.LT(1);
@@ -972,7 +971,7 @@ public class SQLParser extends Parser {
 
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:145:2: ( table | joinClause )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:146:2: ( table | joinClause )
 			int alt5=2;
 			int LA5_0 = input.LA(1);
 			if ( (LA5_0==IDENT) ) {
@@ -1006,7 +1005,7 @@ public class SQLParser extends Parser {
 
 			switch (alt5) {
 				case 1 :
-					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:145:4: table
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:146:4: table
 					{
 					root_0 = (CommonTree)adaptor.nil();
 
@@ -1020,7 +1019,7 @@ public class SQLParser extends Parser {
 					}
 					break;
 				case 2 :
-					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:146:4: joinClause
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:147:4: joinClause
 					{
 					root_0 = (CommonTree)adaptor.nil();
 
@@ -1062,7 +1061,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "joinClause"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:149:1: joinClause : table ( joinOperator ^ table )+ ;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:150:1: joinClause : table ( joinOperator ^ table )+ ;
 	public final SQLParser.joinClause_return joinClause() throws RecognitionException {
 		SQLParser.joinClause_return retval = new SQLParser.joinClause_return();
 		retval.start = input.LT(1);
@@ -1075,8 +1074,8 @@ public class SQLParser extends Parser {
 
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:150:2: ( table ( joinOperator ^ table )+ )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:150:4: table ( joinOperator ^ table )+
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:151:2: ( table ( joinOperator ^ table )+ )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:151:4: table ( joinOperator ^ table )+
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
@@ -1087,7 +1086,7 @@ public class SQLParser extends Parser {
 
 			adaptor.addChild(root_0, table36.getTree());
 
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:150:10: ( joinOperator ^ table )+
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:151:10: ( joinOperator ^ table )+
 			int cnt6=0;
 			loop6:
 			while (true) {
@@ -1099,7 +1098,7 @@ public class SQLParser extends Parser {
 
 				switch (alt6) {
 				case 1 :
-					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:150:11: joinOperator ^ table
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:151:11: joinOperator ^ table
 					{
 					pushFollow(FOLLOW_joinOperator_in_joinClause326);
 					joinOperator37=joinOperator();
@@ -1155,7 +1154,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "onClause"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:157:1: onClause : ON ^ onSearchConditions ;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:158:1: onClause : ON ^ onSearchConditions ;
 	public final SQLParser.onClause_return onClause() throws RecognitionException {
 		SQLParser.onClause_return retval = new SQLParser.onClause_return();
 		retval.start = input.LT(1);
@@ -1168,8 +1167,8 @@ public class SQLParser extends Parser {
 		CommonTree ON39_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:158:2: ( ON ^ onSearchConditions )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:158:4: ON ^ onSearchConditions
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:159:2: ( ON ^ onSearchConditions )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:159:4: ON ^ onSearchConditions
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
@@ -1219,7 +1218,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "whereClause"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:167:1: whereClause : WHERE ^ searchConditions ;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:168:1: whereClause : WHERE ^ searchConditions ;
 	public final SQLParser.whereClause_return whereClause() throws RecognitionException {
 		SQLParser.whereClause_return retval = new SQLParser.whereClause_return();
 		retval.start = input.LT(1);
@@ -1232,8 +1231,8 @@ public class SQLParser extends Parser {
 		CommonTree WHERE41_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:168:2: ( WHERE ^ searchConditions )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:168:4: WHERE ^ searchConditions
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:169:2: ( WHERE ^ searchConditions )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:169:4: WHERE ^ searchConditions
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
@@ -1277,7 +1276,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "orderByClause"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:171:1: orderByClause : ORDER_BY ^ column ( order )? ;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:172:1: orderByClause : ORDER_BY ^ orderByColumn ( order )? ;
 	public final SQLParser.orderByClause_return orderByClause() throws RecognitionException {
 		SQLParser.orderByClause_return retval = new SQLParser.orderByClause_return();
 		retval.start = input.LT(1);
@@ -1285,14 +1284,14 @@ public class SQLParser extends Parser {
 		CommonTree root_0 = null;
 
 		Token ORDER_BY43=null;
-		ParserRuleReturnScope column44 =null;
+		ParserRuleReturnScope orderByColumn44 =null;
 		ParserRuleReturnScope order45 =null;
 
 		CommonTree ORDER_BY43_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:172:2: ( ORDER_BY ^ column ( order )? )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:172:4: ORDER_BY ^ column ( order )?
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:173:2: ( ORDER_BY ^ orderByColumn ( order )? )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:173:4: ORDER_BY ^ orderByColumn ( order )?
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
@@ -1301,13 +1300,13 @@ public class SQLParser extends Parser {
 			ORDER_BY43_tree = (CommonTree)adaptor.create(ORDER_BY43);
 			root_0 = (CommonTree)adaptor.becomeRoot(ORDER_BY43_tree, root_0);
 
-			pushFollow(FOLLOW_column_in_orderByClause385);
-			column44=column();
+			pushFollow(FOLLOW_orderByColumn_in_orderByClause385);
+			orderByColumn44=orderByColumn();
 			state._fsp--;
 
-			adaptor.addChild(root_0, column44.getTree());
+			adaptor.addChild(root_0, orderByColumn44.getTree());
 
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:172:21: ( order )?
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:173:28: ( order )?
 			int alt7=2;
 			int LA7_0 = input.LA(1);
 			if ( (LA7_0==ASC||LA7_0==DESC) ) {
@@ -1315,7 +1314,7 @@ public class SQLParser extends Parser {
 			}
 			switch (alt7) {
 				case 1 :
-					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:172:22: order
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:173:29: order
 					{
 					pushFollow(FOLLOW_order_in_orderByClause388);
 					order45=order();
@@ -1357,7 +1356,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "valuesClause"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:175:1: valuesClause : VALUES ^ LPAREN ! values RPAREN !;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:176:1: valuesClause : VALUES ^ LPAREN ! values RPAREN !;
 	public final SQLParser.valuesClause_return valuesClause() throws RecognitionException {
 		SQLParser.valuesClause_return retval = new SQLParser.valuesClause_return();
 		retval.start = input.LT(1);
@@ -1374,8 +1373,8 @@ public class SQLParser extends Parser {
 		CommonTree RPAREN49_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:176:2: ( VALUES ^ LPAREN ! values RPAREN !)
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:176:4: VALUES ^ LPAREN ! values RPAREN !
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:177:2: ( VALUES ^ LPAREN ! values RPAREN !)
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:177:4: VALUES ^ LPAREN ! values RPAREN !
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
@@ -1421,7 +1420,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "setClause"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:179:1: setClause : SET ^ assignments ;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:180:1: setClause : SET ^ assignments ;
 	public final SQLParser.setClause_return setClause() throws RecognitionException {
 		SQLParser.setClause_return retval = new SQLParser.setClause_return();
 		retval.start = input.LT(1);
@@ -1434,8 +1433,8 @@ public class SQLParser extends Parser {
 		CommonTree SET50_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:180:2: ( SET ^ assignments )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:180:4: SET ^ assignments
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:181:2: ( SET ^ assignments )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:181:4: SET ^ assignments
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
@@ -1479,7 +1478,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "insertParams"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:190:1: insertParams : table ^ LPAREN ! columns RPAREN !;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:191:1: insertParams : table ^ LPAREN ! columns RPAREN !;
 	public final SQLParser.insertParams_return insertParams() throws RecognitionException {
 		SQLParser.insertParams_return retval = new SQLParser.insertParams_return();
 		retval.start = input.LT(1);
@@ -1495,8 +1494,8 @@ public class SQLParser extends Parser {
 		CommonTree RPAREN55_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:191:2: ( table ^ LPAREN ! columns RPAREN !)
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:191:4: table ^ LPAREN ! columns RPAREN !
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:192:2: ( table ^ LPAREN ! columns RPAREN !)
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:192:4: table ^ LPAREN ! columns RPAREN !
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
@@ -1543,7 +1542,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "table"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:194:1: table : IDENT ;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:195:1: table : IDENT ;
 	public final SQLParser.table_return table() throws RecognitionException {
 		SQLParser.table_return retval = new SQLParser.table_return();
 		retval.start = input.LT(1);
@@ -1555,8 +1554,8 @@ public class SQLParser extends Parser {
 		CommonTree IDENT56_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:195:2: ( IDENT )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:195:4: IDENT
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:196:2: ( IDENT )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:196:4: IDENT
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
@@ -1600,7 +1599,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "onTable"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:207:1: onTable : IDENT ;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:208:1: onTable : IDENT ;
 	public final SQLParser.onTable_return onTable() throws RecognitionException {
 		SQLParser.onTable_return retval = new SQLParser.onTable_return();
 		retval.start = input.LT(1);
@@ -1612,8 +1611,8 @@ public class SQLParser extends Parser {
 		CommonTree IDENT57_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:208:2: ( IDENT )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:208:4: IDENT
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:209:2: ( IDENT )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:209:4: IDENT
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
@@ -1657,7 +1656,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "createTable"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:217:1: createTable : IDENT ^ LPAREN ! columnConstraints RPAREN !;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:218:1: createTable : IDENT ^ LPAREN ! columnConstraints RPAREN !;
 	public final SQLParser.createTable_return createTable() throws RecognitionException {
 		SQLParser.createTable_return retval = new SQLParser.createTable_return();
 		retval.start = input.LT(1);
@@ -1674,8 +1673,8 @@ public class SQLParser extends Parser {
 		CommonTree RPAREN61_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:218:2: ( IDENT ^ LPAREN ! columnConstraints RPAREN !)
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:218:4: IDENT ^ LPAREN ! columnConstraints RPAREN !
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:219:2: ( IDENT ^ LPAREN ! columnConstraints RPAREN !)
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:219:4: IDENT ^ LPAREN ! columnConstraints RPAREN !
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
@@ -1726,7 +1725,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "columnConstraints"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:228:1: columnConstraints : columnConstraint ( COMMA ! columnConstraint )* ;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:229:1: columnConstraints : columnConstraint ( COMMA ! columnConstraint )* ;
 	public final SQLParser.columnConstraints_return columnConstraints() throws RecognitionException {
 		SQLParser.columnConstraints_return retval = new SQLParser.columnConstraints_return();
 		retval.start = input.LT(1);
@@ -1740,8 +1739,8 @@ public class SQLParser extends Parser {
 		CommonTree COMMA63_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:229:2: ( columnConstraint ( COMMA ! columnConstraint )* )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:229:4: columnConstraint ( COMMA ! columnConstraint )*
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:230:2: ( columnConstraint ( COMMA ! columnConstraint )* )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:230:4: columnConstraint ( COMMA ! columnConstraint )*
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
@@ -1752,7 +1751,7 @@ public class SQLParser extends Parser {
 
 			adaptor.addChild(root_0, columnConstraint62.getTree());
 
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:229:21: ( COMMA ! columnConstraint )*
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:230:21: ( COMMA ! columnConstraint )*
 			loop8:
 			while (true) {
 				int alt8=2;
@@ -1763,7 +1762,7 @@ public class SQLParser extends Parser {
 
 				switch (alt8) {
 				case 1 :
-					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:229:22: COMMA ! columnConstraint
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:230:22: COMMA ! columnConstraint
 					{
 					COMMA63=(Token)match(input,COMMA,FOLLOW_COMMA_in_columnConstraints533); 
 					pushFollow(FOLLOW_columnConstraint_in_columnConstraints536);
@@ -1809,7 +1808,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "columnConstraint"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:232:1: columnConstraint : column ^ dataType ( constraint )? ;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:233:1: columnConstraint : column ^ dataType ( constraint )? ;
 	public final SQLParser.columnConstraint_return columnConstraint() throws RecognitionException {
 		SQLParser.columnConstraint_return retval = new SQLParser.columnConstraint_return();
 		retval.start = input.LT(1);
@@ -1822,8 +1821,8 @@ public class SQLParser extends Parser {
 
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:233:2: ( column ^ dataType ( constraint )? )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:233:4: column ^ dataType ( constraint )?
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:234:2: ( column ^ dataType ( constraint )? )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:234:4: column ^ dataType ( constraint )?
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
@@ -1839,7 +1838,7 @@ public class SQLParser extends Parser {
 
 			adaptor.addChild(root_0, dataType66.getTree());
 
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:233:21: ( constraint )?
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:234:21: ( constraint )?
 			int alt9=2;
 			int LA9_0 = input.LA(1);
 			if ( (LA9_0==FOREIGN_KEY) ) {
@@ -1847,7 +1846,7 @@ public class SQLParser extends Parser {
 			}
 			switch (alt9) {
 				case 1 :
-					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:233:21: constraint
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:234:21: constraint
 					{
 					pushFollow(FOLLOW_constraint_in_columnConstraint554);
 					constraint67=constraint();
@@ -1895,7 +1894,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "dataType"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:242:1: dataType : ( 'int' | 'varchar(10000)' );
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:243:1: dataType : ( 'int' | 'varchar(10000)' );
 	public final SQLParser.dataType_return dataType() throws RecognitionException {
 		SQLParser.dataType_return retval = new SQLParser.dataType_return();
 		retval.start = input.LT(1);
@@ -1907,7 +1906,7 @@ public class SQLParser extends Parser {
 		CommonTree set68_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:243:2: ( 'int' | 'varchar(10000)' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:244:2: ( 'int' | 'varchar(10000)' )
 			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:
 			{
 			root_0 = (CommonTree)adaptor.nil();
@@ -1952,7 +1951,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "constraint"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:247:1: constraint : FOREIGN_KEY ;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:248:1: constraint : FOREIGN_KEY ;
 	public final SQLParser.constraint_return constraint() throws RecognitionException {
 		SQLParser.constraint_return retval = new SQLParser.constraint_return();
 		retval.start = input.LT(1);
@@ -1964,8 +1963,8 @@ public class SQLParser extends Parser {
 		CommonTree FOREIGN_KEY69_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:248:2: ( FOREIGN_KEY )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:248:4: FOREIGN_KEY
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:249:2: ( FOREIGN_KEY )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:249:4: FOREIGN_KEY
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
@@ -2004,7 +2003,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "columns"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:251:1: columns : ( column ( COMMA ! column )* ) ;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:252:1: columns : ( column ( COMMA ! column )* ) ;
 	public final SQLParser.columns_return columns() throws RecognitionException {
 		SQLParser.columns_return retval = new SQLParser.columns_return();
 		retval.start = input.LT(1);
@@ -2018,14 +2017,14 @@ public class SQLParser extends Parser {
 		CommonTree COMMA71_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:252:2: ( ( column ( COMMA ! column )* ) )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:252:4: ( column ( COMMA ! column )* )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:253:2: ( ( column ( COMMA ! column )* ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:253:4: ( column ( COMMA ! column )* )
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:252:4: ( column ( COMMA ! column )* )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:252:5: column ( COMMA ! column )*
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:253:4: ( column ( COMMA ! column )* )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:253:5: column ( COMMA ! column )*
 			{
 			pushFollow(FOLLOW_column_in_columns601);
 			column70=column();
@@ -2033,7 +2032,7 @@ public class SQLParser extends Parser {
 
 			adaptor.addChild(root_0, column70.getTree());
 
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:252:12: ( COMMA ! column )*
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:253:12: ( COMMA ! column )*
 			loop10:
 			while (true) {
 				int alt10=2;
@@ -2044,7 +2043,7 @@ public class SQLParser extends Parser {
 
 				switch (alt10) {
 				case 1 :
-					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:252:13: COMMA ! column
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:253:13: COMMA ! column
 					{
 					COMMA71=(Token)match(input,COMMA,FOLLOW_COMMA_in_columns604); 
 					pushFollow(FOLLOW_column_in_columns607);
@@ -2092,7 +2091,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "column"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:256:1: column : IDENT ;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:257:1: column : IDENT ;
 	public final SQLParser.column_return column() throws RecognitionException {
 		SQLParser.column_return retval = new SQLParser.column_return();
 		retval.start = input.LT(1);
@@ -2104,8 +2103,8 @@ public class SQLParser extends Parser {
 		CommonTree IDENT73_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:257:2: ( IDENT )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:257:4: IDENT
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:258:2: ( IDENT )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:258:4: IDENT
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
@@ -2139,6 +2138,57 @@ public class SQLParser extends Parser {
 	// $ANTLR end "column"
 
 
+	public static class orderByColumn_return extends ParserRuleReturnScope {
+		CommonTree tree;
+		@Override
+		public CommonTree getTree() { return tree; }
+	};
+
+
+	// $ANTLR start "orderByColumn"
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:265:1: orderByColumn : IDENT ;
+	public final SQLParser.orderByColumn_return orderByColumn() throws RecognitionException {
+		SQLParser.orderByColumn_return retval = new SQLParser.orderByColumn_return();
+		retval.start = input.LT(1);
+
+		CommonTree root_0 = null;
+
+		Token IDENT74=null;
+
+		CommonTree IDENT74_tree=null;
+
+		try {
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:266:2: ( IDENT )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:266:4: IDENT
+			{
+			root_0 = (CommonTree)adaptor.nil();
+
+
+			IDENT74=(Token)match(input,IDENT,FOLLOW_IDENT_in_orderByColumn638); 
+			IDENT74_tree = (CommonTree)adaptor.create(IDENT74);
+			adaptor.addChild(root_0, IDENT74_tree);
+
+			}
+
+			retval.stop = input.LT(-1);
+
+			retval.tree = (CommonTree)adaptor.rulePostProcessing(root_0);
+			adaptor.setTokenBoundaries(retval.tree, retval.start, retval.stop);
+
+		}
+
+		    catch (RecognitionException e) {
+		        throw e;
+		    }
+
+		finally {
+			// do for sure before leaving
+		}
+		return retval;
+	}
+	// $ANTLR end "orderByColumn"
+
+
 	public static class value_return extends ParserRuleReturnScope {
 		CommonTree tree;
 		@Override
@@ -2147,21 +2197,21 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "value"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:266:1: value : ( STRING_LITERAL | INTEGER );
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:271:1: value : ( STRING_LITERAL | INTEGER );
 	public final SQLParser.value_return value() throws RecognitionException {
 		SQLParser.value_return retval = new SQLParser.value_return();
 		retval.start = input.LT(1);
 
 		CommonTree root_0 = null;
 
-		Token STRING_LITERAL74=null;
-		Token INTEGER75=null;
+		Token STRING_LITERAL75=null;
+		Token INTEGER76=null;
 
-		CommonTree STRING_LITERAL74_tree=null;
-		CommonTree INTEGER75_tree=null;
+		CommonTree STRING_LITERAL75_tree=null;
+		CommonTree INTEGER76_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:267:2: ( STRING_LITERAL | INTEGER )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:272:2: ( STRING_LITERAL | INTEGER )
 			int alt11=2;
 			int LA11_0 = input.LA(1);
 			if ( (LA11_0==STRING_LITERAL) ) {
@@ -2179,33 +2229,38 @@ public class SQLParser extends Parser {
 
 			switch (alt11) {
 				case 1 :
-					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:267:4: STRING_LITERAL
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:272:4: STRING_LITERAL
 					{
 					root_0 = (CommonTree)adaptor.nil();
 
 
-					STRING_LITERAL74=(Token)match(input,STRING_LITERAL,FOLLOW_STRING_LITERAL_in_value639); 
-					STRING_LITERAL74_tree = (CommonTree)adaptor.create(STRING_LITERAL74);
-					adaptor.addChild(root_0, STRING_LITERAL74_tree);
+					STRING_LITERAL75=(Token)match(input,STRING_LITERAL,FOLLOW_STRING_LITERAL_in_value651); 
+					STRING_LITERAL75_tree = (CommonTree)adaptor.create(STRING_LITERAL75);
+					adaptor.addChild(root_0, STRING_LITERAL75_tree);
 
 
-								insertVals.add((STRING_LITERAL74!=null?STRING_LITERAL74.getText():null).substring(1, (STRING_LITERAL74!=null?STRING_LITERAL74.getText():null).length()-1));
+								String tmp = (STRING_LITERAL75!=null?STRING_LITERAL75.getText():null);
+								tmp = tmp.substring(1, (STRING_LITERAL75!=null?STRING_LITERAL75.getText():null).length()-1);
+								//System.out.println(tmp);
+								if(tmp != null)
+									insertVals.add(tmp);
 								numVals++;
 							
 					}
 					break;
 				case 2 :
-					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:272:5: INTEGER
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:281:5: INTEGER
 					{
 					root_0 = (CommonTree)adaptor.nil();
 
 
-					INTEGER75=(Token)match(input,INTEGER,FOLLOW_INTEGER_in_value649); 
-					INTEGER75_tree = (CommonTree)adaptor.create(INTEGER75);
-					adaptor.addChild(root_0, INTEGER75_tree);
+					INTEGER76=(Token)match(input,INTEGER,FOLLOW_INTEGER_in_value661); 
+					INTEGER76_tree = (CommonTree)adaptor.create(INTEGER76);
+					adaptor.addChild(root_0, INTEGER76_tree);
 
 
-								insertVals.add(Integer.parseInt((INTEGER75!=null?INTEGER75.getText():null)));
+								if((INTEGER76!=null?INTEGER76.getText():null) != null)
+									insertVals.add(Integer.parseInt((INTEGER76!=null?INTEGER76.getText():null)));
 								numVals++;
 							
 					}
@@ -2239,36 +2294,36 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "values"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:279:1: values : ( value ( COMMA ! value )* ) ;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:289:1: values : ( value ( COMMA ! value )* ) ;
 	public final SQLParser.values_return values() throws RecognitionException {
 		SQLParser.values_return retval = new SQLParser.values_return();
 		retval.start = input.LT(1);
 
 		CommonTree root_0 = null;
 
-		Token COMMA77=null;
-		ParserRuleReturnScope value76 =null;
-		ParserRuleReturnScope value78 =null;
+		Token COMMA78=null;
+		ParserRuleReturnScope value77 =null;
+		ParserRuleReturnScope value79 =null;
 
-		CommonTree COMMA77_tree=null;
+		CommonTree COMMA78_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:280:2: ( ( value ( COMMA ! value )* ) )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:280:4: ( value ( COMMA ! value )* )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:290:2: ( ( value ( COMMA ! value )* ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:290:4: ( value ( COMMA ! value )* )
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:280:4: ( value ( COMMA ! value )* )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:280:5: value ( COMMA ! value )*
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:290:4: ( value ( COMMA ! value )* )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:290:5: value ( COMMA ! value )*
 			{
-			pushFollow(FOLLOW_value_in_values666);
-			value76=value();
+			pushFollow(FOLLOW_value_in_values678);
+			value77=value();
 			state._fsp--;
 
-			adaptor.addChild(root_0, value76.getTree());
+			adaptor.addChild(root_0, value77.getTree());
 
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:280:11: ( COMMA ! value )*
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:290:11: ( COMMA ! value )*
 			loop12:
 			while (true) {
 				int alt12=2;
@@ -2279,14 +2334,14 @@ public class SQLParser extends Parser {
 
 				switch (alt12) {
 				case 1 :
-					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:280:12: COMMA ! value
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:290:12: COMMA ! value
 					{
-					COMMA77=(Token)match(input,COMMA,FOLLOW_COMMA_in_values669); 
-					pushFollow(FOLLOW_value_in_values672);
-					value78=value();
+					COMMA78=(Token)match(input,COMMA,FOLLOW_COMMA_in_values681); 
+					pushFollow(FOLLOW_value_in_values684);
+					value79=value();
 					state._fsp--;
 
-					adaptor.addChild(root_0, value78.getTree());
+					adaptor.addChild(root_0, value79.getTree());
 
 					}
 					break;
@@ -2336,28 +2391,28 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "order"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:294:1: order : ( ASC | DESC );
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:304:1: order : ( ASC | DESC );
 	public final SQLParser.order_return order() throws RecognitionException {
 		SQLParser.order_return retval = new SQLParser.order_return();
 		retval.start = input.LT(1);
 
 		CommonTree root_0 = null;
 
-		Token set79=null;
+		Token set80=null;
 
-		CommonTree set79_tree=null;
+		CommonTree set80_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:295:2: ( ASC | DESC )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:305:2: ( ASC | DESC )
 			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			set79=input.LT(1);
+			set80=input.LT(1);
 			if ( input.LA(1)==ASC||input.LA(1)==DESC ) {
 				input.consume();
-				adaptor.addChild(root_0, (CommonTree)adaptor.create(set79));
+				adaptor.addChild(root_0, (CommonTree)adaptor.create(set80));
 				state.errorRecovery=false;
 			}
 			else {
@@ -2393,33 +2448,33 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "assignments"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:299:1: assignments : assignment ( COMMA ! assignment )* ;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:309:1: assignments : assignment ( COMMA ! assignment )* ;
 	public final SQLParser.assignments_return assignments() throws RecognitionException {
 		SQLParser.assignments_return retval = new SQLParser.assignments_return();
 		retval.start = input.LT(1);
 
 		CommonTree root_0 = null;
 
-		Token COMMA81=null;
-		ParserRuleReturnScope assignment80 =null;
-		ParserRuleReturnScope assignment82 =null;
+		Token COMMA82=null;
+		ParserRuleReturnScope assignment81 =null;
+		ParserRuleReturnScope assignment83 =null;
 
-		CommonTree COMMA81_tree=null;
+		CommonTree COMMA82_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:300:2: ( assignment ( COMMA ! assignment )* )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:300:4: assignment ( COMMA ! assignment )*
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:310:2: ( assignment ( COMMA ! assignment )* )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:310:4: assignment ( COMMA ! assignment )*
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			pushFollow(FOLLOW_assignment_in_assignments711);
-			assignment80=assignment();
+			pushFollow(FOLLOW_assignment_in_assignments723);
+			assignment81=assignment();
 			state._fsp--;
 
-			adaptor.addChild(root_0, assignment80.getTree());
+			adaptor.addChild(root_0, assignment81.getTree());
 
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:300:15: ( COMMA ! assignment )*
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:310:15: ( COMMA ! assignment )*
 			loop13:
 			while (true) {
 				int alt13=2;
@@ -2430,14 +2485,14 @@ public class SQLParser extends Parser {
 
 				switch (alt13) {
 				case 1 :
-					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:300:16: COMMA ! assignment
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:310:16: COMMA ! assignment
 					{
-					COMMA81=(Token)match(input,COMMA,FOLLOW_COMMA_in_assignments714); 
-					pushFollow(FOLLOW_assignment_in_assignments717);
-					assignment82=assignment();
+					COMMA82=(Token)match(input,COMMA,FOLLOW_COMMA_in_assignments726); 
+					pushFollow(FOLLOW_assignment_in_assignments729);
+					assignment83=assignment();
 					state._fsp--;
 
-					adaptor.addChild(root_0, assignment82.getTree());
+					adaptor.addChild(root_0, assignment83.getTree());
 
 					}
 					break;
@@ -2476,44 +2531,54 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "assignment"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:303:1: assignment : column EQUAL ^ value ;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:313:1: assignment : column EQUAL ^ value ;
 	public final SQLParser.assignment_return assignment() throws RecognitionException {
 		SQLParser.assignment_return retval = new SQLParser.assignment_return();
 		retval.start = input.LT(1);
 
 		CommonTree root_0 = null;
 
-		Token EQUAL84=null;
-		ParserRuleReturnScope column83 =null;
-		ParserRuleReturnScope value85 =null;
+		Token EQUAL85=null;
+		ParserRuleReturnScope column84 =null;
+		ParserRuleReturnScope value86 =null;
 
-		CommonTree EQUAL84_tree=null;
+		CommonTree EQUAL85_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:304:2: ( column EQUAL ^ value )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:304:4: column EQUAL ^ value
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:314:2: ( column EQUAL ^ value )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:314:4: column EQUAL ^ value
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			pushFollow(FOLLOW_column_in_assignment731);
-			column83=column();
+			pushFollow(FOLLOW_column_in_assignment743);
+			column84=column();
 			state._fsp--;
 
-			adaptor.addChild(root_0, column83.getTree());
+			adaptor.addChild(root_0, column84.getTree());
 
-			EQUAL84=(Token)match(input,EQUAL,FOLLOW_EQUAL_in_assignment733); 
-			EQUAL84_tree = (CommonTree)adaptor.create(EQUAL84);
-			root_0 = (CommonTree)adaptor.becomeRoot(EQUAL84_tree, root_0);
+			EQUAL85=(Token)match(input,EQUAL,FOLLOW_EQUAL_in_assignment745); 
+			EQUAL85_tree = (CommonTree)adaptor.create(EQUAL85);
+			root_0 = (CommonTree)adaptor.becomeRoot(EQUAL85_tree, root_0);
 
-			pushFollow(FOLLOW_value_in_assignment736);
-			value85=value();
+			pushFollow(FOLLOW_value_in_assignment748);
+			value86=value();
 			state._fsp--;
 
-			adaptor.addChild(root_0, value85.getTree());
+			adaptor.addChild(root_0, value86.getTree());
 
 
-						validateAttrVals(table1);
+						boolean found = false;
+						for(Table table : tables)
+						{
+							if(!found)
+							{
+								Map<Attribute, Object> attrVals = Maps.newHashMap();
+								attrVals.put(new Attribute((column84!=null?input.toString(column84.start,column84.stop):null)), (value86!=null?input.toString(value86.start,value86.stop):null));
+								attrValidator.validate(attrVals, table);
+								
+							}
+						}
 					
 			}
 
@@ -2542,32 +2607,32 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "searchConditions"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:311:1: searchConditions : searchCondition ( logicalOperator ^ searchCondition )* ;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:331:1: searchConditions : searchCondition ( logicalOperator ^ searchCondition )* ;
 	public final SQLParser.searchConditions_return searchConditions() throws RecognitionException {
 		SQLParser.searchConditions_return retval = new SQLParser.searchConditions_return();
 		retval.start = input.LT(1);
 
 		CommonTree root_0 = null;
 
-		ParserRuleReturnScope searchCondition86 =null;
-		ParserRuleReturnScope logicalOperator87 =null;
-		ParserRuleReturnScope searchCondition88 =null;
+		ParserRuleReturnScope searchCondition87 =null;
+		ParserRuleReturnScope logicalOperator88 =null;
+		ParserRuleReturnScope searchCondition89 =null;
 
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:312:2: ( searchCondition ( logicalOperator ^ searchCondition )* )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:312:4: searchCondition ( logicalOperator ^ searchCondition )*
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:332:2: ( searchCondition ( logicalOperator ^ searchCondition )* )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:332:4: searchCondition ( logicalOperator ^ searchCondition )*
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			pushFollow(FOLLOW_searchCondition_in_searchConditions756);
-			searchCondition86=searchCondition();
+			pushFollow(FOLLOW_searchCondition_in_searchConditions768);
+			searchCondition87=searchCondition();
 			state._fsp--;
 
-			adaptor.addChild(root_0, searchCondition86.getTree());
+			adaptor.addChild(root_0, searchCondition87.getTree());
 
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:312:20: ( logicalOperator ^ searchCondition )*
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:332:20: ( logicalOperator ^ searchCondition )*
 			loop14:
 			while (true) {
 				int alt14=2;
@@ -2578,18 +2643,18 @@ public class SQLParser extends Parser {
 
 				switch (alt14) {
 				case 1 :
-					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:312:21: logicalOperator ^ searchCondition
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:332:21: logicalOperator ^ searchCondition
 					{
-					pushFollow(FOLLOW_logicalOperator_in_searchConditions759);
-					logicalOperator87=logicalOperator();
+					pushFollow(FOLLOW_logicalOperator_in_searchConditions771);
+					logicalOperator88=logicalOperator();
 					state._fsp--;
 
-					root_0 = (CommonTree)adaptor.becomeRoot(logicalOperator87.getTree(), root_0);
-					pushFollow(FOLLOW_searchCondition_in_searchConditions762);
-					searchCondition88=searchCondition();
+					root_0 = (CommonTree)adaptor.becomeRoot(logicalOperator88.getTree(), root_0);
+					pushFollow(FOLLOW_searchCondition_in_searchConditions774);
+					searchCondition89=searchCondition();
 					state._fsp--;
 
-					adaptor.addChild(root_0, searchCondition88.getTree());
+					adaptor.addChild(root_0, searchCondition89.getTree());
 
 					}
 					break;
@@ -2628,41 +2693,41 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "searchCondition"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:315:1: searchCondition : column comparisonOperator ^ value ;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:335:1: searchCondition : column comparisonOperator ^ value ;
 	public final SQLParser.searchCondition_return searchCondition() throws RecognitionException {
 		SQLParser.searchCondition_return retval = new SQLParser.searchCondition_return();
 		retval.start = input.LT(1);
 
 		CommonTree root_0 = null;
 
-		ParserRuleReturnScope column89 =null;
-		ParserRuleReturnScope comparisonOperator90 =null;
-		ParserRuleReturnScope value91 =null;
+		ParserRuleReturnScope column90 =null;
+		ParserRuleReturnScope comparisonOperator91 =null;
+		ParserRuleReturnScope value92 =null;
 
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:316:2: ( column comparisonOperator ^ value )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:316:4: column comparisonOperator ^ value
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:336:2: ( column comparisonOperator ^ value )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:336:4: column comparisonOperator ^ value
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			pushFollow(FOLLOW_column_in_searchCondition776);
-			column89=column();
+			pushFollow(FOLLOW_column_in_searchCondition788);
+			column90=column();
 			state._fsp--;
 
-			adaptor.addChild(root_0, column89.getTree());
+			adaptor.addChild(root_0, column90.getTree());
 
-			pushFollow(FOLLOW_comparisonOperator_in_searchCondition778);
-			comparisonOperator90=comparisonOperator();
+			pushFollow(FOLLOW_comparisonOperator_in_searchCondition790);
+			comparisonOperator91=comparisonOperator();
 			state._fsp--;
 
-			root_0 = (CommonTree)adaptor.becomeRoot(comparisonOperator90.getTree(), root_0);
-			pushFollow(FOLLOW_value_in_searchCondition781);
-			value91=value();
+			root_0 = (CommonTree)adaptor.becomeRoot(comparisonOperator91.getTree(), root_0);
+			pushFollow(FOLLOW_value_in_searchCondition793);
+			value92=value();
 			state._fsp--;
 
-			adaptor.addChild(root_0, value91.getTree());
+			adaptor.addChild(root_0, value92.getTree());
 
 
 						boolean found = false;
@@ -2671,7 +2736,10 @@ public class SQLParser extends Parser {
 						{
 							if(!found)
 							{
-								validateAttrVals(table);
+								Map<Attribute, Object> attrVals = Maps.newHashMap();
+								attrVals.put(new Attribute((column90!=null?input.toString(column90.start,column90.stop):null)), (value92!=null?input.toString(value92.start,value92.stop):null).substring(1, (value92!=null?input.toString(value92.start,value92.stop):null).length()-1));
+								attrValidator.validate(attrVals, table);
+								
 							}
 						}
 						
@@ -2707,32 +2775,32 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "onSearchConditions"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:336:1: onSearchConditions : onSearchCondition ( logicalOperator ^ onSearchCondition )* ;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:359:1: onSearchConditions : onSearchCondition ( logicalOperator ^ onSearchCondition )* ;
 	public final SQLParser.onSearchConditions_return onSearchConditions() throws RecognitionException {
 		SQLParser.onSearchConditions_return retval = new SQLParser.onSearchConditions_return();
 		retval.start = input.LT(1);
 
 		CommonTree root_0 = null;
 
-		ParserRuleReturnScope onSearchCondition92 =null;
-		ParserRuleReturnScope logicalOperator93 =null;
-		ParserRuleReturnScope onSearchCondition94 =null;
+		ParserRuleReturnScope onSearchCondition93 =null;
+		ParserRuleReturnScope logicalOperator94 =null;
+		ParserRuleReturnScope onSearchCondition95 =null;
 
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:337:2: ( onSearchCondition ( logicalOperator ^ onSearchCondition )* )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:337:4: onSearchCondition ( logicalOperator ^ onSearchCondition )*
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:360:2: ( onSearchCondition ( logicalOperator ^ onSearchCondition )* )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:360:4: onSearchCondition ( logicalOperator ^ onSearchCondition )*
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			pushFollow(FOLLOW_onSearchCondition_in_onSearchConditions801);
-			onSearchCondition92=onSearchCondition();
+			pushFollow(FOLLOW_onSearchCondition_in_onSearchConditions813);
+			onSearchCondition93=onSearchCondition();
 			state._fsp--;
 
-			adaptor.addChild(root_0, onSearchCondition92.getTree());
+			adaptor.addChild(root_0, onSearchCondition93.getTree());
 
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:337:22: ( logicalOperator ^ onSearchCondition )*
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:360:22: ( logicalOperator ^ onSearchCondition )*
 			loop15:
 			while (true) {
 				int alt15=2;
@@ -2743,18 +2811,18 @@ public class SQLParser extends Parser {
 
 				switch (alt15) {
 				case 1 :
-					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:337:23: logicalOperator ^ onSearchCondition
+					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:360:23: logicalOperator ^ onSearchCondition
 					{
-					pushFollow(FOLLOW_logicalOperator_in_onSearchConditions804);
-					logicalOperator93=logicalOperator();
+					pushFollow(FOLLOW_logicalOperator_in_onSearchConditions816);
+					logicalOperator94=logicalOperator();
 					state._fsp--;
 
-					root_0 = (CommonTree)adaptor.becomeRoot(logicalOperator93.getTree(), root_0);
-					pushFollow(FOLLOW_onSearchCondition_in_onSearchConditions807);
-					onSearchCondition94=onSearchCondition();
+					root_0 = (CommonTree)adaptor.becomeRoot(logicalOperator94.getTree(), root_0);
+					pushFollow(FOLLOW_onSearchCondition_in_onSearchConditions819);
+					onSearchCondition95=onSearchCondition();
 					state._fsp--;
 
-					adaptor.addChild(root_0, onSearchCondition94.getTree());
+					adaptor.addChild(root_0, onSearchCondition95.getTree());
 
 					}
 					break;
@@ -2793,65 +2861,105 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "onSearchCondition"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:340:1: onSearchCondition : onTable DOT ! column comparisonOperator ^ value ;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:363:1: onSearchCondition : onOperand comparisonOperator ^ onOperand ;
 	public final SQLParser.onSearchCondition_return onSearchCondition() throws RecognitionException {
 		SQLParser.onSearchCondition_return retval = new SQLParser.onSearchCondition_return();
 		retval.start = input.LT(1);
 
 		CommonTree root_0 = null;
 
-		Token DOT96=null;
-		ParserRuleReturnScope onTable95 =null;
-		ParserRuleReturnScope column97 =null;
-		ParserRuleReturnScope comparisonOperator98 =null;
-		ParserRuleReturnScope value99 =null;
+		ParserRuleReturnScope onOperand96 =null;
+		ParserRuleReturnScope comparisonOperator97 =null;
+		ParserRuleReturnScope onOperand98 =null;
 
-		CommonTree DOT96_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:341:2: ( onTable DOT ! column comparisonOperator ^ value )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:341:4: onTable DOT ! column comparisonOperator ^ value
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:364:2: ( onOperand comparisonOperator ^ onOperand )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:364:4: onOperand comparisonOperator ^ onOperand
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			pushFollow(FOLLOW_onTable_in_onSearchCondition820);
-			onTable95=onTable();
+			pushFollow(FOLLOW_onOperand_in_onSearchCondition832);
+			onOperand96=onOperand();
 			state._fsp--;
 
-			adaptor.addChild(root_0, onTable95.getTree());
+			adaptor.addChild(root_0, onOperand96.getTree());
 
-			DOT96=(Token)match(input,DOT,FOLLOW_DOT_in_onSearchCondition822); 
-			pushFollow(FOLLOW_column_in_onSearchCondition824);
-			column97=column();
+			pushFollow(FOLLOW_comparisonOperator_in_onSearchCondition834);
+			comparisonOperator97=comparisonOperator();
 			state._fsp--;
 
-			adaptor.addChild(root_0, column97.getTree());
-
-			pushFollow(FOLLOW_comparisonOperator_in_onSearchCondition826);
-			comparisonOperator98=comparisonOperator();
+			root_0 = (CommonTree)adaptor.becomeRoot(comparisonOperator97.getTree(), root_0);
+			pushFollow(FOLLOW_onOperand_in_onSearchCondition837);
+			onOperand98=onOperand();
 			state._fsp--;
 
-			root_0 = (CommonTree)adaptor.becomeRoot(comparisonOperator98.getTree(), root_0);
-			pushFollow(FOLLOW_value_in_onSearchCondition829);
-			value99=value();
+			adaptor.addChild(root_0, onOperand98.getTree());
+
+			}
+
+			retval.stop = input.LT(-1);
+
+			retval.tree = (CommonTree)adaptor.rulePostProcessing(root_0);
+			adaptor.setTokenBoundaries(retval.tree, retval.start, retval.stop);
+
+		}
+
+		    catch (RecognitionException e) {
+		        throw e;
+		    }
+
+		finally {
+			// do for sure before leaving
+		}
+		return retval;
+	}
+	// $ANTLR end "onSearchCondition"
+
+
+	public static class onOperand_return extends ParserRuleReturnScope {
+		CommonTree tree;
+		@Override
+		public CommonTree getTree() { return tree; }
+	};
+
+
+	// $ANTLR start "onOperand"
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:367:1: onOperand : onTable ^ DOT ! onColumn ;
+	public final SQLParser.onOperand_return onOperand() throws RecognitionException {
+		SQLParser.onOperand_return retval = new SQLParser.onOperand_return();
+		retval.start = input.LT(1);
+
+		CommonTree root_0 = null;
+
+		Token DOT100=null;
+		ParserRuleReturnScope onTable99 =null;
+		ParserRuleReturnScope onColumn101 =null;
+
+		CommonTree DOT100_tree=null;
+
+		try {
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:368:2: ( onTable ^ DOT ! onColumn )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:368:4: onTable ^ DOT ! onColumn
+			{
+			root_0 = (CommonTree)adaptor.nil();
+
+
+			pushFollow(FOLLOW_onTable_in_onOperand849);
+			onTable99=onTable();
 			state._fsp--;
 
-			adaptor.addChild(root_0, value99.getTree());
+			root_0 = (CommonTree)adaptor.becomeRoot(onTable99.getTree(), root_0);
+			DOT100=(Token)match(input,DOT,FOLLOW_DOT_in_onOperand852); 
+			pushFollow(FOLLOW_onColumn_in_onOperand855);
+			onColumn101=onColumn();
+			state._fsp--;
+
+			adaptor.addChild(root_0, onColumn101.getTree());
 
 
-						Object tmp;
-						attrValidator.validate(new Attribute[]{new Attribute((column97!=null?input.toString(column97.start,column97.stop):null))}, storageManager.getTable((onTable95!=null?input.toString(onTable95.start,onTable95.stop):null)));
-						if((value99!=null?input.toString(value99.start,value99.stop):null).startsWith("'") && (value99!=null?input.toString(value99.start,value99.stop):null).endsWith("'"))
-						{
-							tmp = (value99!=null?input.toString(value99.start,value99.stop):null).substring(1, (value99!=null?input.toString(value99.start,value99.stop):null).length()-1);
-						}
-						else
-						{
-							tmp = Integer.parseInt((value99!=null?input.toString(value99.start,value99.stop):null));
-						}
-						
-						attrValidator.attributeTypeCheck(storageManager.getTable((onTable95!=null?input.toString(onTable95.start,onTable95.stop):null)).getDescription().getAttribute((column97!=null?input.toString(column97.start,column97.stop):null)), tmp);
+						attrValidator.validate(new Attribute[]{new Attribute((onColumn101!=null?input.toString(onColumn101.start,onColumn101.stop):null))}, storageManager.getTable((onTable99!=null?input.toString(onTable99.start,onTable99.stop):null)));
 					
 			}
 
@@ -2869,7 +2977,58 @@ public class SQLParser extends Parser {
 		}
 		return retval;
 	}
-	// $ANTLR end "onSearchCondition"
+	// $ANTLR end "onOperand"
+
+
+	public static class onColumn_return extends ParserRuleReturnScope {
+		CommonTree tree;
+		@Override
+		public CommonTree getTree() { return tree; }
+	};
+
+
+	// $ANTLR start "onColumn"
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:374:1: onColumn : IDENT ;
+	public final SQLParser.onColumn_return onColumn() throws RecognitionException {
+		SQLParser.onColumn_return retval = new SQLParser.onColumn_return();
+		retval.start = input.LT(1);
+
+		CommonTree root_0 = null;
+
+		Token IDENT102=null;
+
+		CommonTree IDENT102_tree=null;
+
+		try {
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:375:2: ( IDENT )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:375:4: IDENT
+			{
+			root_0 = (CommonTree)adaptor.nil();
+
+
+			IDENT102=(Token)match(input,IDENT,FOLLOW_IDENT_in_onColumn873); 
+			IDENT102_tree = (CommonTree)adaptor.create(IDENT102);
+			adaptor.addChild(root_0, IDENT102_tree);
+
+			}
+
+			retval.stop = input.LT(-1);
+
+			retval.tree = (CommonTree)adaptor.rulePostProcessing(root_0);
+			adaptor.setTokenBoundaries(retval.tree, retval.start, retval.stop);
+
+		}
+
+		    catch (RecognitionException e) {
+		        throw e;
+		    }
+
+		finally {
+			// do for sure before leaving
+		}
+		return retval;
+	}
+	// $ANTLR end "onColumn"
 
 
 	public static class comparisonOperator_return extends ParserRuleReturnScope {
@@ -2880,28 +3039,28 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "comparisonOperator"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:364:1: comparisonOperator : ( EQUAL | NOT_EQUAL | LESS_THAN_EQUAL | LESS_THAN | GREATER_THAN_EQUAL | GREATER_THAN );
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:380:1: comparisonOperator : ( EQUAL | NOT_EQUAL | LESS_THAN_EQUAL | LESS_THAN | GREATER_THAN_EQUAL | GREATER_THAN );
 	public final SQLParser.comparisonOperator_return comparisonOperator() throws RecognitionException {
 		SQLParser.comparisonOperator_return retval = new SQLParser.comparisonOperator_return();
 		retval.start = input.LT(1);
 
 		CommonTree root_0 = null;
 
-		Token set100=null;
+		Token set103=null;
 
-		CommonTree set100_tree=null;
+		CommonTree set103_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:365:2: ( EQUAL | NOT_EQUAL | LESS_THAN_EQUAL | LESS_THAN | GREATER_THAN_EQUAL | GREATER_THAN )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:381:2: ( EQUAL | NOT_EQUAL | LESS_THAN_EQUAL | LESS_THAN | GREATER_THAN_EQUAL | GREATER_THAN )
 			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			set100=input.LT(1);
+			set103=input.LT(1);
 			if ( input.LA(1)==EQUAL||(input.LA(1) >= GREATER_THAN && input.LA(1) <= GREATER_THAN_EQUAL)||(input.LA(1) >= LESS_THAN && input.LA(1) <= LESS_THAN_EQUAL)||input.LA(1)==NOT_EQUAL ) {
 				input.consume();
-				adaptor.addChild(root_0, (CommonTree)adaptor.create(set100));
+				adaptor.addChild(root_0, (CommonTree)adaptor.create(set103));
 				state.errorRecovery=false;
 			}
 			else {
@@ -2937,28 +3096,28 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "logicalOperator"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:373:1: logicalOperator : ( AND | OR );
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:389:1: logicalOperator : ( AND | OR );
 	public final SQLParser.logicalOperator_return logicalOperator() throws RecognitionException {
 		SQLParser.logicalOperator_return retval = new SQLParser.logicalOperator_return();
 		retval.start = input.LT(1);
 
 		CommonTree root_0 = null;
 
-		Token set101=null;
+		Token set104=null;
 
-		CommonTree set101_tree=null;
+		CommonTree set104_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:374:2: ( AND | OR )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:390:2: ( AND | OR )
 			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			set101=input.LT(1);
+			set104=input.LT(1);
 			if ( input.LA(1)==AND||input.LA(1)==OR ) {
 				input.consume();
-				adaptor.addChild(root_0, (CommonTree)adaptor.create(set101));
+				adaptor.addChild(root_0, (CommonTree)adaptor.create(set104));
 				state.errorRecovery=false;
 			}
 			else {
@@ -2994,28 +3153,28 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "joinOperator"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:378:1: joinOperator : ( INNER_JOIN | OUTER_JOIN | LEFT_JOIN | RIGHT_JOIN | JOIN );
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:394:1: joinOperator : ( INNER_JOIN | OUTER_JOIN | LEFT_JOIN | RIGHT_JOIN | JOIN );
 	public final SQLParser.joinOperator_return joinOperator() throws RecognitionException {
 		SQLParser.joinOperator_return retval = new SQLParser.joinOperator_return();
 		retval.start = input.LT(1);
 
 		CommonTree root_0 = null;
 
-		Token set102=null;
+		Token set105=null;
 
-		CommonTree set102_tree=null;
+		CommonTree set105_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:379:2: ( INNER_JOIN | OUTER_JOIN | LEFT_JOIN | RIGHT_JOIN | JOIN )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:395:2: ( INNER_JOIN | OUTER_JOIN | LEFT_JOIN | RIGHT_JOIN | JOIN )
 			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			set102=input.LT(1);
+			set105=input.LT(1);
 			if ( input.LA(1)==INNER_JOIN||(input.LA(1) >= JOIN && input.LA(1) <= LEFT_JOIN)||(input.LA(1) >= OUTER_JOIN && input.LA(1) <= RIGHT_JOIN) ) {
 				input.consume();
-				adaptor.addChild(root_0, (CommonTree)adaptor.create(set102));
+				adaptor.addChild(root_0, (CommonTree)adaptor.create(set105));
 				state.errorRecovery=false;
 			}
 			else {
@@ -3089,7 +3248,7 @@ public class SQLParser extends Parser {
 	public static final BitSet FOLLOW_WHERE_in_whereClause367 = new BitSet(new long[]{0x0000000000040000L});
 	public static final BitSet FOLLOW_searchConditions_in_whereClause370 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_ORDER_BY_in_orderByClause382 = new BitSet(new long[]{0x0000000000040000L});
-	public static final BitSet FOLLOW_column_in_orderByClause385 = new BitSet(new long[]{0x0000000000000222L});
+	public static final BitSet FOLLOW_orderByColumn_in_orderByClause385 = new BitSet(new long[]{0x0000000000000222L});
 	public static final BitSet FOLLOW_order_in_orderByClause388 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_VALUES_in_valuesClause402 = new BitSet(new long[]{0x0000000008000000L});
 	public static final BitSet FOLLOW_LPAREN_in_valuesClause405 = new BitSet(new long[]{0x0000004000200000L});
@@ -3118,29 +3277,32 @@ public class SQLParser extends Parser {
 	public static final BitSet FOLLOW_COMMA_in_columns604 = new BitSet(new long[]{0x0000000000040000L});
 	public static final BitSet FOLLOW_column_in_columns607 = new BitSet(new long[]{0x0000000000000042L});
 	public static final BitSet FOLLOW_IDENT_in_column622 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_STRING_LITERAL_in_value639 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_INTEGER_in_value649 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_value_in_values666 = new BitSet(new long[]{0x0000000000000042L});
-	public static final BitSet FOLLOW_COMMA_in_values669 = new BitSet(new long[]{0x0000004000200000L});
-	public static final BitSet FOLLOW_value_in_values672 = new BitSet(new long[]{0x0000000000000042L});
-	public static final BitSet FOLLOW_assignment_in_assignments711 = new BitSet(new long[]{0x0000000000000042L});
-	public static final BitSet FOLLOW_COMMA_in_assignments714 = new BitSet(new long[]{0x0000000000040000L});
-	public static final BitSet FOLLOW_assignment_in_assignments717 = new BitSet(new long[]{0x0000000000000042L});
-	public static final BitSet FOLLOW_column_in_assignment731 = new BitSet(new long[]{0x0000000000002000L});
-	public static final BitSet FOLLOW_EQUAL_in_assignment733 = new BitSet(new long[]{0x0000004000200000L});
-	public static final BitSet FOLLOW_value_in_assignment736 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_searchCondition_in_searchConditions756 = new BitSet(new long[]{0x0000000040000012L});
-	public static final BitSet FOLLOW_logicalOperator_in_searchConditions759 = new BitSet(new long[]{0x0000000000040000L});
-	public static final BitSet FOLLOW_searchCondition_in_searchConditions762 = new BitSet(new long[]{0x0000000040000012L});
-	public static final BitSet FOLLOW_column_in_searchCondition776 = new BitSet(new long[]{0x0000000013032000L});
-	public static final BitSet FOLLOW_comparisonOperator_in_searchCondition778 = new BitSet(new long[]{0x0000004000200000L});
-	public static final BitSet FOLLOW_value_in_searchCondition781 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_onSearchCondition_in_onSearchConditions801 = new BitSet(new long[]{0x0000000040000012L});
-	public static final BitSet FOLLOW_logicalOperator_in_onSearchConditions804 = new BitSet(new long[]{0x0000000000040000L});
-	public static final BitSet FOLLOW_onSearchCondition_in_onSearchConditions807 = new BitSet(new long[]{0x0000000040000012L});
-	public static final BitSet FOLLOW_onTable_in_onSearchCondition820 = new BitSet(new long[]{0x0000000000000800L});
-	public static final BitSet FOLLOW_DOT_in_onSearchCondition822 = new BitSet(new long[]{0x0000000000040000L});
-	public static final BitSet FOLLOW_column_in_onSearchCondition824 = new BitSet(new long[]{0x0000000013032000L});
-	public static final BitSet FOLLOW_comparisonOperator_in_onSearchCondition826 = new BitSet(new long[]{0x0000004000200000L});
-	public static final BitSet FOLLOW_value_in_onSearchCondition829 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_IDENT_in_orderByColumn638 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_STRING_LITERAL_in_value651 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_INTEGER_in_value661 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_value_in_values678 = new BitSet(new long[]{0x0000000000000042L});
+	public static final BitSet FOLLOW_COMMA_in_values681 = new BitSet(new long[]{0x0000004000200000L});
+	public static final BitSet FOLLOW_value_in_values684 = new BitSet(new long[]{0x0000000000000042L});
+	public static final BitSet FOLLOW_assignment_in_assignments723 = new BitSet(new long[]{0x0000000000000042L});
+	public static final BitSet FOLLOW_COMMA_in_assignments726 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_assignment_in_assignments729 = new BitSet(new long[]{0x0000000000000042L});
+	public static final BitSet FOLLOW_column_in_assignment743 = new BitSet(new long[]{0x0000000000002000L});
+	public static final BitSet FOLLOW_EQUAL_in_assignment745 = new BitSet(new long[]{0x0000004000200000L});
+	public static final BitSet FOLLOW_value_in_assignment748 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_searchCondition_in_searchConditions768 = new BitSet(new long[]{0x0000000040000012L});
+	public static final BitSet FOLLOW_logicalOperator_in_searchConditions771 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_searchCondition_in_searchConditions774 = new BitSet(new long[]{0x0000000040000012L});
+	public static final BitSet FOLLOW_column_in_searchCondition788 = new BitSet(new long[]{0x0000000013032000L});
+	public static final BitSet FOLLOW_comparisonOperator_in_searchCondition790 = new BitSet(new long[]{0x0000004000200000L});
+	public static final BitSet FOLLOW_value_in_searchCondition793 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_onSearchCondition_in_onSearchConditions813 = new BitSet(new long[]{0x0000000040000012L});
+	public static final BitSet FOLLOW_logicalOperator_in_onSearchConditions816 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_onSearchCondition_in_onSearchConditions819 = new BitSet(new long[]{0x0000000040000012L});
+	public static final BitSet FOLLOW_onOperand_in_onSearchCondition832 = new BitSet(new long[]{0x0000000013032000L});
+	public static final BitSet FOLLOW_comparisonOperator_in_onSearchCondition834 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_onOperand_in_onSearchCondition837 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_onTable_in_onOperand849 = new BitSet(new long[]{0x0000000000000800L});
+	public static final BitSet FOLLOW_DOT_in_onOperand852 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_onColumn_in_onOperand855 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_IDENT_in_onColumn873 = new BitSet(new long[]{0x0000000000000002L});
 }

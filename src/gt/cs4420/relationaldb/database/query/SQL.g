@@ -19,7 +19,7 @@ options {
 	List<String> tableNames = Lists.newArrayList();
 	List<Attribute> table1Attributes = Lists.newArrayList();
 	List<Object> insertVals = Lists.newArrayList();
-	Map<Attribute, Object> attrVals = Maps.newHashMap();
+	
 	AttributeValidator attrValidator = new AttributeValidator();
 	StorageManager storageManager = new StorageManager();
 	
@@ -31,6 +31,7 @@ options {
     }
     
     private void validateAttrVals(Table table) throws ValidationException {
+    	Map<Attribute, Object> attrVals = Maps.newHashMap();
     	for(int i = 0; i < table1Attributes.size(); i++) {
 				attrVals.put(table1Attributes.get(i), insertVals.get(i));			
 			}
@@ -169,7 +170,7 @@ whereClause
 	;
 	
 orderByClause
-	:	ORDER_BY^ column (order)?
+	:	ORDER_BY^ orderByColumn (order)?
 	;
 	
 valuesClause
@@ -260,18 +261,27 @@ column
 			table1Attributes.add(new Attribute($IDENT.text));
 		}
 	;
+	
+orderByColumn
+	:	IDENT
+	;
 
 // This is where more data type support can be added
 // numVals is incremented to ensure the number of values matches the number of attributes in the INSERT
 value
 	:	STRING_LITERAL
 		{
-			insertVals.add($STRING_LITERAL.text.substring(1, $STRING_LITERAL.text.length()-1));
+			String tmp = $STRING_LITERAL.text;
+			tmp = tmp.substring(1, $STRING_LITERAL.text.length()-1);
+			//System.out.println(tmp);
+			if(tmp != null)
+				insertVals.add(tmp);
 			numVals++;
 		}
 	| 	INTEGER
 		{
-			insertVals.add(Integer.parseInt($INTEGER.text));
+			if($INTEGER.text != null)
+				insertVals.add(Integer.parseInt($INTEGER.text));
 			numVals++;
 		}
 	;
@@ -303,7 +313,17 @@ assignments
 assignment
 	:	column EQUAL^ value
 		{
-			validateAttrVals(table1);
+			boolean found = false;
+			for(Table table : tables)
+			{
+				if(!found)
+				{
+					Map<Attribute, Object> attrVals = Maps.newHashMap();
+					attrVals.put(new Attribute($column.text), $value.text);
+					attrValidator.validate(attrVals, table);
+					
+				}
+			}
 		}
 	;catch[ValidationException e]{}
 	
@@ -321,7 +341,10 @@ searchCondition
 			{
 				if(!found)
 				{
-					validateAttrVals(table);
+					Map<Attribute, Object> attrVals = Maps.newHashMap();
+					attrVals.put(new Attribute($column.text), $value.text.substring(1, $value.text.length()-1));
+					attrValidator.validate(attrVals, table);
+					
 				}
 			}
 			
@@ -338,26 +361,19 @@ onSearchConditions
 	;
 
 onSearchCondition
-	:	onTable DOT!column comparisonOperator^ value
+	:	onOperand comparisonOperator^ onOperand
+	;
+	
+onOperand
+	:	onTable^ DOT! onColumn
 		{
-			Object tmp;
-			attrValidator.validate(new Attribute[]{new Attribute($column.text)}, storageManager.getTable($onTable.text));
-			if($value.text.startsWith("'") && $value.text.endsWith("'"))
-			{
-				tmp = $value.text.substring(1, $value.text.length()-1);
-			}
-			else
-			{
-				tmp = Integer.parseInt($value.text);
-			}
-			
-			attrValidator.attributeTypeCheck(storageManager.getTable($onTable.text).getDescription().getAttribute($column.text), tmp);
+			attrValidator.validate(new Attribute[]{new Attribute($onColumn.text)}, storageManager.getTable($onTable.text));
 		}
 	;catch[ValidationException e]{}
-	
 
-
-	
+onColumn
+	:	IDENT
+	;
 
 	
 /* Operators */

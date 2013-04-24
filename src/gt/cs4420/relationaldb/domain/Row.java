@@ -14,6 +14,11 @@ public class Row {
         rowData = null;
     }
 
+    public Row(final Map<Attribute, Object> rowData) {
+        this();
+        this.rowData = rowData;
+    }
+
     public Integer getPrimaryKey() {
         return primaryKey;
     }
