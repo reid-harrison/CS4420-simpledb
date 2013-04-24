@@ -93,10 +93,14 @@ public class AttributeValidator implements Validator<Attribute> {
         }
 
         for (Attribute attr : attributes.keySet()) {
+            if (attr.getType() == null) {
+                attr.setType(table.getDescription().getAttribute(attr.getName()).getType());
+            }
+
             Object obj = attributes.get(attr);
 
             if (obj == null) {
-                if (attr.getName().equals(table.getDescription().getPrimaryKeyAttribute())) {
+                if (attr.equals(table.getDescription().getPrimaryKeyAttribute())) {
                     ve.addMessage("Primary key attribute cannot be null, must be set");
                     continue;
                 }
