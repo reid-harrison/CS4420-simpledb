@@ -16,20 +16,20 @@ import java.util.List;
 
 /**
  * The point of interaction for the Storage Engine. Use the provided methods to perform database operations.
- *
- * TODO:
- * -Implement more database operations and management functionality
- * * * JOIN
- * * * ORDER BY
  */
 public class StorageManager {
+
+    private static final String DEFAULT_DB_ROOT_DIRECTORY = "database/";
 
     private StorageData storageData;
 
     private TableValidator tableValidator;
     private RowValidator rowValidator;
     private AttributeValidator attrValidator;
-    
+
+    public StorageManager() {
+        this(DEFAULT_DB_ROOT_DIRECTORY);
+    }
 
     public StorageManager(final String dbRootDirectory) {
         storageData = StorageData.getInstance(dbRootDirectory);
