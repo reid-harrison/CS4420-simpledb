@@ -110,7 +110,13 @@ public class BlockManager {
             blocks.get(blockId).setBlockSize(blockSize);
         }
 
-        if (nextBlockIds.get(tableId) <= blockId) {
+        Integer nextBlockId = nextBlockIds.get(tableId);
+
+        if (nextBlockId == null) {
+            nextBlockId = 0;
+        }
+
+        if (nextBlockId <= blockId) {
             nextBlockIds.put(tableId, blockId + 1);
         }
 

@@ -129,8 +129,8 @@ public class StorageManagerTest {
         Map<Attribute, Object> user4Attrs = Maps.newHashMap();
         user4Attrs.put(userAttrs[0], 3);
         user4Attrs.put(userAttrs[1], "jeff");
-        user4Attrs.put(userAttrs[2], "chenhao.liu@gmail.com");
-        user4Attrs.put(userAttrs[3], "brucepass");
+        user4Attrs.put(userAttrs[2], "jeff.drasher@gmail.com");
+        user4Attrs.put(userAttrs[3], "jeffpass");
         userRow4.setRowData(user4Attrs);
         testInsert(usersTable.getId(), userRow4.getRowData());
 

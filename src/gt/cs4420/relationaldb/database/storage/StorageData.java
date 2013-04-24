@@ -170,9 +170,11 @@ class StorageData {
      * @param tableId
      */
     protected void removeTable(final Integer tableId) {
+        String tableName = tables.get(tableId).getName();
 
         //Remove all table data in memory
         tables.remove(tableId);
+        tableNames.remove(tableName);
         tableData.remove(tableId);
         indexManager.removeIndex(tableId);
         blockManager.removeAllBlocks(tableId);
@@ -409,7 +411,9 @@ class StorageData {
     }
 
     protected void clearDatabase() {
-        for (Integer tableId : tables.keySet()) {
+        Set<Integer> tableIdSet = Sets.newHashSet(tables.keySet());
+
+        for (Integer tableId : tableIdSet) {
             removeTable(tableId);
         }
     }
@@ -483,10 +487,23 @@ class StorageData {
     }
 
     private void export() {
-        if (!exportDisabled) {
-            exportBlocks();
-            exportIndexes();
+        if (exportDisabled) {
+            return;
         }
+
+        exportSystemCatalog();
+        exportBlocks();
+        exportIndexes();
+    }
+
+    private void exportSystemCatalog() {
+        Set<Table> tableSet = Sets.newHashSet();
+
+        for (Integer tableId : tables.keySet()) {
+            tableSet.add(tables.get(tableId));
+        }
+
+        fileManager.exportDescriptions(tableSet);
     }
 
     private void exportBlocks() {
