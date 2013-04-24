@@ -416,6 +416,8 @@ class StorageData {
         for (Integer tableId : tableIdSet) {
             removeTable(tableId);
         }
+
+        nextId = 0;
     }
 
     private Constraint removeIrrelevantConstraints(final Constraint constraint, final Integer tableId) {
