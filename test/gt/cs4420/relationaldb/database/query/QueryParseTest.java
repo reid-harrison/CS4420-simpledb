@@ -33,7 +33,7 @@ public class QueryParseTest {
         QueryParseTest test = new QueryParseTest();
 
         try {
-            test.runTest(2);
+            test.runTest(3);
 
            /* for (int i = 0; i < 3; i++) {
                 test.runTest(i);
@@ -51,7 +51,7 @@ public class QueryParseTest {
         switch(choice)
         {
             case 0:
-                query = "SELECT userID, firstName, lastName, password FROM users INNER JOIN accounts OUTER JOIN company ON users.name=1 AND accounts.status = 'stupid' WHERE userID >= 1 AND firstName = 'phil' OR lastName = 'oliver' ORDER BY lastName, firstName;";
+                query = "SELECT userID, firstName, lastName, password FROM users INNER JOIN accounts OUTER JOIN company ON users.name=1 AND accounts.status = 'stupid' WHERE userID >= 1 AND firstName = 'phil' OR lastName = 'oliver' ORDER BY firstName ASC;";
 
                 ValueConstraint vc1 = new ValueConstraint(new Attribute("userID"), "1", ValueOperator.GREATER_THAN_EQUAL_TO);
                 ValueConstraint vc2 = new ValueConstraint(new Attribute("firstName"), "'phil'", ValueOperator.EQUALS);
@@ -74,6 +74,11 @@ public class QueryParseTest {
                 expectedConstraint = vc;
 
                 break;
+            
+            case 3:
+            	query = "CREATE TABLE names (nameID int FOREIGN KEY, name int);";
+            	break;
+            
             default:
                 break;
         }

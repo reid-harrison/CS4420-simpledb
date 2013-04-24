@@ -11,9 +11,7 @@ import gt.cs4420.relationaldb.database.storage.index.Index;
 import gt.cs4420.relationaldb.database.storage.index.IndexManager;
 import gt.cs4420.relationaldb.domain.*;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
-import gt.cs4420.relationaldb.domain.query.Constraint;
-import gt.cs4420.relationaldb.domain.query.JoinConstraint;
-import gt.cs4420.relationaldb.domain.query.ValueOperator;
+import gt.cs4420.relationaldb.domain.query.*;
 
 import java.util.*;
 
@@ -146,7 +144,13 @@ class StorageData {
     }
 
     protected Table getTable(final String tableName) {
-        return getTable(tableNames.get(tableName));
+        Integer tableId = getTableId(tableName);
+
+        if (tableId == null) {
+            return null;
+        }
+
+        return getTable(tableId);
     }
     
     protected Description getTableDescription(final String tableName) {
@@ -208,7 +212,7 @@ class StorageData {
      * @throws ValidationException
      */
     protected void update(final Integer tableId, final Row updateDataRow, final Constraint whereConstraint) throws ValidationException {
-        List<Row> affectedRows = select(tableId, whereConstraint);
+        List<Row> affectedRows = select(tableId, whereConstraint, null);
 
         Index tableIndex = indexManager.getIndex(tableId);
 
@@ -287,7 +291,7 @@ class StorageData {
         return row;
     }
 
-    public List<Row> getAllRows(final Integer tableId) {
+    protected List<Row> getAllRows(final Integer tableId) {
         List<Row> rows = Lists.newArrayList();
 
         for (Integer primaryKey : indexManager.getIndex(tableId).getPrimaryKeySet()) {
@@ -297,7 +301,7 @@ class StorageData {
         return rows;
     }
 
-    public List<Row> select(final Integer tableId, final Constraint whereConstraint) {
+    protected List<Row> select(final Integer tableId, final Constraint whereConstraint, final OrderConstraint orderConstraint) {
         List<Row> rows = Lists.newArrayList();
         BlockFilter filter = new BlockFilter(whereConstraint);
 
@@ -340,33 +344,22 @@ class StorageData {
 
             blockRows.addAll(importedRows);
 
-            //Sort the rows selected from the current block by primary key
-            Collections.sort(blockRows, new Comparator<Row>() {
-                @Override
-                public int compare(Row o1, Row o2) {
-                    Integer pk1 = o1.getPrimaryKey();
-                    Integer pk2 = o2.getPrimaryKey();
-
-                    if (pk1 == null) {
-                        if (pk2 == null) {
-                            return 0;
-                        }
-
-                        return pk2;
-                    }
-
-                    return pk1.compareTo(pk2);
-                }
-            });
-
             rows.addAll(blockRows);
 
+        }
+
+        // Sort the rows depending on the order by clause
+        if (orderConstraint == null) {
+            OrderConstraint primaryKeyOrder = new OrderConstraint(description.getPrimaryKeyAttribute(), OrderConstraint.Direction.ASCENDING);
+            sortRows(rows, primaryKeyOrder);
+        } else {
+            sortRows(rows, orderConstraint);
         }
 
         return rows;
     }
 
-    public List<JoinedRow> joinSelect(final Integer leftTableId, final Integer rightTableId, final JoinConstraint joinConstraint, final Constraint whereConstraint) throws ValidationException {
+    protected List<JoinedRow> selectJoin(final Integer leftTableId, final Integer rightTableId, final JoinConstraint joinConstraint, final Constraint whereConstraint, final OrderConstraint orderConstraint) throws ValidationException {
         List<JoinedRow> rows = Lists.newArrayList();
 
         ValueOperator joinOperator = joinConstraint.getOperator();
@@ -383,10 +376,11 @@ class StorageData {
         //TODO support more than just inner join
         JoinConstraint.JoinType joinType = joinConstraint.getJoinType();
 
-        //TODO Check where constraint against table descriptions to see which table they are valid for
+        Constraint leftWhereConstraint = removeIrrelevantConstraints(whereConstraint, leftTableId);
+        Constraint rightWhereConstraint = removeIrrelevantConstraints(whereConstraint, leftTableId);
 
-        List<Row> leftRows = select(leftTableId, whereConstraint);
-        List<Row> rightRows = select(rightTableId, whereConstraint);
+        List<Row> leftRows = select(leftTableId, leftWhereConstraint, orderConstraint);
+        List<Row> rightRows = select(rightTableId, rightWhereConstraint, orderConstraint);
 
         for (Row leftRow : leftRows) {
             Object leftValue = leftRow.getRowData().get(leftAttribute);
@@ -409,6 +403,54 @@ class StorageData {
         }
 
         return rows;
+    }
+
+    protected void clearDatabase() {
+        for (Integer tableId : tables.keySet()) {
+            removeTable(tableId);
+        }
+    }
+
+    private Constraint removeIrrelevantConstraints(final Constraint constraint, final Integer tableId) {
+
+        if (constraint instanceof LogicalConstraint) {
+            LogicalConstraint logicalConstraint = (LogicalConstraint) constraint;
+
+            Constraint leftConstraint = removeIrrelevantConstraints(logicalConstraint.getLeftConstraint(), tableId);
+            Constraint rightConstraint = removeIrrelevantConstraints(logicalConstraint.getRightConstraint(), tableId);
+
+            if (leftConstraint == null) {
+                if (rightConstraint == null) {
+                    return null;
+                }
+
+                return rightConstraint;
+            }
+
+            if (rightConstraint == null) {
+                return leftConstraint;
+            }
+
+            logicalConstraint.setLeftConstraint(leftConstraint);
+            logicalConstraint.setRightConstraint(rightConstraint);
+
+            return logicalConstraint;
+        }
+
+        if (constraint instanceof ValueConstraint) {
+            ValueConstraint valueConstraint = (ValueConstraint) constraint;
+            Attribute attribute = valueConstraint.getAttribute();
+
+            List<Attribute> attrs = Arrays.asList(tables.get(tableId).getDescription().getAttributes());
+
+            if (attrs.contains(attribute)) {
+                return constraint;
+            }
+
+            return null;
+        }
+
+        return null;
     }
 
     /**
@@ -578,6 +620,64 @@ class StorageData {
         }
 
         return false;
+    }
+
+    private void sortRows(final List<Row> unsortedRows, final OrderConstraint orderConstraint) {
+        Collections.sort(unsortedRows, new Comparator<Row>() {
+            @Override
+            public int compare(Row row1, Row row2) {
+                Attribute attribute = orderConstraint.getAttribute();
+                OrderConstraint.Direction direction = orderConstraint.getDirection();
+
+                Object row1Data = row1.getRowData().get(attribute);
+                Object row2Data = row2.getRowData().get(attribute);
+
+                if (row1Data == null) {
+                    if (row2Data == null) {
+                        return 0;
+                    }
+
+                    return -1;
+                }
+
+                if (row2Data == null) {
+                    return 1;
+                }
+
+                switch (attribute.getType()) {
+                    case INT:
+
+                        Integer int1 =  (Integer) row1Data;
+                        Integer int2 =  (Integer) row2Data;
+
+                        switch (direction) {
+                            case ASCENDING:
+                                return int1.compareTo(int2);
+                            case DESCENDING:
+                                return int2.compareTo(int1);
+                        }
+
+                        break;
+
+                    case STRING:
+
+                        String str1 =  (String) row1Data;
+                        String str2 =  (String) row2Data;
+
+                        switch (direction) {
+                            case ASCENDING:
+                                return str1.compareTo(str2);
+                            case DESCENDING:
+                                return str2.compareTo(str1);
+                        }
+
+                        break;
+
+                }
+
+                return 0;
+            }
+        });
     }
 
 }

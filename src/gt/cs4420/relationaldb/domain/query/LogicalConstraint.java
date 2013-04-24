@@ -21,8 +21,16 @@ public class LogicalConstraint implements Constraint {
         return leftConstraint;
     }
 
+    public void setLeftConstraint(final Constraint leftConstraint) {
+        this.leftConstraint = leftConstraint;
+    }
+
     public Constraint getRightConstraint() {
         return  rightConstraint;
+    }
+
+    public void setRightConstraint(final Constraint rightConstraint) {
+        this.rightConstraint = rightConstraint;
     }
 
     @Override

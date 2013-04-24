@@ -14,32 +14,44 @@ options {
 	Table table1 = new Table();
 	Table table2 = new Table();
 	boolean isJoin = false;
-	List<String> tables = Lists.newArrayList();
+	List<Table> tables = Lists.newArrayList();
+	List<String> tableNames = Lists.newArrayList();
 	List<Attribute> table1Attributes = Lists.newArrayList();
 	List<Object> insertVals = Lists.newArrayList();
 	Map<Attribute, Object> attrVals = Maps.newHashMap();
-	//StorageManager storageManager = new StorageManager();
+	AttributeValidator attrValidator = new AttributeValidator();
+	StorageManager storageManager = new StorageManager();
 	
 	@Override    
     public void displayRecognitionError(String[] tokenNames, RecognitionException e) {
         String hdr = getErrorHeader(e);
         String msg = getErrorMessage(e, tokenNames);
-        throw new RuntimeException(hdr + ":" + msg);
+        throw new RuntimeException(hdr + ":" + msg); 
+    }
+    
+    private void validateAttrVals(Table table) throws ValidationException {
+    	for(int i = 0; i < table1Attributes.size(); i++) {
+				attrVals.put(table1Attributes.get(i), insertVals.get(i));			
+			}
+			
+			attrValidator.validate(attrVals, table);
     }
 }
 
 @rulecatch {
-    catch (RecognitionException e) {
-        throw e;
+    catch (Exception e) {
+        throw new RuntimeException(e.getMessage());
     }
 }
 
 @lexer::members {
 	@Override
     public void reportError(RecognitionException e) {
-        throw new RuntimeException(e);
+        throw new RuntimeException(e.getMessage());
     }
+
 }
+
 
 @header {
 ///////////////////////////////////////////////////////////////////
@@ -52,6 +64,7 @@ package gt.cs4420.relationaldb.database.query;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.Attribute;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
+import gt.cs4420.relationaldb.domain.validator.AttributeValidator;
 import gt.cs4420.relationaldb.database.storage.StorageManager;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -71,8 +84,10 @@ package gt.cs4420.relationaldb.database.query;
 
 
 
+
 statement
 	:	select
+	|	create
 	|	insert
 	|	update
 	|	EOF
@@ -80,6 +95,10 @@ statement
 
 
 /* query statements */
+create
+	:	createClause^ LPAREN! columnConstraints RPAREN! SEMI!
+	;
+	
 select
 	:	selectClause fromClause (onClause)? (whereClause)? (orderByClause)? SEMI!
 	;
@@ -97,6 +116,10 @@ update
 	
 	
 /* Query clauses */
+createClause
+	:	CREATE_TABLE^ createTable
+	;
+
 selectClause
 	:	SELECT^ columns
 	;
@@ -141,7 +164,7 @@ whereClause
 	;
 	
 orderByClause
-	:	ORDER_BY^ column (COMMA! column)* (order)?
+	:	ORDER_BY^ column (order)?
 	;
 	
 valuesClause
@@ -167,10 +190,11 @@ table
 	:	IDENT
 		{
 			//build a Table for use with validation
-			table1.setName($IDENT.text);
-			tables.add($IDENT.text);
-			//storageManager.validateTableExists(table1.getName());
-			//table1.setDescription(storageManager.getTable($IDENT.text).getDescription());
+			table1 = storageManager.getTable($IDENT.text);
+			if(table1 == null)
+				throw new ValidationException("Table '" + $IDENT.text + "' does not exist in the database.");
+			tables.add(table1);
+			tableNames.add($IDENT.text);
 		}
 	;
 	
@@ -178,11 +202,40 @@ table
 onTable
 	:	IDENT
 		{
-			if (!tables.contains($IDENT.text))
+			if (!tableNames.contains($IDENT.text))
 			{
 				throw new IllegalArgumentException("'" + $IDENT.text + "' is not a table from which items are being queried.");
 			}
 		}
+	;
+	
+createTable
+	:	IDENT
+		{
+			table1 = storageManager.getTable($IDENT.text);
+			if(table1 != null)
+			{
+				throw new ValidationException("Table with name '" + $IDENT.text + "' already exists.");
+			}
+			System.out.println(table1);
+		}
+	;
+	
+columnConstraints
+	:	columnConstraint (COMMA! columnConstraint)*
+	;
+
+columnConstraint
+	:	column dataType constraint?
+	;
+	
+dataType
+	:	'int'
+	|	'varchar(10000)'
+	;
+
+constraint
+	:	FOREIGN_KEY
 	;
 
 columns
@@ -203,12 +256,12 @@ column
 value
 	:	STRING_LITERAL
 		{
-			insertVals.add($STRING_LITERAL);
+			insertVals.add($STRING_LITERAL.text.substring(1, $STRING_LITERAL.text.length()-1));
 			numVals++;
 		}
 	| 	INTEGER
 		{
-			insertVals.add($INTEGER);
+			insertVals.add(Integer.parseInt($INTEGER.text));
 			numVals++;
 		}
 	;
@@ -223,11 +276,8 @@ values
 			}	
 			
 			// Once attributes and values are parsed, put them in a map for validation
-			for(int i = 0; i < table1Attributes.size(); i++) {
-				attrVals.put(table1Attributes.get(i), insertVals.get(i));			
-			}
 			
-			//storageManager.validateValueTypes(attrVals, table1);
+			validateAttrVals(table1);
 		}
 	;
 	
@@ -242,6 +292,9 @@ assignments
 	
 assignment
 	:	column EQUAL^ value
+		{
+			validateAttrVals(table1);
+		}
 	;
 	
 // WHERE clause conditions
@@ -252,7 +305,20 @@ searchConditions
 searchCondition
 	:	column comparisonOperator^ value
 		{
-			//TODO Possibly validate type of value against column type?
+			boolean found = false;
+			
+			for(Table table : tables)
+			{
+				if(!found)
+				{
+					validateAttrVals(table);
+				}
+			}
+			
+			if(!found)
+			{
+				throw new ValidationException("Validation error in WHERE clause conditions.");
+			}
 		}
 	;
 	
@@ -262,9 +328,20 @@ onSearchConditions
 	;
 
 onSearchCondition
-	:	onTable DOT! column comparisonOperator^ value
+	:	onTable DOT!column comparisonOperator^ value
 		{
-			//TODO Possibly validate type of value against column type?
+			Object tmp;
+			attrValidator.validate(new Attribute[]{new Attribute($column.text)}, storageManager.getTable($onTable.text));
+			if($value.text.startsWith("'") && $value.text.endsWith("'"))
+			{
+				tmp = $value.text.substring(1, $value.text.length()-1);
+			}
+			else
+			{
+				tmp = Integer.parseInt($value.text);
+			}
+			
+			attrValidator.attributeTypeCheck(storageManager.getTable($onTable.text).getDescription().getAttribute($column.text), tmp);
 		}
 	;
 	
@@ -301,6 +378,7 @@ joinOperator
 /* Tokens */
 
 // Reserved words are accepted in any lowercase, uppercase, or any combination of the two
+CREATE_TABLE : ('c' | 'C')('r' | 'R')('e' | 'E')('a' | 'A')('t' | 'T')('e | E')' '('t' | 'T')('a' | 'A')('b' | 'B')('l' | 'L')('e' | 'E') ;
 SELECT : ('s' | 'S')('e' | 'E' )('l' | 'L')('e' | 'E')('c' | 'C')('t' | 'T') ;
 FROM : ('f' |'F')('r' | 'R')('o' | 'O')('m' | 'M') ;
 WHERE : ('w' | 'W')('h' | 'H')('e' | 'E')('r' | 'R')('e' | 'E') ;
@@ -312,6 +390,7 @@ OR : ('o' | 'O')('r' | 'R') ;
 UPDATE : ('u' | 'U')('p' | 'P')('d' | 'D')('a' | 'A')('t' | 'T')('e' | 'E') ;
 SET : ('s' | 'S')('e' | 'E')('t' | 'T') ;
 ASC : ('a' | 'A')('s' | 'S')('c' | 'C') ;
+FOREIGN_KEY : ('f' | 'F')('o' | 'O')('r' | 'R')('e' | 'E')('i' | 'I')('g' | 'G')('n' | 'N')' '('k' | 'K')('e' | 'E')('y' | 'Y') ;	
 DESC: ('d' | 'D')('e' | 'E')('s' | 'S')('c' | 'S') ;
 fragment JOIN : ('j' | 'J')('o' | 'O')('i' | 'I')('n' | 'N') ;
 INNER_JOIN: ('i' | 'I')('n' | 'N')('n' | 'N')('e' | 'E')('r' | 'R')(' ')JOIN ;

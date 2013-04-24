@@ -7,6 +7,7 @@ import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
 import gt.cs4420.relationaldb.domain.query.Constraint;
 import gt.cs4420.relationaldb.domain.query.JoinConstraint;
+import gt.cs4420.relationaldb.domain.query.OrderConstraint;
 import gt.cs4420.relationaldb.domain.validator.AttributeValidator;
 import gt.cs4420.relationaldb.domain.validator.RowValidator;
 import gt.cs4420.relationaldb.domain.validator.TableValidator;
@@ -15,20 +16,20 @@ import java.util.List;
 
 /**
  * The point of interaction for the Storage Engine. Use the provided methods to perform database operations.
- *
- * TODO:
- * -Implement more database operations and management functionality
- * * * JOIN
- * * * ORDER BY
  */
 public class StorageManager {
+
+    private static final String DEFAULT_DB_ROOT_DIRECTORY = "database/";
 
     private StorageData storageData;
 
     private TableValidator tableValidator;
     private RowValidator rowValidator;
     private AttributeValidator attrValidator;
-    
+
+    public StorageManager() {
+        this(DEFAULT_DB_ROOT_DIRECTORY);
+    }
 
     public StorageManager(final String dbRootDirectory) {
         storageData = StorageData.getInstance(dbRootDirectory);
@@ -119,16 +120,23 @@ public class StorageManager {
      * @return List<Row> All of the Rows that exist in tableName
      */
     public List<Row> select(final String tableName, final Constraint whereConstraint) {
-        return storageData.select(getTableId(tableName), whereConstraint);
+        return select(tableName, whereConstraint, null);
     }
 
-    public List<JoinedRow> selectJoin(final String leftTableName, final String rightTableName, final JoinConstraint joinConstraint, final Constraint whereConstraint) {
+    public List<Row> select(final String tableName, final Constraint whereConstraint, final OrderConstraint orderConstraint) {
+        return storageData.select(getTableId(tableName), whereConstraint, orderConstraint);
+    }
+
+    public List<JoinedRow> selectJoin(final String leftTableName, final String rightTableName, final JoinConstraint joinConstraint, final Constraint whereConstraint) throws ValidationException {
+        return selectJoin(leftTableName, rightTableName, joinConstraint, whereConstraint, null);
+    }
+
+    public List<JoinedRow> selectJoin(final String leftTableName, final String rightTableName, final JoinConstraint joinConstraint, final Constraint whereConstraint, final OrderConstraint orderConstraint) throws ValidationException {
         Integer leftTableId = getTableId(leftTableName);
         Integer rightTableId = getTableId(rightTableName);
 
-        return null; //storageData.selectJoin(leftTableId, rightTableId, joinConstraint, whereConstraint);
+        return storageData.selectJoin(leftTableId, rightTableId, joinConstraint, whereConstraint, orderConstraint);
     }
-
     /**
      * Inserts the given attribute data mapping into the given table.
      *
@@ -196,6 +204,13 @@ public class StorageManager {
         if (!storageData.tableExists(tableName)) {
             throw new ValidationException("Table does not exist with name: " + tableName);
         }
+    }
+
+    /**
+     * Deletes absolutely everything from the database
+     */
+    public void clearDatabase() {
+        storageData.clearDatabase();
     }
 
 }

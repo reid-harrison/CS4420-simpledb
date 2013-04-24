@@ -116,7 +116,7 @@ public class AttributeValidator implements Validator<Attribute> {
         }
     }
 
-    private void attributeTypeCheck(final Attribute attribute, final Object object) throws ClassCastException {
+    public void attributeTypeCheck(final Attribute attribute, final Object object) throws ClassCastException {
         boolean error = false;
 
         switch (attribute.getType()) {
