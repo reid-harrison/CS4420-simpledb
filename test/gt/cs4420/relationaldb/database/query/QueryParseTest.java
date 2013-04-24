@@ -7,8 +7,27 @@ import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.DOTTreeGenerator;
 import org.antlr.stringtemplate.StringTemplate;
+import org.junit.Test;
 
 public class QueryParseTest {
+
+    @Test
+    public void testQueryParse_createQuery() {
+        String query = "CREATE TABLE persons (id int, name string)";
+        QueryParser parser;
+
+        try {
+            parser = new QueryParser(query);
+        } catch(RecognitionException e) {
+            throw new TestFailedException("Query parse", e.getMessage());
+        }
+
+        DOTTreeGenerator gen = new DOTTreeGenerator();
+        CommonTree queryTree = parser.getQueryTree();
+        StringTemplate st = gen.toDOT(queryTree);
+
+        System.out.println(st);
+    }
 
 	public static void main(String[] args) throws RecognitionException {
         QueryParseTest test = new QueryParseTest();
