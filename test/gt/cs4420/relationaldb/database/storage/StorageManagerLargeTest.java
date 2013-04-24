@@ -31,6 +31,11 @@ public class StorageManagerLargeTest {
     public static void main(String[] args) {
         StorageManagerLargeTest test = new StorageManagerLargeTest();
 
+        //Currently force exporting to test in-memory and on-disk
+        StorageData.exportDisabled = false;
+        StorageData.ignoreDirty = false;
+        StorageData.forceFlush = true;
+
         try {
             test.generateData();
             test.run();
@@ -250,30 +255,32 @@ public class StorageManagerLargeTest {
 
             Map<Attribute, Object> updateRowData = Maps.newHashMap();
 
+            int modifiedRowCount = 0;
+
             switch (attribute.getType()) {
                 case STRING:
                     nextInt = random.nextInt(strings.length);
                     whereConstraint = new ValueConstraint(attribute, "'" + strings[nextInt] + "'", ValueOperator.EQUALS);
-                    tableStringUsage.get(attribute)[nextInt]--;
-                    expectedRemovedRowCount = tableStringUsage.get(attribute)[nextInt];
+                    modifiedRowCount = tableStringUsage.get(attribute)[nextInt];
+                    tableStringUsage.get(attribute)[nextInt] = 0;
 
                     nextInt = random.nextInt(strings.length);
                     newConstraint = new ValueConstraint(attribute, "'" + strings[nextInt] + "'", ValueOperator.EQUALS);
                     updateRowData.put(attribute, strings[nextInt]);
-                    tableStringUsage.get(attribute)[nextInt]++;
+                    tableStringUsage.get(attribute)[nextInt] += modifiedRowCount;
                     expectedAddedRowCount = tableStringUsage.get(attribute)[nextInt];
 
                     break;
                 case INT:
                     nextInt = random.nextInt(MAX_INT);
                     whereConstraint = new ValueConstraint(attribute, nextInt, ValueOperator.EQUALS);
-                    tableIntUsage.get(attribute)[nextInt]--;
-                    expectedRemovedRowCount = tableIntUsage.get(attribute)[nextInt];
+                    modifiedRowCount = tableIntUsage.get(attribute)[nextInt];
+                    tableIntUsage.get(attribute)[nextInt] = 0;
 
                     nextInt = random.nextInt(MAX_INT);
                     newConstraint = new ValueConstraint(attribute, nextInt, ValueOperator.EQUALS);
                     updateRowData.put(attribute, nextInt);
-                    tableIntUsage.get(attribute)[nextInt]++;
+                    tableIntUsage.get(attribute)[nextInt] += modifiedRowCount;
                     expectedAddedRowCount = tableIntUsage.get(attribute)[nextInt];
 
                     break;
@@ -284,7 +291,7 @@ public class StorageManagerLargeTest {
             manager.update(table.getName(), updateRow, whereConstraint);
 
             try {
-                testSelect(table.getName(), whereConstraint, expectedRemovedRowCount);
+                testSelect(table.getName(), whereConstraint, 0);
             } catch (final TestFailedException e) {
                 throw new TestFailedException("Update", "Rows that were supposed to be updated weren't");
             }
