@@ -17,6 +17,7 @@ public class StorageManagerLargeTest {
 
     private final String DB_ROOT_DIRECTORY = "database/test_large/";
 
+    private final int TABLE_COUNT = 10;
     private final int ATTRIBUTE_SIZE = 10;
     private final int ROW_COUNT = 1000;
 
@@ -68,11 +69,13 @@ public class StorageManagerLargeTest {
     }
 
     private void createTestTables() throws ValidationException {
-        tables = Lists.newArrayList();
+        System.out.println("Generating " + TABLE_COUNT + " random large tables.");
 
-        for (int i = 0; i < 10; i++) {
-            Table table = new Table();
-            table.setId(i);
+        tables = Lists.newArrayList();
+        tableData = Maps.newHashMap();
+
+        for (int i = 1; i <= TABLE_COUNT; i++) {
+            Table table = new Table(i);
             table.setName("table" + i);
 
             Map<Attribute, int[]> tableIntUsage = Maps.newHashMap();
@@ -86,7 +89,6 @@ public class StorageManagerLargeTest {
             Attribute[] attributes = new Attribute[ATTRIBUTE_SIZE];
 
             Attribute primaryKeyAttribute = new Attribute(DataType.INT, "id");
-            description.setPrimaryKeyAttribute(primaryKeyAttribute);
             attributes[0] = primaryKeyAttribute;
 
             for (int j = 1; j < attributes.length; j++) {
@@ -104,6 +106,7 @@ public class StorageManagerLargeTest {
             }
 
             description.setAttributes(attributes);
+            description.setPrimaryKeyAttribute(primaryKeyAttribute);
 
             tables.add(table);
 
@@ -111,6 +114,8 @@ public class StorageManagerLargeTest {
     }
 
     private void createTestRows() {
+        System.out.println("Generating " + ROW_COUNT + " random rows for each table.");
+
         for (Table table : tables) {
             Description description = table.getDescription();
 
@@ -170,6 +175,7 @@ public class StorageManagerLargeTest {
             String tableName = table.getName();
             Attribute[] attributes = table.getDescription().getAttributes();
 
+            System.out.println("Inserting test data into table with ID: " + tableId);
             testInsert(tableId, tableData.get(tableId));
 
             Map<Attribute, int[]> tableIntUsage = intUsage.get(table.getId());
@@ -178,7 +184,12 @@ public class StorageManagerLargeTest {
             int expectedRowCount = 0;
             Constraint whereConstraint = null;
 
+            System.out.println("Testing " + NUMBER_OF_SELECTION_TESTS + " random selection tests on table with ID: " + tableId);
+
+            //TODO Test more complex where constraints
             for (int i = 0; i < NUMBER_OF_SELECTION_TESTS; i++) {
+                System.out.println("Select test " + i);
+
                 int nextInt = random.nextInt(attributes.length);
 
                 Attribute attribute = attributes[nextInt];
@@ -186,7 +197,7 @@ public class StorageManagerLargeTest {
                 switch (attribute.getType()) {
                     case STRING:
                         nextInt = random.nextInt(strings.length);
-                        whereConstraint = new ValueConstraint(attribute, strings[nextInt], ValueOperator.EQUALS);
+                        whereConstraint = new ValueConstraint(attribute, "'" + strings[nextInt] + "'", ValueOperator.EQUALS);
                         expectedRowCount = tableStringUsage.get(attribute)[nextInt];
                         break;
                     case INT:
@@ -200,15 +211,24 @@ public class StorageManagerLargeTest {
             }
 
         }
+
+        /**
+         * TODO
+         * Join, update tests
+         */
     }
 
     private void testCreateTables() throws ValidationException {
+        System.out.println("Creating test tables.");
+
         for (Table table : tables) {
             manager.createTable(table);
         }
     }
 
     private void testInsert(final Integer tableId, final List<Row> rows) throws ValidationException {
+        System.out.println("Inserting test rows.");
+
         for (Row row : rows) {
             manager.insert(manager.getTableName(tableId), row);
         }

@@ -81,19 +81,25 @@ public class StorageManager {
     }
 
     /**
-     * Creates the given Table in the database with no rows. The table's ID is generated automatically and so doesn't
-     * need to be set and will be populated in the passed Table.
+     * Creates the given Table in the database with no rows. The table's ID is generated automatically if it isn't alread
+     * set. The ID does not need to be set and will be populated in the passed Table.
      *
      * @param table Table with valid name and Description
      * @throws ValidationException if the given Table doesn't have a unique name or doesn't have sufficient meta-data to be created
      */
     public void createTable(final Table table) throws ValidationException {
+        if (storageData.getTable(table.getId()) != null) {
+            throw new ValidationException("A table with the ID: " + table.getId() + " alread exists");
+        }
+
         if (storageData.tableExists(table.getName())) {
             throw new ValidationException("A table with the name " + table.getName() + " already exists");
         }
 
-        Integer id = storageData.getNextTableId();
-        table.setId(id);
+        if (table.getId() == null || table.getId() < 0) {
+            Integer id = storageData.generateNextTableId();
+            table.setId(id);
+        }
 
         tableValidator.validate(table);
         storageData.addTable(table);

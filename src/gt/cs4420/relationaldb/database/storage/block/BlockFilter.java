@@ -66,7 +66,7 @@ public class BlockFilter {
         String constraintValString = constraintVal.toString();
 
         // If the value starts and ends with ' then it is a string
-        if (constraintValString.startsWith("'") && constraintValString.endsWith("'")) {
+        if ((constraintValString.startsWith("'") && constraintValString.endsWith("'"))) {
             String rowValString = rowVal.toString();
             constraintValString = constraintValString.substring(1, constraintValString.length() - 1);
 

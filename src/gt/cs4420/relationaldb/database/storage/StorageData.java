@@ -162,6 +162,11 @@ class StorageData {
         tableNames.put(table.getName(), table.getId());
         tableData.put(table.getId(), new HashMap<Integer, Row>());
         indexManager.createIndex(table.getId());
+
+        if (table.getId() >= nextId) {
+            nextId = table.getId() + 1;
+        }
+
         dirtyCheck();
     }
 
@@ -170,9 +175,11 @@ class StorageData {
      * @param tableId
      */
     protected void removeTable(final Integer tableId) {
+        String tableName = tables.get(tableId).getName();
 
         //Remove all table data in memory
         tables.remove(tableId);
+        tableNames.remove(tableName);
         tableData.remove(tableId);
         indexManager.removeIndex(tableId);
         blockManager.removeAllBlocks(tableId);
@@ -229,8 +236,10 @@ class StorageData {
         dirtyCheck();
     }
 
-    protected Integer getNextTableId() {
-        return nextId;
+    protected Integer generateNextTableId() {
+        nextId++;
+
+        return nextId - 1;
     }
 
     /**
@@ -251,7 +260,8 @@ class StorageData {
             throw new ValidationException("A row already exists with the provided primary key attribute; primary keys must be unique");
         }
 
-        tableData.get(tableId).put(row.getPrimaryKey(), row);
+        Map<Integer, Row> data = tableData.get(tableId);
+        data.put(row.getPrimaryKey(), row);
     }
 
     private Row getRow(final Integer tableId, final Integer primaryKey) {
@@ -406,9 +416,13 @@ class StorageData {
     }
 
     protected void clearDatabase() {
-        for (Integer tableId : tables.keySet()) {
+        Set<Integer> tableIdSet = Sets.newHashSet(tables.keySet());
+
+        for (Integer tableId : tableIdSet) {
             removeTable(tableId);
         }
+
+        nextId = 0;
     }
 
     private Constraint removeIrrelevantConstraints(final Constraint constraint, final Integer tableId) {
@@ -470,7 +484,7 @@ class StorageData {
 
         dirtyCount++;
 
-        if (dirtyCount < DIRTY_COUNT_LIMIT || forceFlush) {
+        if (dirtyCount < DIRTY_COUNT_LIMIT && !forceFlush) {
             return;
         }
 
@@ -480,10 +494,23 @@ class StorageData {
     }
 
     private void export() {
-        if (!exportDisabled) {
-            exportBlocks();
-            exportIndexes();
+        if (exportDisabled) {
+            return;
         }
+
+        exportSystemCatalog();
+        exportBlocks();
+        exportIndexes();
+    }
+
+    private void exportSystemCatalog() {
+        Set<Table> tableSet = Sets.newHashSet();
+
+        for (Integer tableId : tables.keySet()) {
+            tableSet.add(tables.get(tableId));
+        }
+
+        fileManager.exportDescriptions(tableSet);
     }
 
     private void exportBlocks() {

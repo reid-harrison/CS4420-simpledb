@@ -11,6 +11,7 @@ options {
 	int numCols = 0;
 	int numVals = 0;
 	int numTables = 0;
+	int numForeignKey = 0;
 	Table table1 = new Table();
 	Table table2 = new Table();
 	boolean isJoin = false;
@@ -39,16 +40,16 @@ options {
 }
 
 @rulecatch {
-    catch (Exception e) {
-        throw new RuntimeException(e.getMessage());
+    catch (RecognitionException e) {
+        throw e;
     }
 }
 
 @lexer::members {
-	@Override
-    public void reportError(RecognitionException e) {
-        throw new RuntimeException(e.getMessage());
-    }
+	//@Override
+    //public void reportError(RecognitionException e) {
+     //   throw e.getMessage();
+    //}
 
 }
 
@@ -90,13 +91,13 @@ statement
 	|	create
 	|	insert
 	|	update
-	|	EOF
+	|	dropTable
 	;
 
 
 /* query statements */
 create
-	:	createClause^ LPAREN! columnConstraints RPAREN! SEMI!
+	:	createClause SEMI!
 	;
 	
 select
@@ -109,6 +110,10 @@ insert
 	
 update
 	:	updateClause setClause whereClause SEMI!
+	;
+	
+dropTable
+	:	DROP_TABLE^ table SEMI!
 	;
 	
 	
@@ -196,7 +201,7 @@ table
 			tables.add(table1);
 			tableNames.add($IDENT.text);
 		}
-	;
+	;catch[ValidationException e]{}
 	
 // Requires different logic than table
 onTable
@@ -210,23 +215,28 @@ onTable
 	;
 	
 createTable
-	:	IDENT
+	:	IDENT^ LPAREN! columnConstraints RPAREN!
 		{
 			table1 = storageManager.getTable($IDENT.text);
 			if(table1 != null)
 			{
 				throw new ValidationException("Table with name '" + $IDENT.text + "' already exists.");
 			}
-			System.out.println(table1);
 		}
-	;
+	;catch[ValidationException e]{}
 	
 columnConstraints
 	:	columnConstraint (COMMA! columnConstraint)*
 	;
 
 columnConstraint
-	:	column dataType constraint?
+	:	column^ dataType constraint?
+		{
+			if(numForeignKey > 1)
+			{
+				throw new IllegalArgumentException("Only one foreign key permitted in CREATE.");
+			}
+		}
 	;
 	
 dataType
@@ -235,7 +245,7 @@ dataType
 	;
 
 constraint
-	:	FOREIGN_KEY
+	:	FOREIGN_KEY {numForeignKey++;}
 	;
 
 columns
@@ -279,7 +289,7 @@ values
 			
 			validateAttrVals(table1);
 		}
-	;
+	;catch[ValidationException e]{}
 	
 order
 	:	ASC
@@ -295,7 +305,7 @@ assignment
 		{
 			validateAttrVals(table1);
 		}
-	;
+	;catch[ValidationException e]{}
 	
 // WHERE clause conditions
 searchConditions
@@ -320,7 +330,7 @@ searchCondition
 				throw new ValidationException("Validation error in WHERE clause conditions.");
 			}
 		}
-	;
+	;catch[ValidationException e]{}
 	
 // ON clause conditions when performing a JOIN
 onSearchConditions
@@ -343,7 +353,7 @@ onSearchCondition
 			
 			attrValidator.attributeTypeCheck(storageManager.getTable($onTable.text).getDescription().getAttribute($column.text), tmp);
 		}
-	;
+	;catch[ValidationException e]{}
 	
 
 
@@ -378,7 +388,9 @@ joinOperator
 /* Tokens */
 
 // Reserved words are accepted in any lowercase, uppercase, or any combination of the two
-CREATE_TABLE : ('c' | 'C')('r' | 'R')('e' | 'E')('a' | 'A')('t' | 'T')('e | E')' '('t' | 'T')('a' | 'A')('b' | 'B')('l' | 'L')('e' | 'E') ;
+CREATE_TABLE : ('c' | 'C')('r' | 'R')('e' | 'E')('a' | 'A')('t' | 'T')('e' | 'E')' 'TABLE ;
+DROP_TABLE : ('d' | 'D')('r' | 'R')('o' | 'O')('p' | 'P')' 'TABLE ;
+fragment TABLE : ('t' | 'T')('a' | 'A')('b' | 'B')('l' | 'L')('e' | 'E') ;
 SELECT : ('s' | 'S')('e' | 'E' )('l' | 'L')('e' | 'E')('c' | 'C')('t' | 'T') ;
 FROM : ('f' |'F')('r' | 'R')('o' | 'O')('m' | 'M') ;
 WHERE : ('w' | 'W')('h' | 'H')('e' | 'E')('r' | 'R')('e' | 'E') ;
