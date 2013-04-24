@@ -14,11 +14,12 @@ options {
 	Table table1 = new Table();
 	Table table2 = new Table();
 	boolean isJoin = false;
-	List<String> tables = Lists.newArrayList();
+	List<Table> tables = Lists.newArrayList();
 	List<Attribute> table1Attributes = Lists.newArrayList();
 	List<Object> insertVals = Lists.newArrayList();
 	Map<Attribute, Object> attrVals = Maps.newHashMap();
-	//StorageManager storageManager = new StorageManager();
+	AttributeValidator attrValidator = new AttributeValidator();
+	StorageManager storageManager = new StorageManager();
 	
 	@Override    
     public void displayRecognitionError(String[] tokenNames, RecognitionException e) {
@@ -52,6 +53,7 @@ package gt.cs4420.relationaldb.database.query;
 import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.Attribute;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
+import gt.cs4420.relationaldb.domain.validator.AttributeValidator;
 import gt.cs4420.relationaldb.database.storage.StorageManager;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -141,7 +143,7 @@ whereClause
 	;
 	
 orderByClause
-	:	ORDER_BY^ column (COMMA! column)* (order)?
+	:	ORDER_BY^ column (order)?
 	;
 	
 valuesClause
@@ -167,8 +169,8 @@ table
 	:	IDENT
 		{
 			//build a Table for use with validation
-			table1.setName($IDENT.text);
-			tables.add($IDENT.text);
+			table1 = storageManager.getTable($IDENT.text);
+			tables.add(table1);
 			//storageManager.validateTableExists(table1.getName());
 			//table1.setDescription(storageManager.getTable($IDENT.text).getDescription());
 		}
@@ -227,9 +229,11 @@ values
 				attrVals.put(table1Attributes.get(i), insertVals.get(i));			
 			}
 			
-			//storageManager.validateValueTypes(attrVals, table1);
+			
+			
+			attrValidator.validate(attrVals, table1);
 		}
-	;
+	;catch[ValidationException e]{}
 	
 order
 	:	ASC
@@ -262,7 +266,7 @@ onSearchConditions
 	;
 
 onSearchCondition
-	:	onTable DOT! column comparisonOperator^ value
+	:	onTable DOT!column comparisonOperator^ value
 		{
 			//TODO Possibly validate type of value against column type?
 		}
