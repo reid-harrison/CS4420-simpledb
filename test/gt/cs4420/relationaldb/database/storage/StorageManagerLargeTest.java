@@ -4,6 +4,10 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import gt.cs4420.relationaldb.domain.*;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
+import gt.cs4420.relationaldb.domain.query.Constraint;
+import gt.cs4420.relationaldb.domain.query.ValueConstraint;
+import gt.cs4420.relationaldb.domain.query.ValueOperator;
+import gt.cs4420.relationaldb.test.TestFailedException;
 
 import java.util.List;
 import java.util.Map;
@@ -18,6 +22,9 @@ public class StorageManagerLargeTest {
 
     private final int DIFFERENT_STRING_COUNT = 300;
     private final int MAX_STRING_SIZE = 100;
+    private final int MAX_INT = 300;
+
+    private final int NUMBER_OF_SELECTION_TESTS = 100;
 
     public static void main(String[] args) {
         StorageManagerLargeTest test = new StorageManagerLargeTest();
@@ -40,6 +47,9 @@ public class StorageManagerLargeTest {
     private List<Table> tables;
     private Map<Integer, List<Row>> tableData;
 
+    private Map<Integer, Map<Attribute, int[]>> intUsage;
+    private Map<Integer, Map<Attribute, int[]>> stringUsage;
+
     private Random random;
 
     public void generateData() throws ValidationException {
@@ -47,6 +57,9 @@ public class StorageManagerLargeTest {
         manager.clearDatabase();
 
         random = new Random();
+
+        intUsage = Maps.newHashMap();
+        stringUsage = Maps.newHashMap();
 
         generateRandomStrings();
 
@@ -62,6 +75,11 @@ public class StorageManagerLargeTest {
             table.setId(i);
             table.setName("table" + i);
 
+            Map<Attribute, int[]> tableIntUsage = Maps.newHashMap();
+            Map<Attribute, int[]> tableStringUsage = Maps.newHashMap();
+            intUsage.put(table.getId(), tableIntUsage);
+            stringUsage.put(table.getId(), tableStringUsage);
+
             Description description = new Description();
             table.setDescription(description);
 
@@ -76,8 +94,10 @@ public class StorageManagerLargeTest {
 
                 if (j < 5) {
                     attr = new Attribute(DataType.INT, "table" + table.getId() + "attribute" + j);
+                    tableIntUsage.put(attr, new int[MAX_INT]);
                 } else {
                     attr = new Attribute(DataType.STRING, "table" + table.getId() + "attribute" + j);
+                    tableStringUsage.put(attr, new int[DIFFERENT_STRING_COUNT]);
                 }
 
                 attributes[j] = attr;
@@ -86,6 +106,7 @@ public class StorageManagerLargeTest {
             description.setAttributes(attributes);
 
             tables.add(table);
+
         }
     }
 
@@ -95,6 +116,9 @@ public class StorageManagerLargeTest {
 
             List<Row> rows = Lists.newArrayList();
             tableData.put(table.getId(), rows);
+
+            Map<Attribute, int[]> tableIntUsage = intUsage.get(table.getId());
+            Map<Attribute, int[]> tableStringUsage = stringUsage.get(table.getId());
 
             for (int i = 0; i < ROW_COUNT; i++) {
                 Row row = new Row();
@@ -110,11 +134,25 @@ public class StorageManagerLargeTest {
                     if (attr.equals(description.getPrimaryKeyAttribute())) {
                         data = i;
                     } else {
+                        int nextInt;
+
                         switch (attr.getType()) {
                             case INT:
-                                data = random.nextInt(300);
+                                nextInt = random.nextInt(MAX_INT);
+                                data = nextInt;
+
+                                int[] intCounts = tableIntUsage.get(attr);
+                                intCounts[nextInt]++;
+
+                                break;
                             case STRING:
+                                nextInt = random.nextInt(strings.length);
                                 data = strings[random.nextInt(strings.length)];
+
+                                int[] stringCounts = tableStringUsage.get(attr);
+                                stringCounts[nextInt]++;
+
+                                break;
                         }
                     }
 
@@ -129,7 +167,38 @@ public class StorageManagerLargeTest {
 
         for (Table table : tables) {
             Integer tableId = table.getId();
+            String tableName = table.getName();
+            Attribute[] attributes = table.getDescription().getAttributes();
+
             testInsert(tableId, tableData.get(tableId));
+
+            Map<Attribute, int[]> tableIntUsage = intUsage.get(table.getId());
+            Map<Attribute, int[]> tableStringUsage = stringUsage.get(table.getId());
+
+            int expectedRowCount = 0;
+            Constraint whereConstraint = null;
+
+            for (int i = 0; i < NUMBER_OF_SELECTION_TESTS; i++) {
+                int nextInt = random.nextInt(attributes.length);
+
+                Attribute attribute = attributes[nextInt];
+
+                switch (attribute.getType()) {
+                    case STRING:
+                        nextInt = random.nextInt(strings.length);
+                        whereConstraint = new ValueConstraint(attribute, strings[nextInt], ValueOperator.EQUALS);
+                        expectedRowCount = tableStringUsage.get(attribute)[nextInt];
+                        break;
+                    case INT:
+                        nextInt = random.nextInt(MAX_INT);
+                        whereConstraint = new ValueConstraint(attribute, nextInt, ValueOperator.EQUALS);
+                        expectedRowCount = tableIntUsage.get(attribute)[nextInt];
+                        break;
+                }
+
+                testSelect(tableName, whereConstraint, expectedRowCount);
+            }
+
         }
     }
 
@@ -142,6 +211,14 @@ public class StorageManagerLargeTest {
     private void testInsert(final Integer tableId, final List<Row> rows) throws ValidationException {
         for (Row row : rows) {
             manager.insert(manager.getTableName(tableId), row);
+        }
+    }
+
+    private void testSelect(final String tableName, Constraint whereConstraint, final int expectedRowCount) {
+        List<Row> selectedRows = manager.select(tableName, whereConstraint);
+
+        if (selectedRows.size() != expectedRowCount) {
+            throw new TestFailedException("Select", "Selected " + selectedRows.size() + " rows when " + expectedRowCount + " rows were expected");
         }
     }
 
