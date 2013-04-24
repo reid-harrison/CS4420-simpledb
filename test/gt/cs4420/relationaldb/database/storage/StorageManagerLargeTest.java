@@ -72,9 +72,10 @@ public class StorageManagerLargeTest {
         System.out.println("Generating " + TABLE_COUNT + " random large tables.");
 
         tables = Lists.newArrayList();
+        tableData = Maps.newHashMap();
 
-        for (int i = 0; i < TABLE_COUNT; i++) {
-            Table table = new Table();
+        for (int i = 1; i <= TABLE_COUNT; i++) {
+            Table table = new Table(i);
             table.setName("table" + i);
 
             Map<Attribute, int[]> tableIntUsage = Maps.newHashMap();
@@ -88,7 +89,6 @@ public class StorageManagerLargeTest {
             Attribute[] attributes = new Attribute[ATTRIBUTE_SIZE];
 
             Attribute primaryKeyAttribute = new Attribute(DataType.INT, "id");
-            description.setPrimaryKeyAttribute(primaryKeyAttribute);
             attributes[0] = primaryKeyAttribute;
 
             for (int j = 1; j < attributes.length; j++) {
@@ -106,6 +106,7 @@ public class StorageManagerLargeTest {
             }
 
             description.setAttributes(attributes);
+            description.setPrimaryKeyAttribute(primaryKeyAttribute);
 
             tables.add(table);
 
@@ -187,6 +188,8 @@ public class StorageManagerLargeTest {
 
             //TODO Test more complex where constraints
             for (int i = 0; i < NUMBER_OF_SELECTION_TESTS; i++) {
+                System.out.println("Select test " + i);
+
                 int nextInt = random.nextInt(attributes.length);
 
                 Attribute attribute = attributes[nextInt];
@@ -194,7 +197,7 @@ public class StorageManagerLargeTest {
                 switch (attribute.getType()) {
                     case STRING:
                         nextInt = random.nextInt(strings.length);
-                        whereConstraint = new ValueConstraint(attribute, strings[nextInt], ValueOperator.EQUALS);
+                        whereConstraint = new ValueConstraint(attribute, "'" + strings[nextInt] + "'", ValueOperator.EQUALS);
                         expectedRowCount = tableStringUsage.get(attribute)[nextInt];
                         break;
                     case INT:

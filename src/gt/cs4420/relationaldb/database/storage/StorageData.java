@@ -162,6 +162,11 @@ class StorageData {
         tableNames.put(table.getName(), table.getId());
         tableData.put(table.getId(), new HashMap<Integer, Row>());
         indexManager.createIndex(table.getId());
+
+        if (table.getId() >= nextId) {
+            nextId = table.getId() + 1;
+        }
+
         dirtyCheck();
     }
 

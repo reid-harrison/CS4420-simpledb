@@ -6,6 +6,7 @@ import gt.cs4420.relationaldb.domain.Attribute;
 import gt.cs4420.relationaldb.domain.Row;
 import org.json.JSONObject;
 
+import java.util.Iterator;
 import java.util.Map;
 
 public class RowSerializer implements JsonSerializer<Row> {
@@ -37,8 +38,10 @@ public class RowSerializer implements JsonSerializer<Row> {
     private Map<Attribute, Object> deserializeAttributes(final JSONObject jsonObject) {
         Map<Attribute, Object> attributes = Maps.newHashMap();
 
-        while (jsonObject.keys().hasNext()) {
-            String attrName = (String) jsonObject.keys().next();
+        Iterator keys = jsonObject.keys();
+
+        while (keys.hasNext()) {
+            String attrName = (String) keys.next();
             attributes.put(new Attribute(attrName), jsonObject.get(attrName));
         }
 
