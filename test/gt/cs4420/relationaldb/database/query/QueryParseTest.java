@@ -13,7 +13,7 @@ public class QueryParseTest {
 
     @Test
     public void testQueryParse_createQuery() {
-        String query = "CREATE TABLE persons (id int, name string)";
+        String query = "CREATE TABLE persons (id int, name string);";
         QueryParser parser;
 
         try {
