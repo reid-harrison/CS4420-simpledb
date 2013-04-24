@@ -26,6 +26,7 @@ public class StorageManagerLargeTest {
     private final int MAX_INT = 300;
 
     private final int NUMBER_OF_SELECTION_TESTS = 100;
+    private final int NUMBER_OF_UPDATE_TESTS = 100;
 
     public static void main(String[] args) {
         StorageManagerLargeTest test = new StorageManagerLargeTest();
@@ -181,45 +182,116 @@ public class StorageManagerLargeTest {
             Map<Attribute, int[]> tableIntUsage = intUsage.get(table.getId());
             Map<Attribute, int[]> tableStringUsage = stringUsage.get(table.getId());
 
-            int expectedRowCount = 0;
-            Constraint whereConstraint = null;
+            System.out.println("Testing " + NUMBER_OF_SELECTION_TESTS + " random selection tests on table with ID: " + tableId);
+            runSelectionTests(table, attributes, tableIntUsage, tableStringUsage);
+
+            System.out.println("Testing " + NUMBER_OF_UPDATE_TESTS + " random update tests on table with ID: " + tableId);
+            runUpdateTests(table, attributes, tableIntUsage, tableStringUsage);
 
             System.out.println("Testing " + NUMBER_OF_SELECTION_TESTS + " random selection tests on table with ID: " + tableId);
-
-            //TODO Test more complex where constraints
-            for (int i = 0; i < NUMBER_OF_SELECTION_TESTS; i++) {
-                int nextInt = random.nextInt(attributes.length);
-
-                Attribute attribute = attributes[nextInt];
-
-                switch (attribute.getType()) {
-                    case STRING:
-                        nextInt = random.nextInt(strings.length);
-                        whereConstraint = new ValueConstraint(attribute, "'" + strings[nextInt] + "'", ValueOperator.EQUALS);
-                        expectedRowCount = tableStringUsage.get(attribute)[nextInt];
-                        break;
-                    case INT:
-                        nextInt = random.nextInt(MAX_INT);
-                        whereConstraint = new ValueConstraint(attribute, nextInt, ValueOperator.EQUALS);
-
-                        if (table.getDescription().getPrimaryKeyAttribute().equals(attribute)) {
-                            expectedRowCount = 1;
-                            break;
-                        }
-
-                        expectedRowCount = tableIntUsage.get(attribute)[nextInt];
-                        break;
-                }
-
-                testSelect(tableName, whereConstraint, expectedRowCount);
-            }
-
+            runSelectionTests(table, attributes, tableIntUsage, tableStringUsage);
         }
 
         /**
          * TODO
          * Join, update tests
          */
+    }
+
+    private void runSelectionTests(final Table table, final Attribute[] attributes, final Map<Attribute, int[]> tableIntUsage, final Map<Attribute, int[]> tableStringUsage) {
+        int expectedRowCount = 0;
+        Constraint whereConstraint = null;
+
+        //TODO Test more complex where constraints
+        for (int i = 0; i < NUMBER_OF_SELECTION_TESTS; i++) {
+            int nextInt = random.nextInt(attributes.length);
+
+            Attribute attribute = attributes[nextInt];
+
+            switch (attribute.getType()) {
+                case STRING:
+                    nextInt = random.nextInt(strings.length);
+                    whereConstraint = new ValueConstraint(attribute, "'" + strings[nextInt] + "'", ValueOperator.EQUALS);
+                    expectedRowCount = tableStringUsage.get(attribute)[nextInt];
+                    break;
+                case INT:
+                    nextInt = random.nextInt(MAX_INT);
+                    whereConstraint = new ValueConstraint(attribute, nextInt, ValueOperator.EQUALS);
+
+                    if (table.getDescription().getPrimaryKeyAttribute().equals(attribute)) {
+                        expectedRowCount = 1;
+                        break;
+                    }
+
+                    expectedRowCount = tableIntUsage.get(attribute)[nextInt];
+                    break;
+            }
+
+            testSelect(table.getName(), whereConstraint, expectedRowCount);
+        }
+    }
+
+    private void runUpdateTests(final Table table, final Attribute[] attributes, final Map<Attribute, int[]> tableIntUsage, final Map<Attribute, int[]> tableStringUsage) throws ValidationException{
+        int expectedRemovedRowCount = 0;
+        int expectedAddedRowCount = 0;
+        Constraint whereConstraint = null;
+
+        //TODO Test more complex where constraints
+        for (int i = 0; i < NUMBER_OF_UPDATE_TESTS; i++) {
+            Attribute attribute = null;
+            int nextInt = 0;
+
+            //Don't update primary keys
+            while (attribute == null || table.getDescription().getPrimaryKeyAttribute().equals(attribute)) {
+                nextInt = random.nextInt(attributes.length);
+                attribute = attributes[nextInt];
+            }
+
+            Map<Attribute, Object> updateRowData = Maps.newHashMap();
+
+            switch (attribute.getType()) {
+                case STRING:
+                    nextInt = random.nextInt(strings.length);
+                    whereConstraint = new ValueConstraint(attribute, "'" + strings[nextInt] + "'", ValueOperator.EQUALS);
+                    tableStringUsage.get(attribute)[nextInt]--;
+                    expectedRemovedRowCount = tableStringUsage.get(attribute)[nextInt];
+
+                    nextInt = random.nextInt(strings.length);
+                    updateRowData.put(attribute, strings[nextInt]);
+                    tableStringUsage.get(attribute)[nextInt]++;
+                    expectedAddedRowCount = tableStringUsage.get(attribute)[nextInt];
+
+                    break;
+                case INT:
+                    nextInt = random.nextInt(MAX_INT);
+                    whereConstraint = new ValueConstraint(attribute, nextInt, ValueOperator.EQUALS);
+                    tableIntUsage.get(attribute)[nextInt]--;
+                    expectedRemovedRowCount = tableIntUsage.get(attribute)[nextInt];
+
+                    nextInt = random.nextInt(MAX_INT);
+                    updateRowData.put(attribute, nextInt);
+                    tableIntUsage.get(attribute)[nextInt]++;
+                    expectedAddedRowCount = tableIntUsage.get(attribute)[nextInt];
+
+                    break;
+            }
+
+            Row updateRow = new Row(updateRowData);
+
+            manager.update(table.getName(), updateRow, whereConstraint);
+
+            try {
+                testSelect(table.getName(), whereConstraint, expectedRemovedRowCount);
+            } catch (final TestFailedException e) {
+                throw new TestFailedException("Update", "Rows that were supposed to be updated weren't");
+            }
+
+            try {
+                testSelect(table.getName(), whereConstraint, expectedAddedRowCount);
+            } catch (final TestFailedException e) {
+                throw new TestFailedException("Update", "Some rows were not updated with the new data that they should have now");
+            }
+        }
     }
 
     private void testCreateTables() throws ValidationException {
