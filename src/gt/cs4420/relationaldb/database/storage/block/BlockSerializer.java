@@ -146,8 +146,14 @@ public class BlockSerializer implements JsonSerializer<Block> {
         List<Row> mergeRows = block.getBlockData();
         int mergedRowCount = 0;
 
-        JSONObject previousBlockJson = json.getJSONObject("block");
-        JSONArray previousArray = previousBlockJson.getJSONArray("data");
+        JSONArray previousArray;
+
+        if (json.length() != 0) {
+            JSONObject previousBlockJson = json.getJSONObject("block");
+            previousArray = previousBlockJson.getJSONArray("data");
+        } else {
+            previousArray = new JSONArray();
+        }
 
         List<Integer> mergePrimaryKeys = Lists.newArrayList();
 

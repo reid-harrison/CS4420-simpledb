@@ -253,7 +253,8 @@ class StorageData {
             throw new ValidationException("A row already exists with the provided primary key attribute; primary keys must be unique");
         }
 
-        tableData.get(tableId).put(row.getPrimaryKey(), row);
+        Map<Integer, Row> data = tableData.get(tableId);
+        data.put(row.getPrimaryKey(), row);
     }
 
     private Row getRow(final Integer tableId, final Integer primaryKey) {
@@ -472,7 +473,7 @@ class StorageData {
 
         dirtyCount++;
 
-        if (dirtyCount < DIRTY_COUNT_LIMIT || forceFlush) {
+        if (dirtyCount < DIRTY_COUNT_LIMIT && !forceFlush) {
             return;
         }
 
