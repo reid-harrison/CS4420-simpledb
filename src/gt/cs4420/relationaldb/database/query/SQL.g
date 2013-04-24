@@ -96,7 +96,7 @@ statement
 
 /* query statements */
 create
-	:
+	:	CREATE_TABLE createTable LPAREN! RPAREN! SEMI!
 	;
 	
 select
@@ -201,6 +201,17 @@ onTable
 			if (!tableNames.contains($IDENT.text))
 			{
 				throw new IllegalArgumentException("'" + $IDENT.text + "' is not a table from which items are being queried.");
+			}
+		}
+	;
+	
+createTable
+	:	IDENT
+		{
+			table1 = storageManager.getTable($IDENT.text);
+			if(table1 != null)
+			{
+				throw new ValidationException("Table with name " + $IDENT.text + " already exists.");
 			}
 		}
 	;
