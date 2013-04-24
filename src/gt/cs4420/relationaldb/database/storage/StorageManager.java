@@ -206,4 +206,11 @@ public class StorageManager {
         }
     }
 
+    /**
+     * Deletes absolutely everything from the database
+     */
+    public void clearDatabase() {
+        storageData.clearDatabase();
+    }
+
 }

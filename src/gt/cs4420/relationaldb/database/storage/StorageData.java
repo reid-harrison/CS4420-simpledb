@@ -285,7 +285,7 @@ class StorageData {
         return row;
     }
 
-    public List<Row> getAllRows(final Integer tableId) {
+    protected List<Row> getAllRows(final Integer tableId) {
         List<Row> rows = Lists.newArrayList();
 
         for (Integer primaryKey : indexManager.getIndex(tableId).getPrimaryKeySet()) {
@@ -295,7 +295,7 @@ class StorageData {
         return rows;
     }
 
-    public List<Row> select(final Integer tableId, final Constraint whereConstraint, final OrderConstraint orderConstraint) {
+    protected List<Row> select(final Integer tableId, final Constraint whereConstraint, final OrderConstraint orderConstraint) {
         List<Row> rows = Lists.newArrayList();
         BlockFilter filter = new BlockFilter(whereConstraint);
 
@@ -353,7 +353,7 @@ class StorageData {
         return rows;
     }
 
-    public List<JoinedRow> selectJoin(final Integer leftTableId, final Integer rightTableId, final JoinConstraint joinConstraint, final Constraint whereConstraint, final OrderConstraint orderConstraint) throws ValidationException {
+    protected List<JoinedRow> selectJoin(final Integer leftTableId, final Integer rightTableId, final JoinConstraint joinConstraint, final Constraint whereConstraint, final OrderConstraint orderConstraint) throws ValidationException {
         List<JoinedRow> rows = Lists.newArrayList();
 
         ValueOperator joinOperator = joinConstraint.getOperator();
@@ -397,6 +397,12 @@ class StorageData {
         }
 
         return rows;
+    }
+
+    protected void clearDatabase() {
+        for (Integer tableId : tables.keySet()) {
+            removeTable(tableId);
+        }
     }
 
     private Constraint removeIrrelevantConstraints(final Constraint constraint, final Integer tableId) {
