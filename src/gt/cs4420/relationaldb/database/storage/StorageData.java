@@ -144,7 +144,13 @@ class StorageData {
     }
 
     protected Table getTable(final String tableName) {
-        return getTable(tableNames.get(tableName));
+        Integer tableId = getTableId(tableName);
+
+        if (tableId == null) {
+            return null;
+        }
+
+        return getTable(tableId);
     }
     
     protected Description getTableDescription(final String tableName) {
