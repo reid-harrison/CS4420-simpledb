@@ -14,7 +14,7 @@ public class QueryParseTest {
         QueryParseTest test = new QueryParseTest();
 
         try {
-            test.runTest(3);
+            test.runTest(1);
 
            /* for (int i = 0; i < 3; i++) {
                 test.runTest(i);
@@ -57,7 +57,11 @@ public class QueryParseTest {
                 break;
             
             case 3:
-            	query = "CREATE TABLE names (nameID int FOREIGN KEY, name int);";
+            	query = "CREATE TABLE names (nameID int FOREIGN KEY, name varchar(10000));";
+            	break;
+            	
+            case 4:
+            	query = "DROP TABLE phil;";
             	break;
             
             default:

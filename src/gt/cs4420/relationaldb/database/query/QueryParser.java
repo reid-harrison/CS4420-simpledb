@@ -27,7 +27,7 @@ public class QueryParser {
 		
 		queryTree = statement.tree;
 
-        whereConstraint = parseConstraint(queryTree);
+        //whereConstraint = parseConstraint(queryTree);
 	}
 	
 	public CommonTree getQueryTree()
