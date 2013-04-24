@@ -15,6 +15,7 @@ options {
 	Table table2 = new Table();
 	boolean isJoin = false;
 	List<Table> tables = Lists.newArrayList();
+	List<String> tableNames = Lists.newArrayList();
 	List<Attribute> table1Attributes = Lists.newArrayList();
 	List<Object> insertVals = Lists.newArrayList();
 	Map<Attribute, Object> attrVals = Maps.newHashMap();
@@ -25,13 +26,21 @@ options {
     public void displayRecognitionError(String[] tokenNames, RecognitionException e) {
         String hdr = getErrorHeader(e);
         String msg = getErrorMessage(e, tokenNames);
-        throw new RuntimeException(hdr + ":" + msg);
+        throw new RuntimeException(hdr + ":" + msg); 
+    }
+    
+    private void validateAttrVals(Table table) throws ValidationException {
+    	for(int i = 0; i < table1Attributes.size(); i++) {
+				attrVals.put(table1Attributes.get(i), insertVals.get(i));			
+			}
+			
+			attrValidator.validate(attrVals, table);
     }
 }
 
 @rulecatch {
-    catch (RecognitionException e) {
-        throw e;
+    catch (Exception e) {
+        throw new RuntimeException(e.getMessage());
     }
 }
 
@@ -40,7 +49,9 @@ options {
     public void reportError(RecognitionException e) {
         throw new RuntimeException(e);
     }
+
 }
+
 
 @header {
 ///////////////////////////////////////////////////////////////////
@@ -73,8 +84,10 @@ package gt.cs4420.relationaldb.database.query;
 
 
 
+
 statement
 	:	select
+	|	create
 	|	insert
 	|	update
 	|	EOF
@@ -82,6 +95,10 @@ statement
 
 
 /* query statements */
+create
+	:
+	;
+	
 select
 	:	selectClause fromClause (onClause)? (whereClause)? (orderByClause)? SEMI!
 	;
@@ -170,9 +187,10 @@ table
 		{
 			//build a Table for use with validation
 			table1 = storageManager.getTable($IDENT.text);
+			if(table1 == null)
+				throw new ValidationException("Table '" + $IDENT.text + "' does not exist in the database.");
 			tables.add(table1);
-			//storageManager.validateTableExists(table1.getName());
-			//table1.setDescription(storageManager.getTable($IDENT.text).getDescription());
+			tableNames.add($IDENT.text);
 		}
 	;
 	
@@ -180,7 +198,7 @@ table
 onTable
 	:	IDENT
 		{
-			if (!tables.contains($IDENT.text))
+			if (!tableNames.contains($IDENT.text))
 			{
 				throw new IllegalArgumentException("'" + $IDENT.text + "' is not a table from which items are being queried.");
 			}
@@ -205,12 +223,12 @@ column
 value
 	:	STRING_LITERAL
 		{
-			insertVals.add($STRING_LITERAL);
+			insertVals.add($STRING_LITERAL.text.substring(1, $STRING_LITERAL.text.length()-1));
 			numVals++;
 		}
 	| 	INTEGER
 		{
-			insertVals.add($INTEGER);
+			insertVals.add(Integer.parseInt($INTEGER.text));
 			numVals++;
 		}
 	;
@@ -225,15 +243,10 @@ values
 			}	
 			
 			// Once attributes and values are parsed, put them in a map for validation
-			for(int i = 0; i < table1Attributes.size(); i++) {
-				attrVals.put(table1Attributes.get(i), insertVals.get(i));			
-			}
 			
-			
-			
-			attrValidator.validate(attrVals, table1);
+			validateAttrVals(table1);
 		}
-	;catch[ValidationException e]{}
+	;
 	
 order
 	:	ASC
@@ -246,6 +259,9 @@ assignments
 	
 assignment
 	:	column EQUAL^ value
+		{
+			validateAttrVals(table1);
+		}
 	;
 	
 // WHERE clause conditions
@@ -256,7 +272,20 @@ searchConditions
 searchCondition
 	:	column comparisonOperator^ value
 		{
-			//TODO Possibly validate type of value against column type?
+			boolean found = false;
+			
+			for(Table table : tables)
+			{
+				if(!found)
+				{
+					validateAttrVals(table);
+				}
+			}
+			
+			if(!found)
+			{
+				throw new ValidationException("Validation error in WHERE clause conditions.");
+			}
 		}
 	;
 	
@@ -268,7 +297,18 @@ onSearchConditions
 onSearchCondition
 	:	onTable DOT!column comparisonOperator^ value
 		{
-			//TODO Possibly validate type of value against column type?
+			Object tmp;
+			attrValidator.validate(new Attribute[]{new Attribute($column.text)}, storageManager.getTable($onTable.text));
+			if($value.text.startsWith("'") && $value.text.endsWith("'"))
+			{
+				tmp = $value.text.substring(1, $value.text.length()-1);
+			}
+			else
+			{
+				tmp = Integer.parseInt($value.text);
+			}
+			
+			attrValidator.attributeTypeCheck(storageManager.getTable($onTable.text).getDescription().getAttribute($column.text), tmp);
 		}
 	;
 	
@@ -305,6 +345,7 @@ joinOperator
 /* Tokens */
 
 // Reserved words are accepted in any lowercase, uppercase, or any combination of the two
+CREATE_TABLE : ('c' | 'C')('r' | 'R')('e' | 'E')('a' | 'A')('t' | 'T')('e | E')' ' ('t' | 'T')('a' | 'A')('b' | 'B')('l' | 'L')('e' | 'E') ;
 SELECT : ('s' | 'S')('e' | 'E' )('l' | 'L')('e' | 'E')('c' | 'C')('t' | 'T') ;
 FROM : ('f' |'F')('r' | 'R')('o' | 'O')('m' | 'M') ;
 WHERE : ('w' | 'W')('h' | 'H')('e' | 'E')('r' | 'R')('e' | 'E') ;
