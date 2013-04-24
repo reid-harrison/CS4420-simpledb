@@ -253,7 +253,7 @@ public class StorageManagerLargeTest {
         strings = new String[DIFFERENT_STRING_COUNT];
 
         for (int i = 0; i < strings.length; i++) {
-            int stringSize = random.nextInt(MAX_STRING_SIZE);
+            int stringSize = random.nextInt(MAX_STRING_SIZE - 5) + 5;
 
             StringBuilder sb = new StringBuilder();
 
