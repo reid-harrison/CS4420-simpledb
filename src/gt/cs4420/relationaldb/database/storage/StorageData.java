@@ -229,8 +229,10 @@ class StorageData {
         dirtyCheck();
     }
 
-    protected Integer getNextTableId() {
-        return nextId;
+    protected Integer generateNextTableId() {
+        nextId++;
+
+        return nextId - 1;
     }
 
     /**

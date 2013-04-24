@@ -17,6 +17,10 @@ public class Table {
         setId(id);
     }
 
+    public Table(final String name, final Description desc) {
+        this(null, name, desc);
+    }
+
     public Table(final Integer id, final String name, final Description desc) {
         this(id);
         setName(name);

@@ -92,7 +92,7 @@ public class StorageManager {
             throw new ValidationException("A table with the name " + table.getName() + " already exists");
         }
 
-        Integer id = storageData.getNextTableId();
+        Integer id = storageData.generateNextTableId();
         table.setId(id);
 
         tableValidator.validate(table);

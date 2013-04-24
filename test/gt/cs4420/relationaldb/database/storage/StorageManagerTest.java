@@ -2,11 +2,13 @@ package gt.cs4420.relationaldb.database.storage;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import gt.cs4420.relationaldb.domain.*;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
 import gt.cs4420.relationaldb.test.TestFailedException;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * A basic class to test the functionality of the StorageManager. For now, the tests will just be run through the main
@@ -34,14 +36,13 @@ public class StorageManagerTest {
 
     private void run() {
 
-        try {
-            //Drop the old test table if it already exists
-            manager.dropTable("users");
-        } catch (final ValidationException e) {
-            //Users table didn't already exist
-        }
+        //Clear any old test data that still exists
+        manager.clearDatabase();
 
-        //Test createTable
+        /**
+         * Build test Tables
+         */
+        //Build user Table
         Attribute[] userAttrs = new Attribute[4];
         userAttrs[0] = new Attribute(DataType.INT, "userId");
         userAttrs[1] = new Attribute(DataType.STRING, "username");
@@ -52,22 +53,149 @@ public class StorageManagerTest {
         usersDescription.setAttributes(userAttrs);
         usersDescription.setPrimaryKeyAttribute(userAttrs[0]);
 
-        Table usersTable = new Table(0, "users", usersDescription);
+        Table usersTable = new Table("users", usersDescription);
         testCreateTable(usersTable);
+
+        //Build post Table
+        Attribute[] postAttrs = new Attribute[3];
+        postAttrs[0] = new Attribute(DataType.INT, "postId");
+        postAttrs[1] = new Attribute(DataType.INT, "userId");
+        postAttrs[2] = new Attribute(DataType.STRING, "post");
+
+        Description postsDescription = new Description();
+        postsDescription.setAttributes(postAttrs);
+        postsDescription.setPrimaryKeyAttribute(postAttrs[0]);
+
+        Table postsTable = new Table("posts", postsDescription);
+        testCreateTable(postsTable);
+
+        //Build followers Table
+        Attribute[] followerAttrs = new Attribute[3];
+        followerAttrs[0] = new Attribute(DataType.INT, "followId");
+        followerAttrs[1] = new Attribute(DataType.INT, "followerId");
+        followerAttrs[2] = new Attribute(DataType.INT, "followedId");
+
+        Description followerDescription = new Description();
+        followerDescription.setAttributes(followerAttrs);
+        followerDescription.setPrimaryKeyAttribute(followerAttrs[0]);
+
+        Table followersTable = new Table("followers", followerDescription);
+        testCreateTable(followersTable);
+
+        //Build a test Set
+        Set<Table> testTableSet = Sets.newHashSet();
+        testTableSet.add(usersTable);
+        testTableSet.add(postsTable);
+        testTableSet.add(followersTable);
 
         //Test getTable
         testGetTable("users", usersTable);
+        testGetTable("posts", postsTable);
+        testGetTable("followers", followersTable);
 
-        //Test insert (This should currently fail since the table was just dropped
-        Map<Attribute, Object> attributes = Maps.newHashMap();
-        attributes.put(userAttrs[0], 0);
-        attributes.put(userAttrs[1], "reid");
-        attributes.put(userAttrs[2], "rharr90@gmail.com");
-        attributes.put(userAttrs[3], "reidpass");
-        testInsert(usersTable.getId(), attributes);
+        //Test insert
+        Row userRow1 = new Row();
+        userRow1.setPrimaryKey(0);
+        Map<Attribute, Object> user1Attrs = Maps.newHashMap();
+        user1Attrs.put(userAttrs[0], 0);
+        user1Attrs.put(userAttrs[1], "reid");
+        user1Attrs.put(userAttrs[2], "rharr90@gmail.com");
+        user1Attrs.put(userAttrs[3], "reidpass");
+        userRow1.setRowData(user1Attrs);
+        testInsert(usersTable.getId(), userRow1.getRowData());
 
-        //Test dropTable
-        testDropTable(usersTable.getId());
+        Row userRow2 = new Row();
+        userRow2.setPrimaryKey(1);
+        Map<Attribute, Object> user2Attrs = Maps.newHashMap();
+        user2Attrs.put(userAttrs[0], 1);
+        user2Attrs.put(userAttrs[1], "phil");
+        user2Attrs.put(userAttrs[2], "sortofrican90@gmail.com");
+        user2Attrs.put(userAttrs[3], "philpass");
+        userRow2.setRowData(user2Attrs);
+        testInsert(usersTable.getId(), userRow2.getRowData());
+
+        Row userRow3 = new Row();
+        userRow3.setPrimaryKey(2);
+        Map<Attribute, Object> user3Attrs = Maps.newHashMap();
+        user3Attrs.put(userAttrs[0], 2);
+        user3Attrs.put(userAttrs[1], "bruce");
+        user3Attrs.put(userAttrs[2], "chenhao.liu@gmail.com");
+        user3Attrs.put(userAttrs[3], "brucepass");
+        userRow3.setRowData(user3Attrs);
+        testInsert(usersTable.getId(), userRow3.getRowData());
+
+        Row userRow4 = new Row();
+        userRow4.setPrimaryKey(3);
+        Map<Attribute, Object> user4Attrs = Maps.newHashMap();
+        user4Attrs.put(userAttrs[0], 3);
+        user4Attrs.put(userAttrs[1], "jeff");
+        user4Attrs.put(userAttrs[2], "chenhao.liu@gmail.com");
+        user4Attrs.put(userAttrs[3], "brucepass");
+        userRow4.setRowData(user4Attrs);
+        testInsert(usersTable.getId(), userRow4.getRowData());
+
+        Row postRow1 = new Row();
+        postRow1.setPrimaryKey(0);
+        Map<Attribute, Object> post1Attrs = Maps.newHashMap();
+        post1Attrs.put(postAttrs[0], 0);
+        post1Attrs.put(postAttrs[1], 0);
+        post1Attrs.put(postAttrs[2], "This is the first post");
+        postRow1.setRowData(post1Attrs);
+        testInsert(postsTable.getId(), postRow1.getRowData());
+
+        Row postRow2 = new Row();
+        postRow2.setPrimaryKey(1);
+        Map<Attribute, Object> post2Attrs = Maps.newHashMap();
+        post2Attrs.put(postAttrs[0], 1);
+        post2Attrs.put(postAttrs[1], 1);
+        post2Attrs.put(postAttrs[2], "This is the second post");
+        postRow2.setRowData(post2Attrs);
+        testInsert(postsTable.getId(), postRow2.getRowData());
+
+        Row postRow3 = new Row();
+        postRow3.setPrimaryKey(2);
+        Map<Attribute, Object> post3Attrs = Maps.newHashMap();
+        post3Attrs.put(postAttrs[0], 2);
+        post3Attrs.put(postAttrs[1], 2);
+        post3Attrs.put(postAttrs[2], "This is the third post");
+        postRow3.setRowData(post3Attrs);
+        testInsert(postsTable.getId(), postRow3.getRowData());
+
+        Row postRow4 = new Row();
+        postRow4.setPrimaryKey(3);
+        Map<Attribute, Object> post4Attrs = Maps.newHashMap();
+        post4Attrs.put(postAttrs[0], 3);
+        post4Attrs.put(postAttrs[1], 3);
+        post4Attrs.put(postAttrs[2], "This is the fourth post");
+        postRow4.setRowData(post4Attrs);
+        testInsert(postsTable.getId(), postRow4.getRowData());
+
+        Row followerRow1 = new Row();
+        followerRow1.setPrimaryKey(0);
+        Map<Attribute, Object> follower1Attrs = Maps.newHashMap();
+        follower1Attrs.put(followerAttrs[0], 0);
+        follower1Attrs.put(followerAttrs[1], 1);
+        follower1Attrs.put(followerAttrs[2], 0);
+        followerRow1.setRowData(follower1Attrs);
+        testInsert(followersTable.getId(), followerRow1.getRowData());
+
+        Row followerRow2 = new Row();
+        followerRow2.setPrimaryKey(1);
+        Map<Attribute, Object> follower2Attrs = Maps.newHashMap();
+        follower2Attrs.put(followerAttrs[0], 1);
+        follower2Attrs.put(followerAttrs[1], 2);
+        follower2Attrs.put(followerAttrs[2], 0);
+        followerRow2.setRowData(follower2Attrs);
+        testInsert(followersTable.getId(), followerRow2.getRowData());
+
+        Row followerRow3 = new Row();
+        followerRow3.setPrimaryKey(2);
+        Map<Attribute, Object> follower3Attrs = Maps.newHashMap();
+        follower3Attrs.put(followerAttrs[0], 2);
+        follower3Attrs.put(followerAttrs[1], 1);
+        follower3Attrs.put(followerAttrs[2], 3);
+        followerRow3.setRowData(follower3Attrs);
+        testInsert(followersTable.getId(), followerRow3.getRowData());
 
     }
 

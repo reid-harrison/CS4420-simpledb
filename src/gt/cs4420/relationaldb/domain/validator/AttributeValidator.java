@@ -51,6 +51,7 @@ public class AttributeValidator implements Validator<Attribute> {
             if (index < 0) {
                 ve.addMessage("The attribute " + attr.getName() + " of type " + attr.getType()
                         + " is not in the description of table \'" + table.getName() + "\'");
+                throw ve;
             }
 
             Attribute descAttr = descAttributes.get(index);
