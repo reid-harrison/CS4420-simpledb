@@ -11,9 +11,7 @@ import gt.cs4420.relationaldb.database.storage.index.Index;
 import gt.cs4420.relationaldb.database.storage.index.IndexManager;
 import gt.cs4420.relationaldb.domain.*;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
-import gt.cs4420.relationaldb.domain.query.Constraint;
-import gt.cs4420.relationaldb.domain.query.JoinConstraint;
-import gt.cs4420.relationaldb.domain.query.ValueOperator;
+import gt.cs4420.relationaldb.domain.query.*;
 
 import java.util.*;
 
@@ -383,10 +381,11 @@ class StorageData {
         //TODO support more than just inner join
         JoinConstraint.JoinType joinType = joinConstraint.getJoinType();
 
-        //TODO Check where constraint against table descriptions to see which table they are valid for
+        Constraint leftWhereConstraint = removeIrrelevantConstraints(whereConstraint, leftTableId);
+        Constraint rightWhereConstraint = removeIrrelevantConstraints(whereConstraint, leftTableId);
 
-        List<Row> leftRows = select(leftTableId, whereConstraint);
-        List<Row> rightRows = select(rightTableId, whereConstraint);
+        List<Row> leftRows = select(leftTableId, leftWhereConstraint);
+        List<Row> rightRows = select(rightTableId, rightWhereConstraint);
 
         for (Row leftRow : leftRows) {
             Object leftValue = leftRow.getRowData().get(leftAttribute);
@@ -409,6 +408,48 @@ class StorageData {
         }
 
         return rows;
+    }
+
+    private Constraint removeIrrelevantConstraints(final Constraint constraint, final Integer tableId) {
+
+        if (constraint instanceof LogicalConstraint) {
+            LogicalConstraint logicalConstraint = (LogicalConstraint) constraint;
+
+            Constraint leftConstraint = removeIrrelevantConstraints(logicalConstraint.getLeftConstraint(), tableId);
+            Constraint rightConstraint = removeIrrelevantConstraints(logicalConstraint.getRightConstraint(), tableId);
+
+            if (leftConstraint == null) {
+                if (rightConstraint == null) {
+                    return null;
+                }
+
+                return rightConstraint;
+            }
+
+            if (rightConstraint == null) {
+                return leftConstraint;
+            }
+
+            logicalConstraint.setLeftConstraint(leftConstraint);
+            logicalConstraint.setRightConstraint(rightConstraint);
+
+            return logicalConstraint;
+        }
+
+        if (constraint instanceof ValueConstraint) {
+            ValueConstraint valueConstraint = (ValueConstraint) constraint;
+            Attribute attribute = valueConstraint.getAttribute();
+
+            List<Attribute> attrs = Arrays.asList(tables.get(tableId).getDescription().getAttributes());
+
+            if (attrs.contains(attribute)) {
+                return constraint;
+            }
+
+            return null;
+        }
+
+        return null;
     }
 
     /**
