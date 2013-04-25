@@ -118,6 +118,10 @@ public class BlockSerializer implements JsonSerializer<Block> {
     public List<Block> deserializeBlockMetaData(final JSONObject json) {
         List<Block> blocks = Lists.newArrayList();
 
+        if (!json.has("meta")) {
+            return blocks;
+        }
+
         JSONArray metaArray = json.getJSONArray("meta");
 
         for (int i = 0; i < metaArray.length(); i++) {

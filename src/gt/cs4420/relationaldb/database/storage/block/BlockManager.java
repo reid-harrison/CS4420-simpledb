@@ -9,7 +9,7 @@ import java.util.Set;
 public class BlockManager {
 
     //The maximum amount of attributes to store in a single block
-    private final int MAX_BLOCK_SIZE = 16;
+    private final int MAX_BLOCK_SIZE = 50;
 
     //Table ID -> (Block ID -> Block meta-data)
     private Map<Integer, Map<Integer, Block>> tableBlocks;
