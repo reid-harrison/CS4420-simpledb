@@ -4,11 +4,13 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
+import gt.cs4420.relationaldb.database.query.QueryEngine;
 import gt.cs4420.relationaldb.database.query.QueryParser;
 import gt.cs4420.relationaldb.domain.*;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
 import gt.cs4420.relationaldb.test.TestFailedException;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,7 +33,7 @@ public class StorageManagerTest {
         String query = "";
         
         //for(int i = 0; i < 5; i++){
-            int choice = 3;
+            int choice = 0;
 
             switch(choice)
             {
@@ -93,7 +95,13 @@ public class StorageManagerTest {
             } catch (RecognitionException e) {
                 e.printStackTrace();
             }
-
+            QueryEngine qe = new QueryEngine(new StorageManager());
+            
+            List<JoinedRow> results = qe.selectFromTable(parser);
+            
+            System.out.println(results.get(0));
+            
+            
             DOTTreeGenerator gen = new DOTTreeGenerator();
             CommonTree queryTree = parser.getQueryTree();
             StringTemplate st = gen.toDOT(queryTree);
