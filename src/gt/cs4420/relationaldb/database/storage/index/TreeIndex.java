@@ -168,12 +168,12 @@ public class TreeIndex extends AbstractIndex {
     public void addIndexEntry(Integer primaryKey, Integer blockId, Integer blockIndex) {
         //TODO Implement addIndexEntry
     	put(primaryKey, blockId, blockIndex);
-        //super.addIndexEntry(primaryKey, blockId, blockIndex);
+        super.addIndexEntry(primaryKey, blockId, blockIndex);
     }
 
     @Override
     public void removeIndexEntry(Integer primaryKey) {
-        //super.removeIndexEntry(primaryKey);
+        super.removeIndexEntry(primaryKey);
     	delete(primaryKey);
         //TODO Implement removeIndexEntry
     }
