@@ -1,4 +1,4 @@
-// $ANTLR 3.5 C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g 2013-04-24 22:17:32
+// $ANTLR 3.5 C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g 2013-04-25 00:04:25
 
 ///////////////////////////////////////////////////////////////////
 //                                                               //
@@ -671,7 +671,7 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "createClause"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:125:1: createClause : CREATE_TABLE ^ createTable ;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:125:1: createClause : CREATE_TABLE createTable ;
 	public final SQLParser.createClause_return createClause() throws RecognitionException {
 		SQLParser.createClause_return retval = new SQLParser.createClause_return();
 		retval.start = input.LT(1);
@@ -684,17 +684,17 @@ public class SQLParser extends Parser {
 		CommonTree CREATE_TABLE24_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:126:2: ( CREATE_TABLE ^ createTable )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:126:4: CREATE_TABLE ^ createTable
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:126:2: ( CREATE_TABLE createTable )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:126:4: CREATE_TABLE createTable
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
 
 			CREATE_TABLE24=(Token)match(input,CREATE_TABLE,FOLLOW_CREATE_TABLE_in_createClause231); 
 			CREATE_TABLE24_tree = (CommonTree)adaptor.create(CREATE_TABLE24);
-			root_0 = (CommonTree)adaptor.becomeRoot(CREATE_TABLE24_tree, root_0);
+			adaptor.addChild(root_0, CREATE_TABLE24_tree);
 
-			pushFollow(FOLLOW_createTable_in_createClause234);
+			pushFollow(FOLLOW_createTable_in_createClause233);
 			createTable25=createTable();
 			state._fsp--;
 
@@ -748,11 +748,11 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			SELECT26=(Token)match(input,SELECT,FOLLOW_SELECT_in_selectClause245); 
+			SELECT26=(Token)match(input,SELECT,FOLLOW_SELECT_in_selectClause244); 
 			SELECT26_tree = (CommonTree)adaptor.create(SELECT26);
 			root_0 = (CommonTree)adaptor.becomeRoot(SELECT26_tree, root_0);
 
-			pushFollow(FOLLOW_columns_in_selectClause248);
+			pushFollow(FOLLOW_columns_in_selectClause247);
 			columns27=columns();
 			state._fsp--;
 
@@ -806,11 +806,11 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			INSERT_INTO28=(Token)match(input,INSERT_INTO,FOLLOW_INSERT_INTO_in_insertClause260); 
+			INSERT_INTO28=(Token)match(input,INSERT_INTO,FOLLOW_INSERT_INTO_in_insertClause259); 
 			INSERT_INTO28_tree = (CommonTree)adaptor.create(INSERT_INTO28);
 			root_0 = (CommonTree)adaptor.becomeRoot(INSERT_INTO28_tree, root_0);
 
-			pushFollow(FOLLOW_insertParams_in_insertClause263);
+			pushFollow(FOLLOW_insertParams_in_insertClause262);
 			insertParams29=insertParams();
 			state._fsp--;
 
@@ -864,11 +864,11 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			UPDATE30=(Token)match(input,UPDATE,FOLLOW_UPDATE_in_updateClause275); 
+			UPDATE30=(Token)match(input,UPDATE,FOLLOW_UPDATE_in_updateClause274); 
 			UPDATE30_tree = (CommonTree)adaptor.create(UPDATE30);
 			root_0 = (CommonTree)adaptor.becomeRoot(UPDATE30_tree, root_0);
 
-			pushFollow(FOLLOW_table_in_updateClause278);
+			pushFollow(FOLLOW_table_in_updateClause277);
 			table31=table();
 			state._fsp--;
 
@@ -922,11 +922,11 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			FROM32=(Token)match(input,FROM,FOLLOW_FROM_in_fromClause290); 
+			FROM32=(Token)match(input,FROM,FOLLOW_FROM_in_fromClause289); 
 			FROM32_tree = (CommonTree)adaptor.create(FROM32);
 			root_0 = (CommonTree)adaptor.becomeRoot(FROM32_tree, root_0);
 
-			pushFollow(FOLLOW_tableClause_in_fromClause293);
+			pushFollow(FOLLOW_tableClause_in_fromClause292);
 			tableClause33=tableClause();
 			state._fsp--;
 
@@ -1012,7 +1012,7 @@ public class SQLParser extends Parser {
 					root_0 = (CommonTree)adaptor.nil();
 
 
-					pushFollow(FOLLOW_table_in_tableClause306);
+					pushFollow(FOLLOW_table_in_tableClause305);
 					table34=table();
 					state._fsp--;
 
@@ -1026,7 +1026,7 @@ public class SQLParser extends Parser {
 					root_0 = (CommonTree)adaptor.nil();
 
 
-					pushFollow(FOLLOW_joinClause_in_tableClause311);
+					pushFollow(FOLLOW_joinClause_in_tableClause310);
 					joinClause35=joinClause();
 					state._fsp--;
 
@@ -1082,7 +1082,7 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			pushFollow(FOLLOW_table_in_joinClause323);
+			pushFollow(FOLLOW_table_in_joinClause322);
 			table36=table();
 			state._fsp--;
 
@@ -1102,12 +1102,12 @@ public class SQLParser extends Parser {
 				case 1 :
 					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:151:11: joinOperator ^ table
 					{
-					pushFollow(FOLLOW_joinOperator_in_joinClause326);
+					pushFollow(FOLLOW_joinOperator_in_joinClause325);
 					joinOperator37=joinOperator();
 					state._fsp--;
 
 					root_0 = (CommonTree)adaptor.becomeRoot(joinOperator37.getTree(), root_0);
-					pushFollow(FOLLOW_table_in_joinClause329);
+					pushFollow(FOLLOW_table_in_joinClause328);
 					table38=table();
 					state._fsp--;
 
@@ -1181,11 +1181,11 @@ public class SQLParser extends Parser {
 							throw new IllegalArgumentException("Expecting previous join clause.");
 						}
 					
-			ON39=(Token)match(input,ON,FOLLOW_ON_in_onClause352); 
+			ON39=(Token)match(input,ON,FOLLOW_ON_in_onClause351); 
 			ON39_tree = (CommonTree)adaptor.create(ON39);
 			root_0 = (CommonTree)adaptor.becomeRoot(ON39_tree, root_0);
 
-			pushFollow(FOLLOW_onSearchConditions_in_onClause355);
+			pushFollow(FOLLOW_onSearchConditions_in_onClause354);
 			onSearchConditions40=onSearchConditions();
 			state._fsp--;
 
@@ -1239,11 +1239,11 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			WHERE41=(Token)match(input,WHERE,FOLLOW_WHERE_in_whereClause367); 
+			WHERE41=(Token)match(input,WHERE,FOLLOW_WHERE_in_whereClause366); 
 			WHERE41_tree = (CommonTree)adaptor.create(WHERE41);
 			root_0 = (CommonTree)adaptor.becomeRoot(WHERE41_tree, root_0);
 
-			pushFollow(FOLLOW_searchConditions_in_whereClause370);
+			pushFollow(FOLLOW_searchConditions_in_whereClause369);
 			searchConditions42=searchConditions();
 			state._fsp--;
 
@@ -1298,11 +1298,11 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			ORDER_BY43=(Token)match(input,ORDER_BY,FOLLOW_ORDER_BY_in_orderByClause382); 
+			ORDER_BY43=(Token)match(input,ORDER_BY,FOLLOW_ORDER_BY_in_orderByClause381); 
 			ORDER_BY43_tree = (CommonTree)adaptor.create(ORDER_BY43);
 			root_0 = (CommonTree)adaptor.becomeRoot(ORDER_BY43_tree, root_0);
 
-			pushFollow(FOLLOW_orderByColumn_in_orderByClause385);
+			pushFollow(FOLLOW_orderByColumn_in_orderByClause384);
 			orderByColumn44=orderByColumn();
 			state._fsp--;
 
@@ -1318,7 +1318,7 @@ public class SQLParser extends Parser {
 				case 1 :
 					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:173:29: order
 					{
-					pushFollow(FOLLOW_order_in_orderByClause388);
+					pushFollow(FOLLOW_order_in_orderByClause387);
 					order45=order();
 					state._fsp--;
 
@@ -1381,18 +1381,18 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			VALUES46=(Token)match(input,VALUES,FOLLOW_VALUES_in_valuesClause402); 
+			VALUES46=(Token)match(input,VALUES,FOLLOW_VALUES_in_valuesClause401); 
 			VALUES46_tree = (CommonTree)adaptor.create(VALUES46);
 			root_0 = (CommonTree)adaptor.becomeRoot(VALUES46_tree, root_0);
 
-			LPAREN47=(Token)match(input,LPAREN,FOLLOW_LPAREN_in_valuesClause405); 
-			pushFollow(FOLLOW_values_in_valuesClause408);
+			LPAREN47=(Token)match(input,LPAREN,FOLLOW_LPAREN_in_valuesClause404); 
+			pushFollow(FOLLOW_values_in_valuesClause407);
 			values48=values();
 			state._fsp--;
 
 			adaptor.addChild(root_0, values48.getTree());
 
-			RPAREN49=(Token)match(input,RPAREN,FOLLOW_RPAREN_in_valuesClause410); 
+			RPAREN49=(Token)match(input,RPAREN,FOLLOW_RPAREN_in_valuesClause409); 
 			}
 
 			retval.stop = input.LT(-1);
@@ -1441,11 +1441,11 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			SET50=(Token)match(input,SET,FOLLOW_SET_in_setClause422); 
+			SET50=(Token)match(input,SET,FOLLOW_SET_in_setClause421); 
 			SET50_tree = (CommonTree)adaptor.create(SET50);
 			root_0 = (CommonTree)adaptor.becomeRoot(SET50_tree, root_0);
 
-			pushFollow(FOLLOW_assignments_in_setClause425);
+			pushFollow(FOLLOW_assignments_in_setClause424);
 			assignments51=assignments();
 			state._fsp--;
 
@@ -1502,19 +1502,19 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			pushFollow(FOLLOW_table_in_insertParams445);
+			pushFollow(FOLLOW_table_in_insertParams444);
 			table52=table();
 			state._fsp--;
 
 			root_0 = (CommonTree)adaptor.becomeRoot(table52.getTree(), root_0);
-			LPAREN53=(Token)match(input,LPAREN,FOLLOW_LPAREN_in_insertParams448); 
-			pushFollow(FOLLOW_insertColumns_in_insertParams451);
+			LPAREN53=(Token)match(input,LPAREN,FOLLOW_LPAREN_in_insertParams447); 
+			pushFollow(FOLLOW_insertColumns_in_insertParams450);
 			insertColumns54=insertColumns();
 			state._fsp--;
 
 			adaptor.addChild(root_0, insertColumns54.getTree());
 
-			RPAREN55=(Token)match(input,RPAREN,FOLLOW_RPAREN_in_insertParams453); 
+			RPAREN55=(Token)match(input,RPAREN,FOLLOW_RPAREN_in_insertParams452); 
 			}
 
 			retval.stop = input.LT(-1);
@@ -1564,7 +1564,7 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			pushFollow(FOLLOW_insertColumn_in_insertColumns465);
+			pushFollow(FOLLOW_insertColumn_in_insertColumns464);
 			insertColumn56=insertColumn();
 			state._fsp--;
 
@@ -1583,8 +1583,8 @@ public class SQLParser extends Parser {
 				case 1 :
 					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:196:18: COMMA ! insertColumn
 					{
-					COMMA57=(Token)match(input,COMMA,FOLLOW_COMMA_in_insertColumns468); 
-					pushFollow(FOLLOW_insertColumn_in_insertColumns471);
+					COMMA57=(Token)match(input,COMMA,FOLLOW_COMMA_in_insertColumns467); 
+					pushFollow(FOLLOW_insertColumn_in_insertColumns470);
 					insertColumn58=insertColumn();
 					state._fsp--;
 
@@ -1645,7 +1645,7 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			IDENT59=(Token)match(input,IDENT,FOLLOW_IDENT_in_insertColumn485); 
+			IDENT59=(Token)match(input,IDENT,FOLLOW_IDENT_in_insertColumn484); 
 			IDENT59_tree = (CommonTree)adaptor.create(IDENT59);
 			adaptor.addChild(root_0, IDENT59_tree);
 
@@ -1702,7 +1702,7 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			IDENT60=(Token)match(input,IDENT,FOLLOW_IDENT_in_table510); 
+			IDENT60=(Token)match(input,IDENT,FOLLOW_IDENT_in_table509); 
 			IDENT60_tree = (CommonTree)adaptor.create(IDENT60);
 			adaptor.addChild(root_0, IDENT60_tree);
 
@@ -1760,7 +1760,7 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			IDENT61=(Token)match(input,IDENT,FOLLOW_IDENT_in_onTable530); 
+			IDENT61=(Token)match(input,IDENT,FOLLOW_IDENT_in_onTable529); 
 			IDENT61_tree = (CommonTree)adaptor.create(IDENT61);
 			adaptor.addChild(root_0, IDENT61_tree);
 
@@ -1821,18 +1821,18 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			IDENT62=(Token)match(input,IDENT,FOLLOW_IDENT_in_createTable549); 
+			IDENT62=(Token)match(input,IDENT,FOLLOW_IDENT_in_createTable548); 
 			IDENT62_tree = (CommonTree)adaptor.create(IDENT62);
 			adaptor.addChild(root_0, IDENT62_tree);
 
-			LPAREN63=(Token)match(input,LPAREN,FOLLOW_LPAREN_in_createTable551); 
-			pushFollow(FOLLOW_columnConstraints_in_createTable554);
+			LPAREN63=(Token)match(input,LPAREN,FOLLOW_LPAREN_in_createTable550); 
+			pushFollow(FOLLOW_columnConstraints_in_createTable553);
 			columnConstraints64=columnConstraints();
 			state._fsp--;
 
 			adaptor.addChild(root_0, columnConstraints64.getTree());
 
-			RPAREN65=(Token)match(input,RPAREN,FOLLOW_RPAREN_in_createTable556); 
+			RPAREN65=(Token)match(input,RPAREN,FOLLOW_RPAREN_in_createTable555); 
 
 						table1 = storageManager.getTable((IDENT62!=null?IDENT62.getText():null));
 						if(table1 != null)
@@ -1888,7 +1888,7 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			pushFollow(FOLLOW_columnConstraint_in_columnConstraints576);
+			pushFollow(FOLLOW_columnConstraint_in_columnConstraints575);
 			columnConstraint66=columnConstraint();
 			state._fsp--;
 
@@ -1907,8 +1907,8 @@ public class SQLParser extends Parser {
 				case 1 :
 					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:243:22: COMMA ! columnConstraint
 					{
-					COMMA67=(Token)match(input,COMMA,FOLLOW_COMMA_in_columnConstraints579); 
-					pushFollow(FOLLOW_columnConstraint_in_columnConstraints582);
+					COMMA67=(Token)match(input,COMMA,FOLLOW_COMMA_in_columnConstraints578); 
+					pushFollow(FOLLOW_columnConstraint_in_columnConstraints581);
 					columnConstraint68=columnConstraint();
 					state._fsp--;
 
@@ -1970,12 +1970,12 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			pushFollow(FOLLOW_column_in_columnConstraint595);
+			pushFollow(FOLLOW_column_in_columnConstraint594);
 			column69=column();
 			state._fsp--;
 
 			root_0 = (CommonTree)adaptor.becomeRoot(column69.getTree(), root_0);
-			pushFollow(FOLLOW_dataType_in_columnConstraint598);
+			pushFollow(FOLLOW_dataType_in_columnConstraint597);
 			dataType70=dataType();
 			state._fsp--;
 
@@ -1991,7 +1991,7 @@ public class SQLParser extends Parser {
 				case 1 :
 					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:247:21: constraint
 					{
-					pushFollow(FOLLOW_constraint_in_columnConstraint600);
+					pushFollow(FOLLOW_constraint_in_columnConstraint599);
 					constraint71=constraint();
 					state._fsp--;
 
@@ -2111,7 +2111,7 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			PRIMARY_KEY73=(Token)match(input,PRIMARY_KEY,FOLLOW_PRIMARY_KEY_in_constraint636); 
+			PRIMARY_KEY73=(Token)match(input,PRIMARY_KEY,FOLLOW_PRIMARY_KEY_in_constraint635); 
 			PRIMARY_KEY73_tree = (CommonTree)adaptor.create(PRIMARY_KEY73);
 			adaptor.addChild(root_0, PRIMARY_KEY73_tree);
 
@@ -2168,7 +2168,7 @@ public class SQLParser extends Parser {
 			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:266:4: ( column ( COMMA ! column )* )
 			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:266:5: column ( COMMA ! column )*
 			{
-			pushFollow(FOLLOW_column_in_columns650);
+			pushFollow(FOLLOW_column_in_columns649);
 			column74=column();
 			state._fsp--;
 
@@ -2187,8 +2187,8 @@ public class SQLParser extends Parser {
 				case 1 :
 					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:266:13: COMMA ! column
 					{
-					COMMA75=(Token)match(input,COMMA,FOLLOW_COMMA_in_columns653); 
-					pushFollow(FOLLOW_column_in_columns656);
+					COMMA75=(Token)match(input,COMMA,FOLLOW_COMMA_in_columns652); 
+					pushFollow(FOLLOW_column_in_columns655);
 					column76=column();
 					state._fsp--;
 
@@ -2251,7 +2251,7 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			IDENT77=(Token)match(input,IDENT,FOLLOW_IDENT_in_column671); 
+			IDENT77=(Token)match(input,IDENT,FOLLOW_IDENT_in_column670); 
 			IDENT77_tree = (CommonTree)adaptor.create(IDENT77);
 			adaptor.addChild(root_0, IDENT77_tree);
 
@@ -2305,7 +2305,7 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			IDENT78=(Token)match(input,IDENT,FOLLOW_IDENT_in_orderByColumn687); 
+			IDENT78=(Token)match(input,IDENT,FOLLOW_IDENT_in_orderByColumn686); 
 			IDENT78_tree = (CommonTree)adaptor.create(IDENT78);
 			adaptor.addChild(root_0, IDENT78_tree);
 
@@ -2375,7 +2375,7 @@ public class SQLParser extends Parser {
 					root_0 = (CommonTree)adaptor.nil();
 
 
-					STRING_LITERAL79=(Token)match(input,STRING_LITERAL,FOLLOW_STRING_LITERAL_in_value700); 
+					STRING_LITERAL79=(Token)match(input,STRING_LITERAL,FOLLOW_STRING_LITERAL_in_value699); 
 					STRING_LITERAL79_tree = (CommonTree)adaptor.create(STRING_LITERAL79);
 					adaptor.addChild(root_0, STRING_LITERAL79_tree);
 
@@ -2395,7 +2395,7 @@ public class SQLParser extends Parser {
 					root_0 = (CommonTree)adaptor.nil();
 
 
-					INTEGER80=(Token)match(input,INTEGER,FOLLOW_INTEGER_in_value710); 
+					INTEGER80=(Token)match(input,INTEGER,FOLLOW_INTEGER_in_value709); 
 					INTEGER80_tree = (CommonTree)adaptor.create(INTEGER80);
 					adaptor.addChild(root_0, INTEGER80_tree);
 
@@ -2458,7 +2458,7 @@ public class SQLParser extends Parser {
 			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:302:4: ( value ( COMMA ! value )* )
 			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:302:5: value ( COMMA ! value )*
 			{
-			pushFollow(FOLLOW_value_in_values727);
+			pushFollow(FOLLOW_value_in_values726);
 			value81=value();
 			state._fsp--;
 
@@ -2477,8 +2477,8 @@ public class SQLParser extends Parser {
 				case 1 :
 					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:302:12: COMMA ! value
 					{
-					COMMA82=(Token)match(input,COMMA,FOLLOW_COMMA_in_values730); 
-					pushFollow(FOLLOW_value_in_values733);
+					COMMA82=(Token)match(input,COMMA,FOLLOW_COMMA_in_values729); 
+					pushFollow(FOLLOW_value_in_values732);
 					value83=value();
 					state._fsp--;
 
@@ -2608,7 +2608,7 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			pushFollow(FOLLOW_assignment_in_assignments772);
+			pushFollow(FOLLOW_assignment_in_assignments771);
 			assignment85=assignment();
 			state._fsp--;
 
@@ -2627,8 +2627,8 @@ public class SQLParser extends Parser {
 				case 1 :
 					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:320:16: COMMA ! assignment
 					{
-					COMMA86=(Token)match(input,COMMA,FOLLOW_COMMA_in_assignments775); 
-					pushFollow(FOLLOW_assignment_in_assignments778);
+					COMMA86=(Token)match(input,COMMA,FOLLOW_COMMA_in_assignments774); 
+					pushFollow(FOLLOW_assignment_in_assignments777);
 					assignment87=assignment();
 					state._fsp--;
 
@@ -2691,17 +2691,17 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			pushFollow(FOLLOW_column_in_assignment792);
+			pushFollow(FOLLOW_column_in_assignment791);
 			column88=column();
 			state._fsp--;
 
 			adaptor.addChild(root_0, column88.getTree());
 
-			EQUAL89=(Token)match(input,EQUAL,FOLLOW_EQUAL_in_assignment794); 
+			EQUAL89=(Token)match(input,EQUAL,FOLLOW_EQUAL_in_assignment793); 
 			EQUAL89_tree = (CommonTree)adaptor.create(EQUAL89);
 			root_0 = (CommonTree)adaptor.becomeRoot(EQUAL89_tree, root_0);
 
-			pushFollow(FOLLOW_value_in_assignment797);
+			pushFollow(FOLLOW_value_in_assignment796);
 			value90=value();
 			state._fsp--;
 
@@ -2785,7 +2785,7 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			pushFollow(FOLLOW_searchCondition_in_searchConditions817);
+			pushFollow(FOLLOW_searchCondition_in_searchConditions816);
 			searchCondition91=searchCondition();
 			state._fsp--;
 
@@ -2804,12 +2804,12 @@ public class SQLParser extends Parser {
 				case 1 :
 					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:360:21: logicalOperator ^ searchCondition
 					{
-					pushFollow(FOLLOW_logicalOperator_in_searchConditions820);
+					pushFollow(FOLLOW_logicalOperator_in_searchConditions819);
 					logicalOperator92=logicalOperator();
 					state._fsp--;
 
 					root_0 = (CommonTree)adaptor.becomeRoot(logicalOperator92.getTree(), root_0);
-					pushFollow(FOLLOW_searchCondition_in_searchConditions823);
+					pushFollow(FOLLOW_searchCondition_in_searchConditions822);
 					searchCondition93=searchCondition();
 					state._fsp--;
 
@@ -2871,18 +2871,18 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			pushFollow(FOLLOW_column_in_searchCondition837);
+			pushFollow(FOLLOW_column_in_searchCondition836);
 			column94=column();
 			state._fsp--;
 
 			adaptor.addChild(root_0, column94.getTree());
 
-			pushFollow(FOLLOW_comparisonOperator_in_searchCondition839);
+			pushFollow(FOLLOW_comparisonOperator_in_searchCondition838);
 			comparisonOperator95=comparisonOperator();
 			state._fsp--;
 
 			root_0 = (CommonTree)adaptor.becomeRoot(comparisonOperator95.getTree(), root_0);
-			pushFollow(FOLLOW_value_in_searchCondition842);
+			pushFollow(FOLLOW_value_in_searchCondition841);
 			value96=value();
 			state._fsp--;
 
@@ -2966,7 +2966,7 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			pushFollow(FOLLOW_onSearchCondition_in_onSearchConditions862);
+			pushFollow(FOLLOW_onSearchCondition_in_onSearchConditions861);
 			onSearchCondition97=onSearchCondition();
 			state._fsp--;
 
@@ -2985,12 +2985,12 @@ public class SQLParser extends Parser {
 				case 1 :
 					// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:400:23: logicalOperator ^ onSearchCondition
 					{
-					pushFollow(FOLLOW_logicalOperator_in_onSearchConditions865);
+					pushFollow(FOLLOW_logicalOperator_in_onSearchConditions864);
 					logicalOperator98=logicalOperator();
 					state._fsp--;
 
 					root_0 = (CommonTree)adaptor.becomeRoot(logicalOperator98.getTree(), root_0);
-					pushFollow(FOLLOW_onSearchCondition_in_onSearchConditions868);
+					pushFollow(FOLLOW_onSearchCondition_in_onSearchConditions867);
 					onSearchCondition99=onSearchCondition();
 					state._fsp--;
 
@@ -3052,18 +3052,18 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			pushFollow(FOLLOW_onOperand_in_onSearchCondition881);
+			pushFollow(FOLLOW_onOperand_in_onSearchCondition880);
 			onOperand100=onOperand();
 			state._fsp--;
 
 			adaptor.addChild(root_0, onOperand100.getTree());
 
-			pushFollow(FOLLOW_comparisonOperator_in_onSearchCondition883);
+			pushFollow(FOLLOW_comparisonOperator_in_onSearchCondition882);
 			comparisonOperator101=comparisonOperator();
 			state._fsp--;
 
 			root_0 = (CommonTree)adaptor.becomeRoot(comparisonOperator101.getTree(), root_0);
-			pushFollow(FOLLOW_onOperand_in_onSearchCondition886);
+			pushFollow(FOLLOW_onOperand_in_onSearchCondition885);
 			onOperand102=onOperand();
 			state._fsp--;
 
@@ -3118,13 +3118,13 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			pushFollow(FOLLOW_onTable_in_onOperand898);
+			pushFollow(FOLLOW_onTable_in_onOperand897);
 			onTable103=onTable();
 			state._fsp--;
 
 			root_0 = (CommonTree)adaptor.becomeRoot(onTable103.getTree(), root_0);
-			DOT104=(Token)match(input,DOT,FOLLOW_DOT_in_onOperand901); 
-			pushFollow(FOLLOW_onColumn_in_onOperand904);
+			DOT104=(Token)match(input,DOT,FOLLOW_DOT_in_onOperand900); 
+			pushFollow(FOLLOW_onColumn_in_onOperand903);
 			onColumn105=onColumn();
 			state._fsp--;
 
@@ -3183,7 +3183,7 @@ public class SQLParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			IDENT106=(Token)match(input,IDENT,FOLLOW_IDENT_in_onColumn928); 
+			IDENT106=(Token)match(input,IDENT,FOLLOW_IDENT_in_onColumn927); 
 			IDENT106_tree = (CommonTree)adaptor.create(IDENT106);
 			adaptor.addChild(root_0, IDENT106_tree);
 
@@ -3406,84 +3406,84 @@ public class SQLParser extends Parser {
 	public static final BitSet FOLLOW_table_in_dropTable206 = new BitSet(new long[]{0x0000001000000000L});
 	public static final BitSet FOLLOW_SEMI_in_dropTable208 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_CREATE_TABLE_in_createClause231 = new BitSet(new long[]{0x0000000000020000L});
-	public static final BitSet FOLLOW_createTable_in_createClause234 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_SELECT_in_selectClause245 = new BitSet(new long[]{0x0000000000020000L});
-	public static final BitSet FOLLOW_columns_in_selectClause248 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_INSERT_INTO_in_insertClause260 = new BitSet(new long[]{0x0000000000020000L});
-	public static final BitSet FOLLOW_insertParams_in_insertClause263 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_UPDATE_in_updateClause275 = new BitSet(new long[]{0x0000000000020000L});
-	public static final BitSet FOLLOW_table_in_updateClause278 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_FROM_in_fromClause290 = new BitSet(new long[]{0x0000000000020000L});
-	public static final BitSet FOLLOW_tableClause_in_fromClause293 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_table_in_tableClause306 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_joinClause_in_tableClause311 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_table_in_joinClause323 = new BitSet(new long[]{0x0000000280640000L});
-	public static final BitSet FOLLOW_joinOperator_in_joinClause326 = new BitSet(new long[]{0x0000000000020000L});
-	public static final BitSet FOLLOW_table_in_joinClause329 = new BitSet(new long[]{0x0000000280640002L});
-	public static final BitSet FOLLOW_ON_in_onClause352 = new BitSet(new long[]{0x0000000000020000L});
-	public static final BitSet FOLLOW_onSearchConditions_in_onClause355 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_WHERE_in_whereClause367 = new BitSet(new long[]{0x0000000000020000L});
-	public static final BitSet FOLLOW_searchConditions_in_whereClause370 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_ORDER_BY_in_orderByClause382 = new BitSet(new long[]{0x0000000000020000L});
-	public static final BitSet FOLLOW_orderByColumn_in_orderByClause385 = new BitSet(new long[]{0x0000000000000222L});
-	public static final BitSet FOLLOW_order_in_orderByClause388 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_VALUES_in_valuesClause402 = new BitSet(new long[]{0x0000000004000000L});
-	public static final BitSet FOLLOW_LPAREN_in_valuesClause405 = new BitSet(new long[]{0x0000004000100000L});
-	public static final BitSet FOLLOW_values_in_valuesClause408 = new BitSet(new long[]{0x0000000400000000L});
-	public static final BitSet FOLLOW_RPAREN_in_valuesClause410 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_SET_in_setClause422 = new BitSet(new long[]{0x0000000000020000L});
-	public static final BitSet FOLLOW_assignments_in_setClause425 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_table_in_insertParams445 = new BitSet(new long[]{0x0000000004000000L});
-	public static final BitSet FOLLOW_LPAREN_in_insertParams448 = new BitSet(new long[]{0x0000000000020000L});
-	public static final BitSet FOLLOW_insertColumns_in_insertParams451 = new BitSet(new long[]{0x0000000400000000L});
-	public static final BitSet FOLLOW_RPAREN_in_insertParams453 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_insertColumn_in_insertColumns465 = new BitSet(new long[]{0x0000000000000042L});
-	public static final BitSet FOLLOW_COMMA_in_insertColumns468 = new BitSet(new long[]{0x0000000000020000L});
-	public static final BitSet FOLLOW_insertColumn_in_insertColumns471 = new BitSet(new long[]{0x0000000000000042L});
-	public static final BitSet FOLLOW_IDENT_in_insertColumn485 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_IDENT_in_table510 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_IDENT_in_onTable530 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_IDENT_in_createTable549 = new BitSet(new long[]{0x0000000004000000L});
-	public static final BitSet FOLLOW_LPAREN_in_createTable551 = new BitSet(new long[]{0x0000000000020000L});
-	public static final BitSet FOLLOW_columnConstraints_in_createTable554 = new BitSet(new long[]{0x0000000400000000L});
-	public static final BitSet FOLLOW_RPAREN_in_createTable556 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_columnConstraint_in_columnConstraints576 = new BitSet(new long[]{0x0000000000000042L});
-	public static final BitSet FOLLOW_COMMA_in_columnConstraints579 = new BitSet(new long[]{0x0000000000020000L});
-	public static final BitSet FOLLOW_columnConstraint_in_columnConstraints582 = new BitSet(new long[]{0x0000000000000042L});
-	public static final BitSet FOLLOW_column_in_columnConstraint595 = new BitSet(new long[]{0x0000300000000000L});
-	public static final BitSet FOLLOW_dataType_in_columnConstraint598 = new BitSet(new long[]{0x0000000100000002L});
-	public static final BitSet FOLLOW_constraint_in_columnConstraint600 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_PRIMARY_KEY_in_constraint636 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_column_in_columns650 = new BitSet(new long[]{0x0000000000000042L});
-	public static final BitSet FOLLOW_COMMA_in_columns653 = new BitSet(new long[]{0x0000000000020000L});
-	public static final BitSet FOLLOW_column_in_columns656 = new BitSet(new long[]{0x0000000000000042L});
-	public static final BitSet FOLLOW_IDENT_in_column671 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_IDENT_in_orderByColumn687 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_STRING_LITERAL_in_value700 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_INTEGER_in_value710 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_value_in_values727 = new BitSet(new long[]{0x0000000000000042L});
-	public static final BitSet FOLLOW_COMMA_in_values730 = new BitSet(new long[]{0x0000004000100000L});
-	public static final BitSet FOLLOW_value_in_values733 = new BitSet(new long[]{0x0000000000000042L});
-	public static final BitSet FOLLOW_assignment_in_assignments772 = new BitSet(new long[]{0x0000000000000042L});
-	public static final BitSet FOLLOW_COMMA_in_assignments775 = new BitSet(new long[]{0x0000000000020000L});
-	public static final BitSet FOLLOW_assignment_in_assignments778 = new BitSet(new long[]{0x0000000000000042L});
-	public static final BitSet FOLLOW_column_in_assignment792 = new BitSet(new long[]{0x0000000000002000L});
-	public static final BitSet FOLLOW_EQUAL_in_assignment794 = new BitSet(new long[]{0x0000004000100000L});
-	public static final BitSet FOLLOW_value_in_assignment797 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_searchCondition_in_searchConditions817 = new BitSet(new long[]{0x0000000020000012L});
-	public static final BitSet FOLLOW_logicalOperator_in_searchConditions820 = new BitSet(new long[]{0x0000000000020000L});
-	public static final BitSet FOLLOW_searchCondition_in_searchConditions823 = new BitSet(new long[]{0x0000000020000012L});
-	public static final BitSet FOLLOW_column_in_searchCondition837 = new BitSet(new long[]{0x000000000981A000L});
-	public static final BitSet FOLLOW_comparisonOperator_in_searchCondition839 = new BitSet(new long[]{0x0000004000100000L});
-	public static final BitSet FOLLOW_value_in_searchCondition842 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_onSearchCondition_in_onSearchConditions862 = new BitSet(new long[]{0x0000000020000012L});
-	public static final BitSet FOLLOW_logicalOperator_in_onSearchConditions865 = new BitSet(new long[]{0x0000000000020000L});
-	public static final BitSet FOLLOW_onSearchCondition_in_onSearchConditions868 = new BitSet(new long[]{0x0000000020000012L});
-	public static final BitSet FOLLOW_onOperand_in_onSearchCondition881 = new BitSet(new long[]{0x000000000981A000L});
-	public static final BitSet FOLLOW_comparisonOperator_in_onSearchCondition883 = new BitSet(new long[]{0x0000000000020000L});
-	public static final BitSet FOLLOW_onOperand_in_onSearchCondition886 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_onTable_in_onOperand898 = new BitSet(new long[]{0x0000000000000800L});
-	public static final BitSet FOLLOW_DOT_in_onOperand901 = new BitSet(new long[]{0x0000000000020000L});
-	public static final BitSet FOLLOW_onColumn_in_onOperand904 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_IDENT_in_onColumn928 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_createTable_in_createClause233 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_SELECT_in_selectClause244 = new BitSet(new long[]{0x0000000000020000L});
+	public static final BitSet FOLLOW_columns_in_selectClause247 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_INSERT_INTO_in_insertClause259 = new BitSet(new long[]{0x0000000000020000L});
+	public static final BitSet FOLLOW_insertParams_in_insertClause262 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_UPDATE_in_updateClause274 = new BitSet(new long[]{0x0000000000020000L});
+	public static final BitSet FOLLOW_table_in_updateClause277 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_FROM_in_fromClause289 = new BitSet(new long[]{0x0000000000020000L});
+	public static final BitSet FOLLOW_tableClause_in_fromClause292 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_table_in_tableClause305 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_joinClause_in_tableClause310 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_table_in_joinClause322 = new BitSet(new long[]{0x0000000280640000L});
+	public static final BitSet FOLLOW_joinOperator_in_joinClause325 = new BitSet(new long[]{0x0000000000020000L});
+	public static final BitSet FOLLOW_table_in_joinClause328 = new BitSet(new long[]{0x0000000280640002L});
+	public static final BitSet FOLLOW_ON_in_onClause351 = new BitSet(new long[]{0x0000000000020000L});
+	public static final BitSet FOLLOW_onSearchConditions_in_onClause354 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_WHERE_in_whereClause366 = new BitSet(new long[]{0x0000000000020000L});
+	public static final BitSet FOLLOW_searchConditions_in_whereClause369 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_ORDER_BY_in_orderByClause381 = new BitSet(new long[]{0x0000000000020000L});
+	public static final BitSet FOLLOW_orderByColumn_in_orderByClause384 = new BitSet(new long[]{0x0000000000000222L});
+	public static final BitSet FOLLOW_order_in_orderByClause387 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_VALUES_in_valuesClause401 = new BitSet(new long[]{0x0000000004000000L});
+	public static final BitSet FOLLOW_LPAREN_in_valuesClause404 = new BitSet(new long[]{0x0000004000100000L});
+	public static final BitSet FOLLOW_values_in_valuesClause407 = new BitSet(new long[]{0x0000000400000000L});
+	public static final BitSet FOLLOW_RPAREN_in_valuesClause409 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_SET_in_setClause421 = new BitSet(new long[]{0x0000000000020000L});
+	public static final BitSet FOLLOW_assignments_in_setClause424 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_table_in_insertParams444 = new BitSet(new long[]{0x0000000004000000L});
+	public static final BitSet FOLLOW_LPAREN_in_insertParams447 = new BitSet(new long[]{0x0000000000020000L});
+	public static final BitSet FOLLOW_insertColumns_in_insertParams450 = new BitSet(new long[]{0x0000000400000000L});
+	public static final BitSet FOLLOW_RPAREN_in_insertParams452 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_insertColumn_in_insertColumns464 = new BitSet(new long[]{0x0000000000000042L});
+	public static final BitSet FOLLOW_COMMA_in_insertColumns467 = new BitSet(new long[]{0x0000000000020000L});
+	public static final BitSet FOLLOW_insertColumn_in_insertColumns470 = new BitSet(new long[]{0x0000000000000042L});
+	public static final BitSet FOLLOW_IDENT_in_insertColumn484 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_IDENT_in_table509 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_IDENT_in_onTable529 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_IDENT_in_createTable548 = new BitSet(new long[]{0x0000000004000000L});
+	public static final BitSet FOLLOW_LPAREN_in_createTable550 = new BitSet(new long[]{0x0000000000020000L});
+	public static final BitSet FOLLOW_columnConstraints_in_createTable553 = new BitSet(new long[]{0x0000000400000000L});
+	public static final BitSet FOLLOW_RPAREN_in_createTable555 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_columnConstraint_in_columnConstraints575 = new BitSet(new long[]{0x0000000000000042L});
+	public static final BitSet FOLLOW_COMMA_in_columnConstraints578 = new BitSet(new long[]{0x0000000000020000L});
+	public static final BitSet FOLLOW_columnConstraint_in_columnConstraints581 = new BitSet(new long[]{0x0000000000000042L});
+	public static final BitSet FOLLOW_column_in_columnConstraint594 = new BitSet(new long[]{0x0000300000000000L});
+	public static final BitSet FOLLOW_dataType_in_columnConstraint597 = new BitSet(new long[]{0x0000000100000002L});
+	public static final BitSet FOLLOW_constraint_in_columnConstraint599 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_PRIMARY_KEY_in_constraint635 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_column_in_columns649 = new BitSet(new long[]{0x0000000000000042L});
+	public static final BitSet FOLLOW_COMMA_in_columns652 = new BitSet(new long[]{0x0000000000020000L});
+	public static final BitSet FOLLOW_column_in_columns655 = new BitSet(new long[]{0x0000000000000042L});
+	public static final BitSet FOLLOW_IDENT_in_column670 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_IDENT_in_orderByColumn686 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_STRING_LITERAL_in_value699 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_INTEGER_in_value709 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_value_in_values726 = new BitSet(new long[]{0x0000000000000042L});
+	public static final BitSet FOLLOW_COMMA_in_values729 = new BitSet(new long[]{0x0000004000100000L});
+	public static final BitSet FOLLOW_value_in_values732 = new BitSet(new long[]{0x0000000000000042L});
+	public static final BitSet FOLLOW_assignment_in_assignments771 = new BitSet(new long[]{0x0000000000000042L});
+	public static final BitSet FOLLOW_COMMA_in_assignments774 = new BitSet(new long[]{0x0000000000020000L});
+	public static final BitSet FOLLOW_assignment_in_assignments777 = new BitSet(new long[]{0x0000000000000042L});
+	public static final BitSet FOLLOW_column_in_assignment791 = new BitSet(new long[]{0x0000000000002000L});
+	public static final BitSet FOLLOW_EQUAL_in_assignment793 = new BitSet(new long[]{0x0000004000100000L});
+	public static final BitSet FOLLOW_value_in_assignment796 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_searchCondition_in_searchConditions816 = new BitSet(new long[]{0x0000000020000012L});
+	public static final BitSet FOLLOW_logicalOperator_in_searchConditions819 = new BitSet(new long[]{0x0000000000020000L});
+	public static final BitSet FOLLOW_searchCondition_in_searchConditions822 = new BitSet(new long[]{0x0000000020000012L});
+	public static final BitSet FOLLOW_column_in_searchCondition836 = new BitSet(new long[]{0x000000000981A000L});
+	public static final BitSet FOLLOW_comparisonOperator_in_searchCondition838 = new BitSet(new long[]{0x0000004000100000L});
+	public static final BitSet FOLLOW_value_in_searchCondition841 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_onSearchCondition_in_onSearchConditions861 = new BitSet(new long[]{0x0000000020000012L});
+	public static final BitSet FOLLOW_logicalOperator_in_onSearchConditions864 = new BitSet(new long[]{0x0000000000020000L});
+	public static final BitSet FOLLOW_onSearchCondition_in_onSearchConditions867 = new BitSet(new long[]{0x0000000020000012L});
+	public static final BitSet FOLLOW_onOperand_in_onSearchCondition880 = new BitSet(new long[]{0x000000000981A000L});
+	public static final BitSet FOLLOW_comparisonOperator_in_onSearchCondition882 = new BitSet(new long[]{0x0000000000020000L});
+	public static final BitSet FOLLOW_onOperand_in_onSearchCondition885 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_onTable_in_onOperand897 = new BitSet(new long[]{0x0000000000000800L});
+	public static final BitSet FOLLOW_DOT_in_onOperand900 = new BitSet(new long[]{0x0000000000020000L});
+	public static final BitSet FOLLOW_onColumn_in_onOperand903 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_IDENT_in_onColumn927 = new BitSet(new long[]{0x0000000000000002L});
 }
