@@ -57,8 +57,11 @@ public class DatabaseRunner {
                 System.out.println(re.getMessage());
                 continue;
             } catch (ValidationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+                for (String msg : e.getMessages()) {
+                    System.out.println(msg);
+                }
+
+                continue;
 			}
             
 
