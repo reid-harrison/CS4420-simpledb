@@ -260,24 +260,40 @@ public class StorageManagerLargeTest {
             switch (attribute.getType()) {
                 case STRING:
                     nextInt = random.nextInt(strings.length);
-                    whereConstraint = new ValueConstraint(attribute, "'" + strings[nextInt] + "'", ValueOperator.EQUALS);
+                    String oldString = strings[nextInt];
+                    whereConstraint = new ValueConstraint(attribute, "'" + oldString + "'", ValueOperator.EQUALS);
                     modifiedRowCount = tableStringUsage.get(attribute)[nextInt];
                     tableStringUsage.get(attribute)[nextInt] = 0;
 
                     nextInt = random.nextInt(strings.length);
+                    String newString = strings[nextInt];
+
+                    while (newString.equals(oldString)) {
+                        nextInt = random.nextInt(strings.length);
+                        newString = strings[nextInt];
+                    }
+
                     newConstraint = new ValueConstraint(attribute, "'" + strings[nextInt] + "'", ValueOperator.EQUALS);
-                    updateRowData.put(attribute, strings[nextInt]);
+                    updateRowData.put(attribute, newString);
                     tableStringUsage.get(attribute)[nextInt] += modifiedRowCount;
                     expectedAddedRowCount = tableStringUsage.get(attribute)[nextInt];
 
                     break;
                 case INT:
                     nextInt = random.nextInt(MAX_INT);
+                    int oldInt = nextInt;
                     whereConstraint = new ValueConstraint(attribute, nextInt, ValueOperator.EQUALS);
                     modifiedRowCount = tableIntUsage.get(attribute)[nextInt];
                     tableIntUsage.get(attribute)[nextInt] = 0;
 
                     nextInt = random.nextInt(MAX_INT);
+                    int newInt = nextInt;
+
+                    while(newInt == oldInt) {
+                        nextInt = random.nextInt(MAX_INT);
+                        newInt = nextInt;
+                    }
+                    
                     newConstraint = new ValueConstraint(attribute, nextInt, ValueOperator.EQUALS);
                     updateRowData.put(attribute, nextInt);
                     tableIntUsage.get(attribute)[nextInt] += modifiedRowCount;

@@ -198,6 +198,10 @@ class StorageData {
      * @throws ValidationException if a row already exists with the private key or the data is not valid for the table's description
      */
     protected void insert(final Integer tableId, final Row row) throws ValidationException {
+        if (indexManager.getIndex(tableId).getPrimaryKeySet().contains(row.getPrimaryKey())) {
+            throw new ValidationException("A row already exists with the provided primary key attribute; primary keys must be unique");
+        }
+
         addRow(tableId, row);
 
         Integer blockId = blockManager.allocateBlockSpace(tableId, row.getRowData().size());
@@ -254,10 +258,6 @@ class StorageData {
 
         if (row.getPrimaryKey() == null) {
             throw new ValidationException("Primary key must be set for any new row");
-        }
-
-        if (indexManager.getIndex(tableId).getPrimaryKeySet().contains(row.getPrimaryKey())) {
-            throw new ValidationException("A row already exists with the provided primary key attribute; primary keys must be unique");
         }
 
         Map<Integer, Row> data = tableData.get(tableId);
@@ -544,11 +544,14 @@ class StorageData {
 
                 for (Integer primaryKey : primaryKeys) {
                     if (tableData.get(tableId) != null) {
-                        Row row = tableData.get(tableId).get(primaryKey);
+                        Map<Integer, Row> tableRowData = tableData.get(tableId);
+                        Row row = tableRowData.get(primaryKey);
 
                         if (row != null) {
-                            rows.add(tableData.get(tableId).get(primaryKey));
+                            rows.add(row);
                         }
+
+                        tableRowData.remove(primaryKey);
                     }
                 }
 
