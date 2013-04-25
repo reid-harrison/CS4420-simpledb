@@ -59,6 +59,11 @@ public class StorageManagerLargeTest {
 
     private Random random;
 
+    private long startTime = 0;
+    private long endTime = 0;
+    private long averageTime = 0;
+    private int timeCount = 0;
+
     public void generateData() throws ValidationException {
         manager = new StorageManager(DB_ROOT_DIRECTORY);
         manager.clearDatabase();
@@ -190,12 +195,14 @@ public class StorageManagerLargeTest {
             System.out.println("Testing " + NUMBER_OF_SELECTION_TESTS + " random selection tests on table with ID: " + tableId);
             runSelectionTests(table, attributes, tableIntUsage, tableStringUsage);
 
-            System.out.println("Testing " + NUMBER_OF_UPDATE_TESTS + " random update tests on table with ID: " + tableId);
+            /*System.out.println("Testing " + NUMBER_OF_UPDATE_TESTS + " random update tests on table with ID: " + tableId);
             runUpdateTests(table, attributes, tableIntUsage, tableStringUsage);
 
             System.out.println("Testing " + NUMBER_OF_SELECTION_TESTS + " random selection tests on table with ID: " + tableId);
-            runSelectionTests(table, attributes, tableIntUsage, tableStringUsage);
+            runSelectionTests(table, attributes, tableIntUsage, tableStringUsage);*/
         }
+
+        System.out.println("Average millis to select: " + averageTime);
 
         /**
          * TODO
@@ -337,7 +344,15 @@ public class StorageManagerLargeTest {
     }
 
     private void testSelect(final String tableName, Constraint whereConstraint, final int expectedRowCount) {
+        startTime = System.currentTimeMillis();
         List<Row> selectedRows = manager.select(tableName, whereConstraint);
+        endTime = System.currentTimeMillis();
+
+        long timeDifference = endTime - startTime;
+
+        averageTime = (averageTime * timeCount) + timeDifference;
+        timeCount++;
+        averageTime /= timeCount;
 
         if (selectedRows.size() != expectedRowCount) {
             throw new TestFailedException("Select", "Selected " + selectedRows.size() + " rows when " + expectedRowCount + " rows were expected");

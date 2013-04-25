@@ -85,7 +85,7 @@ public class StorageStatistics {
      */
     public int numberOfDistinctValuesForAttribute(final String tableName, final Attribute attribute) {
         storageData = StorageData.getInstance();
-        
+
         Integer tableId = storageData.getTableId(tableName);
         Map<Attribute, Set<Object>> tableDistinctValues = distinctValues.get(tableId);
 

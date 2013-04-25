@@ -313,7 +313,13 @@ class StorageData {
             return null;
         }
 
-        Row row = tableData.get(tableId).get(primaryKey);
+        Row row = null;
+
+        Map<Integer, Row> allRowData = tableData.get(tableId);
+
+        if (allRowData != null) {
+            row = allRowData.get(primaryKey);
+        }
 
         //Try to find the data on disk if it isn't in memory already
         if (row == null || row.getRowData() == null || row.getRowData().isEmpty()) {
@@ -518,8 +524,15 @@ class StorageData {
      * @param block
      */
     private void addBlock(final Integer tableId, final Block block) {
+        Map<Integer, Row> rowData = tableData.get(tableId);
+
+        if (rowData == null) {
+            rowData = Maps.newHashMap();
+            tableData.put(tableId, rowData);
+        }
+
         for (Row row : block.getBlockData()) {
-            tableData.get(tableId).put(row.getPrimaryKey(), row);
+            rowData.put(row.getPrimaryKey(), row);
         }
     }
 
