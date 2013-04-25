@@ -1,6 +1,7 @@
 package gt.cs4420.relationaldb.domain;
 
 import java.util.Map;
+import java.util.Set;
 
 public class Row {
 /*
@@ -35,4 +36,23 @@ public class Row {
         this.rowData = rowData;
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if(! (other instanceof Row) ){
+            return false;
+        }
+
+        if( !(this.primaryKey.equals( ((Row)other).getPrimaryKey() )) )
+            return false;
+
+        Set<Map.Entry<Attribute,Object>> otherEntrySet = ((Row) other).getRowData().entrySet();
+
+        for(Object entry : rowData.entrySet()) {
+            if(!otherEntrySet.contains(entry)){
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

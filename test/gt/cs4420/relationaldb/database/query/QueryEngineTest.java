@@ -1,15 +1,15 @@
 package gt.cs4420.relationaldb.database.query;
 
 import gt.cs4420.relationaldb.database.storage.StorageManager;
-import gt.cs4420.relationaldb.domain.Attribute;
-import gt.cs4420.relationaldb.domain.DataType;
-import gt.cs4420.relationaldb.domain.Description;
-import gt.cs4420.relationaldb.domain.Table;
+import gt.cs4420.relationaldb.domain.*;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.Tree;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -19,6 +19,9 @@ public class QueryEngineTest {
 
     public static final String MY_ATTRIBUTE = "myAttribute";
     public static final String MY_TABLE = "myTable";
+    public static final String FIRST_ATTRIBUTE_NAME = "primaryKeyAttribute";
+    public static final String SECOND_ATTRIBUTE_NAME = "secondAttribute";
+    public static final int PRIMARY_KEY = 10;
     private QueryEngine queryEngine;
     private StorageManager storageManager;
 
@@ -83,6 +86,7 @@ public class QueryEngineTest {
         when(queryTree.getChild(1)).thenReturn(tableNameNode);
         when(queryTree.getChild(2)).thenReturn(attributeNameNode);
 
+        //expected values
         Attribute expectedAttribute = new Attribute(DataType.INT, MY_ATTRIBUTE);
         Attribute[] expectedAttributes = {expectedAttribute};
         Description expectedDescription = new Description();
@@ -98,6 +102,53 @@ public class QueryEngineTest {
         verify(storageManager).createTable(eq(expectedTable));
     }
 
+    @Test
+    public void testExecuteQuery_insertIntoTable() throws ValidationException {
+        //setup
+        Tree firstValueNode = mock(Tree.class);
+        when(firstValueNode.getText()).thenReturn("10");
 
+        Tree secondValueNode = mock(Tree.class);
+        when(secondValueNode.getText()).thenReturn("secondValue");
+
+        Tree valuesNode = mock(Tree.class);
+        when(valuesNode.getText()).thenReturn("VALUES");
+        when(valuesNode.getChild(0)).thenReturn(firstValueNode);
+        when(valuesNode.getChild(1)).thenReturn(secondValueNode);
+
+        Tree firstAttributeName = mock(Tree.class);
+        when(firstAttributeName.getText()).thenReturn(FIRST_ATTRIBUTE_NAME);
+
+        Tree secondAttributeName = mock(Tree.class);
+        when(secondAttributeName.getText()).thenReturn(SECOND_ATTRIBUTE_NAME);
+
+        Tree tableNameNode = mock(Tree.class);
+        when(tableNameNode.getText()).thenReturn(MY_TABLE);
+        when(tableNameNode.getChild(0)).thenReturn(firstAttributeName);
+        when(tableNameNode.getChild(1)).thenReturn(secondAttributeName);
+
+        Tree insertIntoNode = mock(Tree.class);
+        when(insertIntoNode.getText()).thenReturn("INSERT INTO");
+        when(insertIntoNode.getChild(0)).thenReturn(tableNameNode);
+
+        CommonTree queryTree = mock(CommonTree.class);
+        when(queryTree.getChild(0)).thenReturn(insertIntoNode);
+        when(queryTree.getChild(2)).thenReturn(valuesNode);
+
+        //setup expected value
+        Map<Attribute, Object> rowData = new HashMap<>();
+        rowData.put(new Attribute(FIRST_ATTRIBUTE_NAME), new Integer(PRIMARY_KEY));
+        rowData.put(new Attribute(SECOND_ATTRIBUTE_NAME), "secondValue");
+        String expectedTableName = MY_TABLE;
+        Row expectedRow = new Row();
+        expectedRow.setPrimaryKey(PRIMARY_KEY);
+        expectedRow.setRowData(rowData);
+
+        //execute
+        queryEngine.executeQuery(queryTree);
+
+        //verify
+        verify(storageManager).insert(eq(expectedTableName), eq(expectedRow));
+    }
 
 }
