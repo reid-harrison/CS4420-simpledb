@@ -1,4 +1,4 @@
-// $ANTLR 3.5 C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g 2013-04-24 21:31:06
+// $ANTLR 3.5 C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g 2013-04-24 22:17:32
 
 ///////////////////////////////////////////////////////////////////
 //                                                               //
@@ -30,12 +30,12 @@ import org.antlr.runtime.tree.*;
 public class SQLParser extends Parser {
 	public static final String[] tokenNames = new String[] {
 		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "AND", "ASC", "COMMA", "COMMENT", 
-		"CREATE_TABLE", "DESC", "DIGIT", "DOT", "DROP_TABLE", "EQUAL", "FOREIGN_KEY", 
-		"FROM", "GREATER_THAN", "GREATER_THAN_EQUAL", "IDENT", "INNER_JOIN", "INSERT_INTO", 
+		"CREATE_TABLE", "DESC", "DIGIT", "DOT", "DROP_TABLE", "EQUAL", "FROM", 
+		"GREATER_THAN", "GREATER_THAN_EQUAL", "IDENT", "INNER_JOIN", "INSERT_INTO", 
 		"INTEGER", "JOIN", "LEFT_JOIN", "LESS_THAN", "LESS_THAN_EQUAL", "LETTER", 
-		"LPAREN", "NOT_EQUAL", "ON", "OR", "ORDER_BY", "OUTER_JOIN", "RIGHT_JOIN", 
-		"RPAREN", "SELECT", "SEMI", "SET", "STRING_LITERAL", "TABLE", "UPDATE", 
-		"VALUES", "WHERE", "WS", "'int'", "'varchar(10000)'"
+		"LPAREN", "NOT_EQUAL", "ON", "OR", "ORDER_BY", "OUTER_JOIN", "PRIMARY_KEY", 
+		"RIGHT_JOIN", "RPAREN", "SELECT", "SEMI", "SET", "STRING_LITERAL", "TABLE", 
+		"UPDATE", "VALUES", "WHERE", "WS", "'int'", "'varchar(10000)'"
 	};
 	public static final int EOF=-1;
 	public static final int T__44=44;
@@ -50,25 +50,25 @@ public class SQLParser extends Parser {
 	public static final int DOT=11;
 	public static final int DROP_TABLE=12;
 	public static final int EQUAL=13;
-	public static final int FOREIGN_KEY=14;
-	public static final int FROM=15;
-	public static final int GREATER_THAN=16;
-	public static final int GREATER_THAN_EQUAL=17;
-	public static final int IDENT=18;
-	public static final int INNER_JOIN=19;
-	public static final int INSERT_INTO=20;
-	public static final int INTEGER=21;
-	public static final int JOIN=22;
-	public static final int LEFT_JOIN=23;
-	public static final int LESS_THAN=24;
-	public static final int LESS_THAN_EQUAL=25;
-	public static final int LETTER=26;
-	public static final int LPAREN=27;
-	public static final int NOT_EQUAL=28;
-	public static final int ON=29;
-	public static final int OR=30;
-	public static final int ORDER_BY=31;
-	public static final int OUTER_JOIN=32;
+	public static final int FROM=14;
+	public static final int GREATER_THAN=15;
+	public static final int GREATER_THAN_EQUAL=16;
+	public static final int IDENT=17;
+	public static final int INNER_JOIN=18;
+	public static final int INSERT_INTO=19;
+	public static final int INTEGER=20;
+	public static final int JOIN=21;
+	public static final int LEFT_JOIN=22;
+	public static final int LESS_THAN=23;
+	public static final int LESS_THAN_EQUAL=24;
+	public static final int LETTER=25;
+	public static final int LPAREN=26;
+	public static final int NOT_EQUAL=27;
+	public static final int ON=28;
+	public static final int OR=29;
+	public static final int ORDER_BY=30;
+	public static final int OUTER_JOIN=31;
+	public static final int PRIMARY_KEY=32;
 	public static final int RIGHT_JOIN=33;
 	public static final int RPAREN=34;
 	public static final int SELECT=35;
@@ -111,7 +111,7 @@ public class SQLParser extends Parser {
 		int numCols = 0;
 		int numVals = 0;
 		int numTables = 0;
-		int numForeignKey = 0;
+		int numPrimaryKey = 0;
 		Table table1 = new Table();
 		Table table2 = new Table();
 		boolean isJoin = false;
@@ -981,7 +981,7 @@ public class SQLParser extends Parser {
 				if ( (LA5_1==ON||LA5_1==ORDER_BY||LA5_1==SEMI||LA5_1==WHERE) ) {
 					alt5=1;
 				}
-				else if ( (LA5_1==INNER_JOIN||(LA5_1 >= JOIN && LA5_1 <= LEFT_JOIN)||(LA5_1 >= OUTER_JOIN && LA5_1 <= RIGHT_JOIN)) ) {
+				else if ( (LA5_1==INNER_JOIN||(LA5_1 >= JOIN && LA5_1 <= LEFT_JOIN)||LA5_1==OUTER_JOIN||LA5_1==RIGHT_JOIN) ) {
 					alt5=2;
 				}
 
@@ -1094,7 +1094,7 @@ public class SQLParser extends Parser {
 			while (true) {
 				int alt6=2;
 				int LA6_0 = input.LA(1);
-				if ( (LA6_0==INNER_JOIN||(LA6_0 >= JOIN && LA6_0 <= LEFT_JOIN)||(LA6_0 >= OUTER_JOIN && LA6_0 <= RIGHT_JOIN)) ) {
+				if ( (LA6_0==INNER_JOIN||(LA6_0 >= JOIN && LA6_0 <= LEFT_JOIN)||LA6_0==OUTER_JOIN||LA6_0==RIGHT_JOIN) ) {
 					alt6=1;
 				}
 
@@ -1984,7 +1984,7 @@ public class SQLParser extends Parser {
 			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:247:21: ( constraint )?
 			int alt10=2;
 			int LA10_0 = input.LA(1);
-			if ( (LA10_0==FOREIGN_KEY) ) {
+			if ( (LA10_0==PRIMARY_KEY) ) {
 				alt10=1;
 			}
 			switch (alt10) {
@@ -2003,9 +2003,9 @@ public class SQLParser extends Parser {
 			}
 
 
-						if(numForeignKey > 1)
+						if(numPrimaryKey > 1)
 						{
-							throw new ValidationException("Only one foreign key permitted in CREATE.");
+							throw new ValidationException("Only one primary key permitted in CREATE.");
 						}
 					
 			}
@@ -2093,29 +2093,29 @@ public class SQLParser extends Parser {
 
 
 	// $ANTLR start "constraint"
-	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:261:1: constraint : FOREIGN_KEY ;
+	// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:261:1: constraint : PRIMARY_KEY ;
 	public final SQLParser.constraint_return constraint() throws RecognitionException {
 		SQLParser.constraint_return retval = new SQLParser.constraint_return();
 		retval.start = input.LT(1);
 
 		CommonTree root_0 = null;
 
-		Token FOREIGN_KEY73=null;
+		Token PRIMARY_KEY73=null;
 
-		CommonTree FOREIGN_KEY73_tree=null;
+		CommonTree PRIMARY_KEY73_tree=null;
 
 		try {
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:262:2: ( FOREIGN_KEY )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:262:4: FOREIGN_KEY
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:262:2: ( PRIMARY_KEY )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:262:4: PRIMARY_KEY
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			FOREIGN_KEY73=(Token)match(input,FOREIGN_KEY,FOLLOW_FOREIGN_KEY_in_constraint636); 
-			FOREIGN_KEY73_tree = (CommonTree)adaptor.create(FOREIGN_KEY73);
-			adaptor.addChild(root_0, FOREIGN_KEY73_tree);
+			PRIMARY_KEY73=(Token)match(input,PRIMARY_KEY,FOLLOW_PRIMARY_KEY_in_constraint636); 
+			PRIMARY_KEY73_tree = (CommonTree)adaptor.create(PRIMARY_KEY73);
+			adaptor.addChild(root_0, PRIMARY_KEY73_tree);
 
-			numForeignKey++;
+			numPrimaryKey++;
 			}
 
 			retval.stop = input.LT(-1);
@@ -3349,7 +3349,7 @@ public class SQLParser extends Parser {
 
 
 			set109=input.LT(1);
-			if ( input.LA(1)==INNER_JOIN||(input.LA(1) >= JOIN && input.LA(1) <= LEFT_JOIN)||(input.LA(1) >= OUTER_JOIN && input.LA(1) <= RIGHT_JOIN) ) {
+			if ( input.LA(1)==INNER_JOIN||(input.LA(1) >= JOIN && input.LA(1) <= LEFT_JOIN)||input.LA(1)==OUTER_JOIN||input.LA(1)==RIGHT_JOIN ) {
 				input.consume();
 				adaptor.addChild(root_0, (CommonTree)adaptor.create(set109));
 				state.errorRecovery=false;
@@ -3389,10 +3389,10 @@ public class SQLParser extends Parser {
 	public static final BitSet FOLLOW_dropTable_in_statement106 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_createClause_in_create120 = new BitSet(new long[]{0x0000001000000000L});
 	public static final BitSet FOLLOW_SEMI_in_create122 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_selectClause_in_select135 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_fromClause_in_select137 = new BitSet(new long[]{0x00000410A0000000L});
-	public static final BitSet FOLLOW_onClause_in_select140 = new BitSet(new long[]{0x0000041080000000L});
-	public static final BitSet FOLLOW_whereClause_in_select145 = new BitSet(new long[]{0x0000001080000000L});
+	public static final BitSet FOLLOW_selectClause_in_select135 = new BitSet(new long[]{0x0000000000004000L});
+	public static final BitSet FOLLOW_fromClause_in_select137 = new BitSet(new long[]{0x0000041050000000L});
+	public static final BitSet FOLLOW_onClause_in_select140 = new BitSet(new long[]{0x0000041040000000L});
+	public static final BitSet FOLLOW_whereClause_in_select145 = new BitSet(new long[]{0x0000001040000000L});
 	public static final BitSet FOLLOW_orderByClause_in_select150 = new BitSet(new long[]{0x0000001000000000L});
 	public static final BitSet FOLLOW_SEMI_in_select154 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_insertClause_in_insert167 = new BitSet(new long[]{0x0000020000000000L});
@@ -3402,88 +3402,88 @@ public class SQLParser extends Parser {
 	public static final BitSet FOLLOW_setClause_in_update186 = new BitSet(new long[]{0x0000040000000000L});
 	public static final BitSet FOLLOW_whereClause_in_update188 = new BitSet(new long[]{0x0000001000000000L});
 	public static final BitSet FOLLOW_SEMI_in_update190 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_DROP_TABLE_in_dropTable203 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_DROP_TABLE_in_dropTable203 = new BitSet(new long[]{0x0000000000020000L});
 	public static final BitSet FOLLOW_table_in_dropTable206 = new BitSet(new long[]{0x0000001000000000L});
 	public static final BitSet FOLLOW_SEMI_in_dropTable208 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_CREATE_TABLE_in_createClause231 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_CREATE_TABLE_in_createClause231 = new BitSet(new long[]{0x0000000000020000L});
 	public static final BitSet FOLLOW_createTable_in_createClause234 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_SELECT_in_selectClause245 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_SELECT_in_selectClause245 = new BitSet(new long[]{0x0000000000020000L});
 	public static final BitSet FOLLOW_columns_in_selectClause248 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_INSERT_INTO_in_insertClause260 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_INSERT_INTO_in_insertClause260 = new BitSet(new long[]{0x0000000000020000L});
 	public static final BitSet FOLLOW_insertParams_in_insertClause263 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_UPDATE_in_updateClause275 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_UPDATE_in_updateClause275 = new BitSet(new long[]{0x0000000000020000L});
 	public static final BitSet FOLLOW_table_in_updateClause278 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_FROM_in_fromClause290 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_FROM_in_fromClause290 = new BitSet(new long[]{0x0000000000020000L});
 	public static final BitSet FOLLOW_tableClause_in_fromClause293 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_table_in_tableClause306 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_joinClause_in_tableClause311 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_table_in_joinClause323 = new BitSet(new long[]{0x0000000300C80000L});
-	public static final BitSet FOLLOW_joinOperator_in_joinClause326 = new BitSet(new long[]{0x0000000000040000L});
-	public static final BitSet FOLLOW_table_in_joinClause329 = new BitSet(new long[]{0x0000000300C80002L});
-	public static final BitSet FOLLOW_ON_in_onClause352 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_table_in_joinClause323 = new BitSet(new long[]{0x0000000280640000L});
+	public static final BitSet FOLLOW_joinOperator_in_joinClause326 = new BitSet(new long[]{0x0000000000020000L});
+	public static final BitSet FOLLOW_table_in_joinClause329 = new BitSet(new long[]{0x0000000280640002L});
+	public static final BitSet FOLLOW_ON_in_onClause352 = new BitSet(new long[]{0x0000000000020000L});
 	public static final BitSet FOLLOW_onSearchConditions_in_onClause355 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_WHERE_in_whereClause367 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_WHERE_in_whereClause367 = new BitSet(new long[]{0x0000000000020000L});
 	public static final BitSet FOLLOW_searchConditions_in_whereClause370 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_ORDER_BY_in_orderByClause382 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_ORDER_BY_in_orderByClause382 = new BitSet(new long[]{0x0000000000020000L});
 	public static final BitSet FOLLOW_orderByColumn_in_orderByClause385 = new BitSet(new long[]{0x0000000000000222L});
 	public static final BitSet FOLLOW_order_in_orderByClause388 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_VALUES_in_valuesClause402 = new BitSet(new long[]{0x0000000008000000L});
-	public static final BitSet FOLLOW_LPAREN_in_valuesClause405 = new BitSet(new long[]{0x0000004000200000L});
+	public static final BitSet FOLLOW_VALUES_in_valuesClause402 = new BitSet(new long[]{0x0000000004000000L});
+	public static final BitSet FOLLOW_LPAREN_in_valuesClause405 = new BitSet(new long[]{0x0000004000100000L});
 	public static final BitSet FOLLOW_values_in_valuesClause408 = new BitSet(new long[]{0x0000000400000000L});
 	public static final BitSet FOLLOW_RPAREN_in_valuesClause410 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_SET_in_setClause422 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_SET_in_setClause422 = new BitSet(new long[]{0x0000000000020000L});
 	public static final BitSet FOLLOW_assignments_in_setClause425 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_table_in_insertParams445 = new BitSet(new long[]{0x0000000008000000L});
-	public static final BitSet FOLLOW_LPAREN_in_insertParams448 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_table_in_insertParams445 = new BitSet(new long[]{0x0000000004000000L});
+	public static final BitSet FOLLOW_LPAREN_in_insertParams448 = new BitSet(new long[]{0x0000000000020000L});
 	public static final BitSet FOLLOW_insertColumns_in_insertParams451 = new BitSet(new long[]{0x0000000400000000L});
 	public static final BitSet FOLLOW_RPAREN_in_insertParams453 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_insertColumn_in_insertColumns465 = new BitSet(new long[]{0x0000000000000042L});
-	public static final BitSet FOLLOW_COMMA_in_insertColumns468 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_COMMA_in_insertColumns468 = new BitSet(new long[]{0x0000000000020000L});
 	public static final BitSet FOLLOW_insertColumn_in_insertColumns471 = new BitSet(new long[]{0x0000000000000042L});
 	public static final BitSet FOLLOW_IDENT_in_insertColumn485 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_IDENT_in_table510 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_IDENT_in_onTable530 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_IDENT_in_createTable549 = new BitSet(new long[]{0x0000000008000000L});
-	public static final BitSet FOLLOW_LPAREN_in_createTable551 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_IDENT_in_createTable549 = new BitSet(new long[]{0x0000000004000000L});
+	public static final BitSet FOLLOW_LPAREN_in_createTable551 = new BitSet(new long[]{0x0000000000020000L});
 	public static final BitSet FOLLOW_columnConstraints_in_createTable554 = new BitSet(new long[]{0x0000000400000000L});
 	public static final BitSet FOLLOW_RPAREN_in_createTable556 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_columnConstraint_in_columnConstraints576 = new BitSet(new long[]{0x0000000000000042L});
-	public static final BitSet FOLLOW_COMMA_in_columnConstraints579 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_COMMA_in_columnConstraints579 = new BitSet(new long[]{0x0000000000020000L});
 	public static final BitSet FOLLOW_columnConstraint_in_columnConstraints582 = new BitSet(new long[]{0x0000000000000042L});
 	public static final BitSet FOLLOW_column_in_columnConstraint595 = new BitSet(new long[]{0x0000300000000000L});
-	public static final BitSet FOLLOW_dataType_in_columnConstraint598 = new BitSet(new long[]{0x0000000000004002L});
+	public static final BitSet FOLLOW_dataType_in_columnConstraint598 = new BitSet(new long[]{0x0000000100000002L});
 	public static final BitSet FOLLOW_constraint_in_columnConstraint600 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_FOREIGN_KEY_in_constraint636 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_PRIMARY_KEY_in_constraint636 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_column_in_columns650 = new BitSet(new long[]{0x0000000000000042L});
-	public static final BitSet FOLLOW_COMMA_in_columns653 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_COMMA_in_columns653 = new BitSet(new long[]{0x0000000000020000L});
 	public static final BitSet FOLLOW_column_in_columns656 = new BitSet(new long[]{0x0000000000000042L});
 	public static final BitSet FOLLOW_IDENT_in_column671 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_IDENT_in_orderByColumn687 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_STRING_LITERAL_in_value700 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_INTEGER_in_value710 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_value_in_values727 = new BitSet(new long[]{0x0000000000000042L});
-	public static final BitSet FOLLOW_COMMA_in_values730 = new BitSet(new long[]{0x0000004000200000L});
+	public static final BitSet FOLLOW_COMMA_in_values730 = new BitSet(new long[]{0x0000004000100000L});
 	public static final BitSet FOLLOW_value_in_values733 = new BitSet(new long[]{0x0000000000000042L});
 	public static final BitSet FOLLOW_assignment_in_assignments772 = new BitSet(new long[]{0x0000000000000042L});
-	public static final BitSet FOLLOW_COMMA_in_assignments775 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_COMMA_in_assignments775 = new BitSet(new long[]{0x0000000000020000L});
 	public static final BitSet FOLLOW_assignment_in_assignments778 = new BitSet(new long[]{0x0000000000000042L});
 	public static final BitSet FOLLOW_column_in_assignment792 = new BitSet(new long[]{0x0000000000002000L});
-	public static final BitSet FOLLOW_EQUAL_in_assignment794 = new BitSet(new long[]{0x0000004000200000L});
+	public static final BitSet FOLLOW_EQUAL_in_assignment794 = new BitSet(new long[]{0x0000004000100000L});
 	public static final BitSet FOLLOW_value_in_assignment797 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_searchCondition_in_searchConditions817 = new BitSet(new long[]{0x0000000040000012L});
-	public static final BitSet FOLLOW_logicalOperator_in_searchConditions820 = new BitSet(new long[]{0x0000000000040000L});
-	public static final BitSet FOLLOW_searchCondition_in_searchConditions823 = new BitSet(new long[]{0x0000000040000012L});
-	public static final BitSet FOLLOW_column_in_searchCondition837 = new BitSet(new long[]{0x0000000013032000L});
-	public static final BitSet FOLLOW_comparisonOperator_in_searchCondition839 = new BitSet(new long[]{0x0000004000200000L});
+	public static final BitSet FOLLOW_searchCondition_in_searchConditions817 = new BitSet(new long[]{0x0000000020000012L});
+	public static final BitSet FOLLOW_logicalOperator_in_searchConditions820 = new BitSet(new long[]{0x0000000000020000L});
+	public static final BitSet FOLLOW_searchCondition_in_searchConditions823 = new BitSet(new long[]{0x0000000020000012L});
+	public static final BitSet FOLLOW_column_in_searchCondition837 = new BitSet(new long[]{0x000000000981A000L});
+	public static final BitSet FOLLOW_comparisonOperator_in_searchCondition839 = new BitSet(new long[]{0x0000004000100000L});
 	public static final BitSet FOLLOW_value_in_searchCondition842 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_onSearchCondition_in_onSearchConditions862 = new BitSet(new long[]{0x0000000040000012L});
-	public static final BitSet FOLLOW_logicalOperator_in_onSearchConditions865 = new BitSet(new long[]{0x0000000000040000L});
-	public static final BitSet FOLLOW_onSearchCondition_in_onSearchConditions868 = new BitSet(new long[]{0x0000000040000012L});
-	public static final BitSet FOLLOW_onOperand_in_onSearchCondition881 = new BitSet(new long[]{0x0000000013032000L});
-	public static final BitSet FOLLOW_comparisonOperator_in_onSearchCondition883 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_onSearchCondition_in_onSearchConditions862 = new BitSet(new long[]{0x0000000020000012L});
+	public static final BitSet FOLLOW_logicalOperator_in_onSearchConditions865 = new BitSet(new long[]{0x0000000000020000L});
+	public static final BitSet FOLLOW_onSearchCondition_in_onSearchConditions868 = new BitSet(new long[]{0x0000000020000012L});
+	public static final BitSet FOLLOW_onOperand_in_onSearchCondition881 = new BitSet(new long[]{0x000000000981A000L});
+	public static final BitSet FOLLOW_comparisonOperator_in_onSearchCondition883 = new BitSet(new long[]{0x0000000000020000L});
 	public static final BitSet FOLLOW_onOperand_in_onSearchCondition886 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_onTable_in_onOperand898 = new BitSet(new long[]{0x0000000000000800L});
-	public static final BitSet FOLLOW_DOT_in_onOperand901 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_DOT_in_onOperand901 = new BitSet(new long[]{0x0000000000020000L});
 	public static final BitSet FOLLOW_onColumn_in_onOperand904 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_IDENT_in_onColumn928 = new BitSet(new long[]{0x0000000000000002L});
 }

@@ -31,6 +31,15 @@ class StorageData {
      *
      * @return StorageData singleton instance
      */
+    protected static StorageData getInstance() {
+        return getInstance(null);
+    }
+
+    /**
+     * Returns the static instance to the StorageData singleton.
+     *
+     * @return StorageData singleton instance
+     */
     protected static StorageData getInstance(final String dbRootDirectory) {
         if (instance == null) {
             instance = new StorageData(dbRootDirectory);
@@ -66,6 +75,8 @@ class StorageData {
     private FileManager fileManager;
     private BlockManager blockManager;
 
+    private StorageStatistics storageStatistics;
+
     //Random necessary data
     private Integer nextId;
 
@@ -83,6 +94,7 @@ class StorageData {
         loadTableDescriptions();
         initIndexManager();
         initBlockManager();
+        initStorageStatistics();
     }
 
     private void loadTableDescriptions() {
@@ -127,6 +139,24 @@ class StorageData {
 
     }
 
+    private void initStorageStatistics() {
+        storageStatistics = StorageStatistics.getInstance();
+
+        //Briefly import all row data to build storage statistics
+        for (Integer tableId : indexManager.getTableIdSet()) {
+            Index index = indexManager.getIndex(tableId);
+
+            for (Integer primaryKey : index.getPrimaryKeySet()) {
+                Row row = getRow(tableId, primaryKey);
+                Map<Attribute, Object> rowData = row.getRowData();
+
+                for (Attribute attr : rowData.keySet()) {
+                    storageStatistics.checkAndAddDistinctValue(tableId, attr, rowData.get(attr));
+                }
+            }
+        }
+    }
+
     protected boolean tableExists(final Integer tableId) {
         return tables.containsKey(tableId);
     }
@@ -151,6 +181,11 @@ class StorageData {
         }
 
         return getTable(tableId);
+    }
+
+    protected int getRowCount(final Integer tableId) {
+        Index index = indexManager.getIndex(tableId);
+        return index.getPrimaryKeySet().size();
     }
 
     protected Description getTableDescription(final String tableName) {
@@ -262,6 +297,13 @@ class StorageData {
 
         Map<Integer, Row> data = tableData.get(tableId);
         data.put(row.getPrimaryKey(), row);
+
+        Map<Attribute, Object> rowData = row.getRowData();
+
+        //Let storage statistics know about the data in this new row
+        for (Attribute attr : rowData.keySet()) {
+            storageStatistics.checkAndAddDistinctValue(tableId, attr, rowData.get(attr));
+        }
     }
 
     private Row getRow(final Integer tableId, final Integer primaryKey) {
@@ -271,7 +313,13 @@ class StorageData {
             return null;
         }
 
-        Row row = tableData.get(tableId).get(primaryKey);
+        Row row = null;
+
+        Map<Integer, Row> allRowData = tableData.get(tableId);
+
+        if (allRowData != null) {
+            row = allRowData.get(primaryKey);
+        }
 
         //Try to find the data on disk if it isn't in memory already
         if (row == null || row.getRowData() == null || row.getRowData().isEmpty()) {
@@ -476,8 +524,15 @@ class StorageData {
      * @param block
      */
     private void addBlock(final Integer tableId, final Block block) {
+        Map<Integer, Row> rowData = tableData.get(tableId);
+
+        if (rowData == null) {
+            rowData = Maps.newHashMap();
+            tableData.put(tableId, rowData);
+        }
+
         for (Row row : block.getBlockData()) {
-            tableData.get(tableId).put(row.getPrimaryKey(), row);
+            rowData.put(row.getPrimaryKey(), row);
         }
     }
 

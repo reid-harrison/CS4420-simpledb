@@ -11,7 +11,7 @@ options {
 	int numCols = 0;
 	int numVals = 0;
 	int numTables = 0;
-	int numForeignKey = 0;
+	int numPrimaryKey = 0;
 	Table table1 = new Table();
 	Table table2 = new Table();
 	boolean isJoin = false;
@@ -246,9 +246,9 @@ columnConstraints
 columnConstraint
 	:	column^ dataType constraint?
 		{
-			if(numForeignKey > 1)
+			if(numPrimaryKey > 1)
 			{
-				throw new ValidationException("Only one foreign key permitted in CREATE.");
+				throw new ValidationException("Only one primary key permitted in CREATE.");
 			}
 		}
 	;catch[ValidationException e]{e.printStackTrace();}
@@ -259,7 +259,7 @@ dataType
 	;
 
 constraint
-	:	FOREIGN_KEY {numForeignKey++;}
+	:	PRIMARY_KEY {numPrimaryKey++;}
 	;
 
 columns
@@ -460,7 +460,7 @@ OR : ('o' | 'O')('r' | 'R') ;
 UPDATE : ('u' | 'U')('p' | 'P')('d' | 'D')('a' | 'A')('t' | 'T')('e' | 'E') ;
 SET : ('s' | 'S')('e' | 'E')('t' | 'T') ;
 ASC : ('a' | 'A')('s' | 'S')('c' | 'C') ;
-FOREIGN_KEY : ('f' | 'F')('o' | 'O')('r' | 'R')('e' | 'E')('i' | 'I')('g' | 'G')('n' | 'N')' '('k' | 'K')('e' | 'E')('y' | 'Y') ;	
+PRIMARY_KEY : ('p' | 'P')('r' | 'R')('i' | 'I')('m' | 'M')('a' | 'A')('r' | 'R')('y' | 'Y')' '('k' | 'K')('e' | 'E')('y' | 'Y') ;	
 DESC: ('d' | 'D')('e' | 'E')('s' | 'S')('c' | 'S') ;
 fragment JOIN : ('j' | 'J')('o' | 'O')('i' | 'I')('n' | 'N') ;
 INNER_JOIN: ('i' | 'I')('n' | 'N')('n' | 'N')('e' | 'E')('r' | 'R')(' ')JOIN ;
