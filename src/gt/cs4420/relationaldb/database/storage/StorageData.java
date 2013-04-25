@@ -152,9 +152,9 @@ class StorageData {
 
         return getTable(tableId);
     }
-    
+
     protected Description getTableDescription(final String tableName) {
-    	return getTable(tableNames.get(tableName)).getDescription();
+        return getTable(tableNames.get(tableName)).getDescription();
     }
 
     protected void addTable(final Table table) {
@@ -334,7 +334,7 @@ class StorageData {
 
                 if (cachedRow != null) {
                     cachedPrimaryKeys.add(primaryKey);
-                    
+
                     //If this row is cached and meets the where constraints, select it
                     if (filter.rowMeetsConstraints(cachedRow)) {
                         blockRows.add(cachedRow);
