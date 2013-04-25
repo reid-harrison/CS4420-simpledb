@@ -13,6 +13,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.antlr.runtime.RecognitionException;
+import org.antlr.runtime.tree.CommonTree;
+import org.antlr.runtime.tree.DOTTreeGenerator;
+import org.antlr.stringtemplate.StringTemplate;
 
 /**
  * A basic class to test the functionality of the StorageManager. For now, the tests will just be run through the main
@@ -27,66 +30,78 @@ public class StorageManagerTest {
         test.run();
         String query = "";
         
-        int choice = 4;
-        
-        switch(choice)
-        {
-        	case 0:
-        		query = "SELECT userId, email, username, password " +
-        				"FROM users " +
-        				"INNER JOIN posts " +
-        				"ON users.userId=posts.userId " +
-        				"WHERE username = 'reid' " +
-        				"ORDER BY username ASC;";
-        		break;
-        	
-        	case 1:
-        		query = "INSERT INTO users " +
-        				"(" +
-        				"	userId, " +
-        				"	username, " +
-        				"	email, " +
-        				"	password" +
-        				") " +
-        				"VALUES " +
-        				"(" +
-        				"	60, " +
-        				"	'phil', " +
-        				"	'poliver@gatech.edu', " +
-        				"	'unicorns' " +
-        				");";
-        		break;
-        	
-        	case 2:
-        		query = "UPDATE users " +
-        				"SET " +
-        				"username = 'phil', " +
-        				"email = 'poliver@gatech.edu' " +
-        				"WHERE userId = 1;";
-        		break;
-        		
-        	case 3:
-        		query = "CREATE TABLE pimps " +
-        				"(" +
-        				"	nameID int FOREIGN KEY, " +
-        				"	name varchar(10000)" +
-        				");";
-        		break;
-        		
-        	case 4:
-        		query = "DROP TABLE users;";
-        		break;
-        	default:
-        		break;
+        for(int i = 0; i < 5; i++){
+            int choice = i;
+
+            switch(choice)
+            {
+                case 0:
+                    query = "SELECT userId, email, username, password " +
+                            "FROM users " +
+                            "INNER JOIN posts " +
+                            "ON users.userId=posts.userId " +
+                            "WHERE username = 'reid' " +
+                            "ORDER BY username ASC;";
+                    break;
+
+                case 1:
+                    query = "INSERT INTO users " +
+                            "(" +
+                            "	userId, " +
+                            "	username, " +
+                            "	email, " +
+                            "	password" +
+                            ") " +
+                            "VALUES " +
+                            "(" +
+                            "	60, " +
+                            "	'phil', " +
+                            "	'poliver@gatech.edu', " +
+                            "	'unicorns' " +
+                            ");";
+                    break;
+
+                case 2:
+                    query = "UPDATE users " +
+                            "SET " +
+                            "username = 'phil', " +
+                            "email = 'poliver@gatech.edu' " +
+                            "WHERE userId = 1;";
+                    break;
+
+                case 3:
+                    query = "CREATE TABLE pimps " +
+                            "(" +
+                            "	nameID int FOREIGN KEY, " +
+                            "	name varchar(10000)" +
+                            ");";
+                    break;
+
+                case 4:
+                    query = "DROP TABLE users;";
+                    break;
+                default:
+                    break;
+            }
+
+            QueryParser parser = null;
+
+            try {
+                 parser = new QueryParser(query);
+            } catch (RecognitionException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            DOTTreeGenerator gen = new DOTTreeGenerator();
+            CommonTree queryTree = parser.getQueryTree();
+            StringTemplate st = gen.toDOT(queryTree);
+
+            // This prints out a DOT Tree declaration for the query tree. Use GraphViz to view it.
+            System.out.println(st);
+
         }
-        
-        
-        try {
-			QueryParser parser = new QueryParser(query);
-		} catch (RecognitionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
     }
 
     private final StorageManager manager;

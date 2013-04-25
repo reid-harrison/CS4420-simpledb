@@ -36,4 +36,12 @@ public class QueryEngine {
 
         Table table = new Table(name, description);
     }
+
+    public void dropTable(Tree dropTableNode) {
+
+    }
+
+    public void insertIntoTable(Tree insertIntoTableNode) {
+
+    }
 }
