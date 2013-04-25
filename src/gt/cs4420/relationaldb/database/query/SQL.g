@@ -33,7 +33,7 @@ options {
     private void validateAttrVals(Table table) throws ValidationException {
     	Map<Attribute, Object> attrVals = Maps.newHashMap();
     	for(int i = 0; i < table1Attributes.size(); i++) {
-				attrVals.put(table1Attributes.get(i), insertVals.get(i));			
+				attrVals.put(table.getDescription().getAttribute(table1Attributes.get(i).getName()), insertVals.get(i));			
 			}
 			
 			attrValidator.validate(attrVals, table);
@@ -189,8 +189,21 @@ setClause
 /* Query parameters	*/
 	
 insertParams
-	:	table^ LPAREN! columns RPAREN!
+	:	table^ LPAREN! insertColumns RPAREN!
 	;
+
+insertColumns
+	:	insertColumn (COMMA! insertColumn)*
+	;
+	
+insertColumn
+	:	IDENT
+		{
+			attrValidator.validate(new Attribute[]{table1.getDescription().getAttribute($IDENT.text)}, table1);
+			numCols++;
+		}
+	;catch[ValidationException e]{e.printStackTrace();}
+	 catch[NullPointerException e]{System.out.println("Error in INSERT clause."); e.printStackTrace();}
 	
 table
 	:	IDENT
@@ -202,7 +215,7 @@ table
 			tables.add(table1);
 			tableNames.add($IDENT.text);
 		}
-	;catch[ValidationException e]{}
+	;catch[ValidationException e]{e.printStackTrace();}
 	
 // Requires different logic than table
 onTable
@@ -210,10 +223,10 @@ onTable
 		{
 			if (!tableNames.contains($IDENT.text))
 			{
-				throw new IllegalArgumentException("'" + $IDENT.text + "' is not a table from which items are being queried.");
+				throw new ValidationException("'" + $IDENT.text + "' is not a table from which items are being queried.");
 			}
 		}
-	;
+	;catch[ValidationException e]{e.printStackTrace();}
 	
 createTable
 	:	IDENT^ LPAREN! columnConstraints RPAREN!
@@ -224,7 +237,7 @@ createTable
 				throw new ValidationException("Table with name '" + $IDENT.text + "' already exists.");
 			}
 		}
-	;catch[ValidationException e]{}
+	;catch[ValidationException e]{e.printStackTrace();}
 	
 columnConstraints
 	:	columnConstraint (COMMA! columnConstraint)*
@@ -235,10 +248,10 @@ columnConstraint
 		{
 			if(numForeignKey > 1)
 			{
-				throw new IllegalArgumentException("Only one foreign key permitted in CREATE.");
+				throw new ValidationException("Only one foreign key permitted in CREATE.");
 			}
 		}
-	;
+	;catch[ValidationException e]{e.printStackTrace();}
 	
 dataType
 	:	'int'
@@ -257,7 +270,6 @@ columns
 column
 	:	IDENT
 		{
-			numCols++;
 			table1Attributes.add(new Attribute($IDENT.text));
 		}
 	;
@@ -292,14 +304,12 @@ values
 			// Number of values must match number of attribues in INSERT
 			if (!(numVals == numCols))
 			{
-				throw new IllegalArgumentException(numCols + " columns specified and " + numVals + " values entered.");
+				throw new ValidationException(numCols + " columns specified and " + numVals + " values entered.");
 			}	
-			
-			// Once attributes and values are parsed, put them in a map for validation
 			
 			validateAttrVals(table1);
 		}
-	;catch[ValidationException e]{}
+	;catch[ValidationException e]{e.printStackTrace();}
 	
 order
 	:	ASC
@@ -314,18 +324,36 @@ assignment
 	:	column EQUAL^ value
 		{
 			boolean found = false;
+			
 			for(Table table : tables)
 			{
 				if(!found)
 				{
 					Map<Attribute, Object> attrVals = Maps.newHashMap();
-					attrVals.put(new Attribute($column.text), $value.text);
-					attrValidator.validate(attrVals, table);
-					
+					Object tmp;
+					if($value.text.startsWith("'") || $value.text.endsWith("'"))
+					{
+					 	tmp = $value.text.substring(1, $value.text.length()-1);
+					}
+					else
+					{
+						tmp = Integer.parseInt($value.text);
+					}
+					if(table.getDescription().getAttribute($column.text) != null)
+					{
+						attrVals.put(table.getDescription().getAttribute($column.text), tmp);
+						attrValidator.validate(attrVals, table);
+						found = true;
+					}	
 				}
 			}
+			
+			if(!found)
+			{
+				throw new ValidationException("Validation error SET clause.");
+			}
 		}
-	;catch[ValidationException e]{}
+	;catch[ValidationException e]{e.printStackTrace();}
 	
 // WHERE clause conditions
 searchConditions
@@ -342,18 +370,30 @@ searchCondition
 				if(!found)
 				{
 					Map<Attribute, Object> attrVals = Maps.newHashMap();
-					attrVals.put(new Attribute($column.text), $value.text.substring(1, $value.text.length()-1));
-					attrValidator.validate(attrVals, table);
-					
+					Object tmp;
+					if($value.text.startsWith("'") || $value.text.endsWith("'"))
+					{
+					 	tmp = $value.text.substring(1, $value.text.length()-1);
+					}
+					else
+					{
+						tmp = Integer.parseInt($value.text);
+					}
+					if(table.getDescription().getAttribute($column.text) != null)
+					{
+						attrVals.put(table.getDescription().getAttribute($column.text), tmp);
+						attrValidator.validate(attrVals, table);
+						found = true;
+					}	
 				}
 			}
 			
 			if(!found)
 			{
-				throw new ValidationException("Validation error in WHERE clause conditions.");
+				throw new ValidationException("Validation error WHERE clause.");
 			}
 		}
-	;catch[ValidationException e]{}
+	;catch[ValidationException e]{e.printStackTrace();}
 	
 // ON clause conditions when performing a JOIN
 onSearchConditions
@@ -366,10 +406,12 @@ onSearchCondition
 	
 onOperand
 	:	onTable^ DOT! onColumn
-		{
-			attrValidator.validate(new Attribute[]{new Attribute($onColumn.text)}, storageManager.getTable($onTable.text));
+		{	
+			
+				attrValidator.validate(new Attribute[]{storageManager.getTable($onTable.text).getDescription().getAttribute($onColumn.text)}, storageManager.getTable($onTable.text));
 		}
-	;catch[ValidationException e]{}
+	;catch[ValidationException e]{e.printStackTrace();}
+	 catch[NullPointerException e]{System.out.println("Error in ON clause."); e.printStackTrace();}
 
 onColumn
 	:	IDENT
