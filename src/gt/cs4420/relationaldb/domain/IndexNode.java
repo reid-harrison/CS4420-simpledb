@@ -1,16 +1,18 @@
 package gt.cs4420.relationaldb.domain;
 
-public class IndexNode <T extends Comparable<T>,E extends Comparable<E>> {
+public class IndexNode {
 	
-	private T indexID;
-	private E blockID;
+	private Integer indexID;
+	private Integer blockID;
+	private Integer blockIndex;
 	
-	private IndexNode<T,E> left;
-	private IndexNode<T,E> right;
+	private IndexNode left;
+	private IndexNode right;
 	
-	public IndexNode(T indexID, E blockID){
+	public IndexNode(Integer indexID, Integer blockID, Integer blockIndex){
 		this.indexID = indexID;
 		this.blockID = blockID;
+		this.blockIndex = blockIndex;
 		this.left = null;
 		this.right = null;
 	}
@@ -18,46 +20,55 @@ public class IndexNode <T extends Comparable<T>,E extends Comparable<E>> {
 	public IndexNode() {
 		this.indexID = null;
 		this.blockID = null;
+		this.blockIndex = null;
 		this.left = null;
 		this.right = null;
 	}
 	
-	public IndexNode(IndexNode<T,E> in) {
+	public IndexNode(IndexNode in) {
 		this.indexID = in.getIndexId();
 		this.blockID = in.getBlockID();
+		this.blockIndex = in.getBlockIndex();
 		this.left = in.getLeft();
 		this.right = in.getRight();
 	}
 	
-	public void setIndexID(T indexID){
+	public Integer getBlockIndex() {
+		return this.blockIndex;
+	}
+
+	public void setBlockIndex(Integer blockIndex){
+		this.blockIndex = blockIndex;
+	}
+	public void setIndexID(Integer indexID){
 		this.indexID = indexID;
 	}
 	
-	public T getIndexId(){
+	public Integer getIndexId(){
 		return this.indexID;
 	}
 	
-	public void setBlockID(E blockID){
+	public void setBlockID(Integer blockID){
 		this.blockID = blockID;
 	}
 	
-	public E getBlockID(){
+	public Integer getBlockID(){
 		return this.blockID;
 	}
 	
-	public void setLeft(IndexNode<T,E> in){
+	public void setLeft(IndexNode in){
 		this.left = in;
 	}
 	
-	public IndexNode<T,E> getLeft(){
+	public IndexNode getLeft(){
 		return this.left;
 	}
 	
-	public void setRight(IndexNode<T,E> in){
+	public void setRight(IndexNode in){
 		this.right = in;
 	}
 	
-	public IndexNode<T,E> getRight(){
+	public IndexNode getRight(){
 		return this.right;
 	}
 	
@@ -65,7 +76,7 @@ public class IndexNode <T extends Comparable<T>,E extends Comparable<E>> {
 		if(!(o instanceof IndexNode))
 				return false;
 		@SuppressWarnings("unchecked")
-		IndexNode<T, E> in = (IndexNode<T,E>) o;
+		IndexNode in = (IndexNode) o;
 		return in.getIndexId().equals(this.getIndexId()) && in.getBlockID().equals(this.getBlockID()) && 
 				in.getLeft().equals(this.getLeft()) && in.getRight().equals(this.getRight());
 		
