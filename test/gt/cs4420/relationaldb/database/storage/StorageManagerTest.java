@@ -348,8 +348,6 @@ public class StorageManagerTest {
             ve.printStackTrace();
             throw new TestFailedException("Insert");
         }
-
-        //TODO Implement check that items were inserted
     }
 
 }

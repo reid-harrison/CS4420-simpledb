@@ -19,7 +19,7 @@ public class StorageManagerLargeTest {
 
     private final int TABLE_COUNT = 10;
     private final int ATTRIBUTE_SIZE = 10;
-    private final int ROW_COUNT = 1000;
+    private final int ROW_COUNT = 3000;
 
     private final int DIFFERENT_STRING_COUNT = 300;
     private final int MAX_STRING_SIZE = 100;
@@ -61,8 +61,15 @@ public class StorageManagerLargeTest {
 
     private long startTime = 0;
     private long endTime = 0;
-    private long averageTime = 0;
-    private int timeCount = 0;
+
+    private long averageInsertTime = 0;
+    private int insertTimeCount = 0;
+
+    private long averageSelectTime = 0;
+    private int selectTimeCount = 0;
+
+    private long averageUpdateTime = 0;
+    private int updateTimeCount = 0;
 
     public void generateData() throws ValidationException {
         manager = new StorageManager(DB_ROOT_DIRECTORY);
@@ -195,26 +202,24 @@ public class StorageManagerLargeTest {
             System.out.println("Testing " + NUMBER_OF_SELECTION_TESTS + " random selection tests on table with ID: " + tableId);
             runSelectionTests(table, attributes, tableIntUsage, tableStringUsage);
 
-            /*System.out.println("Testing " + NUMBER_OF_UPDATE_TESTS + " random update tests on table with ID: " + tableId);
+            System.out.println("Testing " + NUMBER_OF_UPDATE_TESTS + " random update tests on table with ID: " + tableId);
             runUpdateTests(table, attributes, tableIntUsage, tableStringUsage);
 
+            /*
             System.out.println("Testing " + NUMBER_OF_SELECTION_TESTS + " random selection tests on table with ID: " + tableId);
             runSelectionTests(table, attributes, tableIntUsage, tableStringUsage);*/
         }
 
-        System.out.println("Average millis to select: " + averageTime);
+        System.out.println("Average millis to insert: " + averageInsertTime);
+        System.out.println("Average millis to select: " + averageSelectTime);
+        System.out.println("Average millis to update: " + averageUpdateTime);
 
-        /**
-         * TODO
-         * Join, update tests
-         */
     }
 
     private void runSelectionTests(final Table table, final Attribute[] attributes, final Map<Attribute, int[]> tableIntUsage, final Map<Attribute, int[]> tableStringUsage) {
         int expectedRowCount = 0;
         Constraint whereConstraint = null;
 
-        //TODO Test more complex where constraints
         for (int i = 0; i < NUMBER_OF_SELECTION_TESTS; i++) {
             int nextInt = random.nextInt(attributes.length);
 
@@ -243,13 +248,11 @@ public class StorageManagerLargeTest {
         }
     }
 
-    private void runUpdateTests(final Table table, final Attribute[] attributes, final Map<Attribute, int[]> tableIntUsage, final Map<Attribute, int[]> tableStringUsage) throws ValidationException{
-        int expectedRemovedRowCount = 0;
+    private void runUpdateTests(final Table table, final Attribute[] attributes, final Map<Attribute, int[]> tableIntUsage, final Map<Attribute, int[]> tableStringUsage) throws ValidationException {
         int expectedAddedRowCount = 0;
         Constraint whereConstraint = null;
         Constraint newConstraint = null;
 
-        //TODO Test more complex where constraints
         for (int i = 0; i < NUMBER_OF_UPDATE_TESTS; i++) {
             Attribute attribute = null;
             int nextInt = 0;
@@ -311,7 +314,12 @@ public class StorageManagerLargeTest {
 
             Row updateRow = new Row(updateRowData);
 
+            startTime = System.currentTimeMillis();
             manager.update(table.getName(), updateRow, whereConstraint);
+            endTime = System.currentTimeMillis();
+            averageUpdateTime = (averageUpdateTime * updateTimeCount) + (endTime - startTime);
+            updateTimeCount++;
+            averageUpdateTime /= updateTimeCount;
 
             try {
                 testSelect(table.getName(), whereConstraint, 0);
@@ -339,7 +347,12 @@ public class StorageManagerLargeTest {
         System.out.println("Inserting test rows.");
 
         for (Row row : rows) {
+            startTime = System.currentTimeMillis();
             manager.insert(manager.getTableName(tableId), row);
+            endTime = System.currentTimeMillis();
+            averageInsertTime = (averageInsertTime * insertTimeCount) + (endTime - startTime);
+            insertTimeCount++;
+            averageInsertTime /= insertTimeCount;
         }
     }
 
@@ -350,9 +363,9 @@ public class StorageManagerLargeTest {
 
         long timeDifference = endTime - startTime;
 
-        averageTime = (averageTime * timeCount) + timeDifference;
-        timeCount++;
-        averageTime /= timeCount;
+        averageSelectTime = (averageSelectTime * selectTimeCount) + timeDifference;
+        selectTimeCount++;
+        averageSelectTime /= selectTimeCount;
 
         if (selectedRows.size() != expectedRowCount) {
             throw new TestFailedException("Select", "Selected " + selectedRows.size() + " rows when " + expectedRowCount + " rows were expected");

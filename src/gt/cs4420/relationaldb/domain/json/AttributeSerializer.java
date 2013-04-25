@@ -5,10 +5,6 @@ import gt.cs4420.relationaldb.domain.DataType;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-/**
- * TODO:
- * -Serialize attribute ids?
- */
 public class AttributeSerializer implements JsonSerializer<Attribute> {
 
     @Override

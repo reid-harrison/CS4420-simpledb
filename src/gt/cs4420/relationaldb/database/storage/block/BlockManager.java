@@ -6,11 +6,6 @@ import com.google.common.collect.Sets;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * TODO:
- * * Figure out the best way to handle what determines the "size" of a block (currently an attribute count)
- * * Keep data in sorted order by primary key
- */
 public class BlockManager {
 
     //The maximum amount of attributes to store in a single block
@@ -136,7 +131,6 @@ public class BlockManager {
     }
 
     private Integer getNextBlockId(final Integer tableId) {
-        //TODO test if this nextNext crap is at all necessary
         Integer nextBlockId = nextBlockIds.get(tableId);
 
         if (nextBlockId == null) {

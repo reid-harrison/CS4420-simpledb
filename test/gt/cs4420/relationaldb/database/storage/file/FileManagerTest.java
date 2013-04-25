@@ -13,11 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * TODO:
- * -Add more tests to cover more functionality
- * -Add more sophisticated tests
- */
 public class FileManagerTest {
 
     public static void main(String[] args) {
@@ -161,9 +156,6 @@ public class FileManagerTest {
          */
         testExportIndexes(indexManager);
         testImportIndexes(importIndex, indexManager);
-
-
-        //TODO Some more tests to do
 
     }
 
