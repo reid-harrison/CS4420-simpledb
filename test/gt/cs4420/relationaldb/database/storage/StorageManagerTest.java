@@ -4,11 +4,13 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
+import gt.cs4420.relationaldb.database.query.QueryEngine;
 import gt.cs4420.relationaldb.database.query.QueryParser;
 import gt.cs4420.relationaldb.domain.*;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
 import gt.cs4420.relationaldb.test.TestFailedException;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -30,8 +32,8 @@ public class StorageManagerTest {
         test.run();
         String query = "";
         
-        for(int i = 0; i < 5; i++){
-            int choice = i;
+        //for(int i = 0; i < 5; i++){
+            int choice = 0;
 
             switch(choice)
             {
@@ -40,7 +42,9 @@ public class StorageManagerTest {
                             "FROM users " +
                             "INNER JOIN posts " +
                             "ON users.userId=posts.userId " +
-                            "WHERE username = 'reid' " +
+                            "WHERE username = 'reid' OR " +
+                            "username='phil' OR " +
+                            "email='poliver@gatech.edu' " +
                             "ORDER BY username ASC;";
                     break;
 
@@ -72,7 +76,7 @@ public class StorageManagerTest {
                 case 3:
                     query = "CREATE TABLE pimps " +
                             "(" +
-                            "	nameID int FOREIGN KEY, " +
+                            "	nameID int PRIMARY KEY, " +
                             "	name varchar(10000)" +
                             ");";
                     break;
@@ -89,10 +93,15 @@ public class StorageManagerTest {
             try {
                  parser = new QueryParser(query);
             } catch (RecognitionException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-
+            QueryEngine qe = new QueryEngine(new StorageManager());
+            
+            List<JoinedRow> results = qe.selectFromTable(parser);
+            
+            System.out.println(results.get(0));
+            
+            
             DOTTreeGenerator gen = new DOTTreeGenerator();
             CommonTree queryTree = parser.getQueryTree();
             StringTemplate st = gen.toDOT(queryTree);
@@ -100,7 +109,7 @@ public class StorageManagerTest {
             // This prints out a DOT Tree declaration for the query tree. Use GraphViz to view it.
             System.out.println(st);
 
-        }
+        //}
 
     }
 
