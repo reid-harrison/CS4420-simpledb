@@ -3,11 +3,12 @@ package gt.cs4420.relationaldb.database.storage.index;
 import gt.cs4420.relationaldb.domain.IndexNode;
 
 import java.io.FileNotFoundException;
+import java.util.HashSet;
 import java.util.Set;
 
-public class TreeIndex<T extends Comparable<T>, E extends Comparable<E>> extends AbstractIndex {
+public class TreeIndex extends AbstractIndex {
 	
-	private IndexNode<T,E> root;
+	private IndexNode root;
 	private int size;
 	
 	public TreeIndex(){
@@ -15,8 +16,8 @@ public class TreeIndex<T extends Comparable<T>, E extends Comparable<E>> extends
 		this.size = 0;
 	}
 	
-	public TreeIndex(IndexNode<T,E> root){
-		this.root = new IndexNode<T,E>(root);
+	public TreeIndex(IndexNode root){
+		this.root = new IndexNode(root);
 		size = 1;
 	}
 	
@@ -24,7 +25,7 @@ public class TreeIndex<T extends Comparable<T>, E extends Comparable<E>> extends
 		return this.size;
 	}
 	
-	public IndexNode<T,E> getRoot(){
+	public IndexNode getRoot(){
 		return this.root;
 	}
 	
@@ -32,15 +33,30 @@ public class TreeIndex<T extends Comparable<T>, E extends Comparable<E>> extends
 		return size == 0;
 	}
 	
-	public boolean contains(T indexID){
+	public boolean contains(Integer indexID){
 		return (get(indexID) != null);
 	}
 	
-	public E get(T indexID){
+	public Integer get(Integer indexID){
 		return get(root,indexID);
 	}
 	
-	private E get(IndexNode<T,E> in, T indexID){
+	public Integer getIndex(Integer indexID){
+		return getIndex(root,indexID);
+	}
+	
+	private Integer getIndex(IndexNode in, Integer indexID){
+		if(in == null)
+			return null;
+		int cmp = in.getIndexId().compareTo(indexID);
+		if(cmp > 0)
+			return get(in.getLeft(),indexID);
+		else if(cmp == 0)
+				return in.getBlockIndex();
+		else return get(in.getRight(),indexID);		
+	}
+	
+	private Integer get(IndexNode in, Integer indexID){
 		if(in == null)
 			return null;
 		int cmp = in.getIndexId().compareTo(indexID);
@@ -51,31 +67,31 @@ public class TreeIndex<T extends Comparable<T>, E extends Comparable<E>> extends
 		else return get(in.getRight(),indexID);		
 	}
 	
-	public void put(T indexID, E blockID){
+	public void put(Integer indexID, Integer blockID, Integer blockIndex){
 		if(blockID == null){
 			delete(indexID);
 			return;
 		}
-		root = put(root, indexID, blockID);		
+		root = put(root, indexID, blockID, blockIndex);		
 	}
 
-	private IndexNode<T, E> put(IndexNode<T, E> in, T indexID, E blockID) {
+	private IndexNode put(IndexNode in, Integer indexID, Integer blockID, Integer blockIndex) {
 		// TODO Auto-generated method stub
 		if(in == null){
 			++size;
-			return new IndexNode<T,E>(indexID, blockID);
+			return new IndexNode(indexID, blockID, blockIndex);
 		}
 			
 		int cmp = in.getIndexId().compareTo(indexID);
 		if(cmp == 0)
 			in.setBlockID(blockID);
 		else if(cmp < 0)
-					in.setRight(put(in.getRight(),indexID,blockID));
-			 else in.setLeft(put(in.getLeft(),indexID,blockID));
+					in.setRight(put(in.getRight(),indexID,blockID,blockIndex));
+			 else in.setLeft(put(in.getLeft(),indexID,blockID,blockIndex));
 		return in;
 	}
 	
-	public void delete(T indexID){
+	public void delete(Integer indexID){
 		if(contains(indexID) == false)
 			try {
 				throw new FileNotFoundException();
@@ -87,7 +103,7 @@ public class TreeIndex<T extends Comparable<T>, E extends Comparable<E>> extends
 		return;
 	}
 
-	private IndexNode<T, E> delete(IndexNode<T, E> in, T indexID) {
+	private IndexNode delete(IndexNode in, Integer indexID) {
 		// TODO Auto-generated method stub
 		if(in == null)
 			return null;
@@ -101,7 +117,7 @@ public class TreeIndex<T extends Comparable<T>, E extends Comparable<E>> extends
 				return in.getRight();
 			if(in.getRight() == null)
 				return in.getLeft();
-			IndexNode<T,E> tmp = in;
+			IndexNode tmp = in;
 			in = min(tmp.getRight());
 			in.setRight(deleteMin(tmp.getRight()));
 			in.setLeft(tmp.getLeft());
@@ -109,7 +125,7 @@ public class TreeIndex<T extends Comparable<T>, E extends Comparable<E>> extends
 		return in;
 	}
 
-	private IndexNode<T, E> deleteMin(IndexNode<T, E> in) {
+	private IndexNode deleteMin(IndexNode in) {
 		// TODO Auto-generated method stub
 		if(in.getLeft() == null)
 			return in.getRight();			
@@ -117,7 +133,7 @@ public class TreeIndex<T extends Comparable<T>, E extends Comparable<E>> extends
 		return in;
 	}
 
-	private IndexNode<T, E> min(IndexNode<T, E> in) {
+	private IndexNode min(IndexNode in) {
 		// TODO Auto-generated method stub
 		if(isEmpty())
 			return null;
@@ -129,39 +145,48 @@ public class TreeIndex<T extends Comparable<T>, E extends Comparable<E>> extends
 
     @Override
     public Set<Integer> getPrimaryKeySet() {
-        //TODO Implement getPrimaryKeySet
-        return null;
+    	Set<Integer> s = new HashSet<Integer>();
+    	preorder(root,s);    	
+        return s;
     }
 
-    @Override
+    private void preorder(IndexNode node, Set<Integer> s) {
+		if(node == null)
+			return;
+		s.add(node.getIndexId());
+		preorder(node.getLeft(),s);
+		preorder(node.getRight(),s);
+	}
+
+	@Override
     public Integer getBlockId(Integer primaryKey) {
         //TODO Implement getBlockId
-        return null;
+        return get(primaryKey);
     }
 
     @Override
     public void addIndexEntry(Integer primaryKey, Integer blockId, Integer blockIndex) {
         //TODO Implement addIndexEntry
-
-        super.addIndexEntry(primaryKey, blockId, blockIndex);
+    	put(primaryKey, blockId, blockIndex);
+        //super.addIndexEntry(primaryKey, blockId, blockIndex);
     }
 
     @Override
     public void removeIndexEntry(Integer primaryKey) {
-        super.removeIndexEntry(primaryKey);
-
+        //super.removeIndexEntry(primaryKey);
+    	delete(primaryKey);
         //TODO Implement removeIndexEntry
     }
 
     @Override
     public int getBlockIndex(Integer primaryKey) {
         //TODO Implement getBlockIndex
-        return 0;
+        return getIndex(primaryKey);
     }
 
     @Override
     public boolean primaryKeyExists(Integer primaryKey) {
         //TODO Implement primaryKeyExists
-        return false;
+        return contains(primaryKey);
     }
 }
