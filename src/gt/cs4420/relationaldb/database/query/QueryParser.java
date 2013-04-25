@@ -57,9 +57,6 @@ public class QueryParser {
         throw new IllegalArgumentException("The root of the query tree or the root of the where clause is required to parse the constraints");
     }
 
-    /**
-     * TODO Validation that the value constraints are valid attributes
-     */
     private Constraint parseWhereConstraint(final Tree whereRoot) {
         Tree operatorNode = whereRoot;
 
