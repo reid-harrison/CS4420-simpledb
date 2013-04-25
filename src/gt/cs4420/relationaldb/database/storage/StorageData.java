@@ -268,8 +268,10 @@ class StorageData {
             Integer affectedPrimaryKey = affectedRow.getPrimaryKey();
             Integer affectedBlockId = tableIndex.getBlockId(affectedPrimaryKey);
 
-            tableData.get(tableId).get(affectedPrimaryKey).getRowData().putAll(updateData);
-            tableIndex.addDirtyPrimaryKey(affectedPrimaryKey, affectedBlockId);
+            Map<Integer, Row> rowData = tableData.get(tableId);
+            Row affectedRowData = rowData.get(affectedPrimaryKey);
+            affectedRowData.getRowData().putAll(updateData);
+            tableIndex.addDirtyPrimaryKey(affectedBlockId, affectedPrimaryKey);
         }
 
         dirtyCheck();

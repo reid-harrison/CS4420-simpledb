@@ -19,7 +19,7 @@ public class StorageManagerLargeTest {
 
     private final int TABLE_COUNT = 10;
     private final int ATTRIBUTE_SIZE = 10;
-    private final int ROW_COUNT = 3000;
+    private final int ROW_COUNT = 1000;
 
     private final int DIFFERENT_STRING_COUNT = 300;
     private final int MAX_STRING_SIZE = 100;
@@ -283,7 +283,7 @@ public class StorageManagerLargeTest {
                         newString = strings[nextInt];
                     }
 
-                    newConstraint = new ValueConstraint(attribute, "'" + strings[nextInt] + "'", ValueOperator.EQUALS);
+                    newConstraint = new ValueConstraint(attribute, "'" + newString + "'", ValueOperator.EQUALS);
                     updateRowData.put(attribute, newString);
                     tableStringUsage.get(attribute)[nextInt] += modifiedRowCount;
                     expectedAddedRowCount = tableStringUsage.get(attribute)[nextInt];
