@@ -57,7 +57,14 @@ public class Table {
             return false;
         }
 
-        return this.id.equals(((Table) other).getId());
+        boolean equals;
+        if(id != null) {
+             equals = this.id.equals(((Table) other).getId());
+        } else {
+            equals = this.name.equals(((Table) other).getName()) && this.desc.equals(((Table) other).getDescription());
+        }
+
+        return equals;
     }
 
     /**

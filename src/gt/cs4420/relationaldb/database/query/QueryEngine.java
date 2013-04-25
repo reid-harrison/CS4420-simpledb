@@ -30,13 +30,13 @@ public class QueryEngine {
     public void createTable(CommonTree createTableNode) throws ValidationException {
 
         //extract this node's relevant data
-        String name = createTableNode.getChild(0).getText();
+        String name = createTableNode.getChild(1).getText();
 
         List<Attribute> tableAttributes = new ArrayList<>();
-        Tree currentNode = createTableNode.getChild(1);
+        Tree currentNode = createTableNode.getChild(2);
         Description description = new Description();
 
-        int child = 0;
+        int child = 2;
         Attribute attribute;
         Attribute primaryKeyAttribute = null;
         while(currentNode != null){
@@ -71,7 +71,7 @@ public class QueryEngine {
     }
 
     public static DataType matchToDataType(String type) {
-        if(type.equals(DataType.INT.getTypeString())) {
+        if(type.equals(DataType.INT.getTypeString().toLowerCase())) {
             return DataType.INT;
         } else {
             return DataType.STRING;

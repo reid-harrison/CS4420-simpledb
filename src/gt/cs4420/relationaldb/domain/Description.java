@@ -3,7 +3,6 @@ package gt.cs4420.relationaldb.domain;
 import com.google.common.base.Strings;
 
 public class Description {
-
     private Attribute[] attributes;
 
     private Attribute primaryKeyAttribute;
@@ -67,4 +66,29 @@ public class Description {
         throw new IllegalArgumentException("Primary Key attribute does not exist in the table's description");
 
     }
+
+    /*
+     * Implemented for ease of testing.
+     */
+    @Override
+    public boolean equals(Object other) {
+        if(!(other instanceof Description))
+            return false;
+
+        boolean equals = true; //must assume true to use && later
+        if(primaryKeyAttribute != null){
+            equals = this.getPrimaryKeyAttribute().equals(((Description) other).getPrimaryKeyAttribute());
+        }
+
+        Attribute[] otherAttributes = ((Description) other).getAttributes();
+        if(equals && (attributes.length == (otherAttributes.length))) {
+            for(int i = 0; i < attributes.length; i++){
+                equals = equals && attributes[i].equals(otherAttributes[i]);
+            }
+        } else {
+            return false;
+        }
+        return equals;
+    }
+
 }
