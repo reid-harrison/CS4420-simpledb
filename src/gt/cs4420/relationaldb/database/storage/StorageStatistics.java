@@ -35,8 +35,6 @@ public class StorageStatistics {
     private Map<Integer, Map<Attribute, Set<Object>>> distinctValues;
 
     private StorageStatistics() {
-        storageData = StorageData.getInstance();
-
         distinctValues = Maps.newHashMap();
     }
 
@@ -86,6 +84,21 @@ public class StorageStatistics {
      * @return int
      */
     public int numberOfDistinctValuesForAttribute(final String tableName, final Attribute attribute) {
-        return 0;
+        storageData = StorageData.getInstance();
+        
+        Integer tableId = storageData.getTableId(tableName);
+        Map<Attribute, Set<Object>> tableDistinctValues = distinctValues.get(tableId);
+
+        if (tableDistinctValues == null) {
+            return 0;
+        }
+
+        Set<Object> values = tableDistinctValues.get(attribute);
+
+        if (values == null) {
+            return 0;
+        }
+
+        return values.size();
     }
 }
