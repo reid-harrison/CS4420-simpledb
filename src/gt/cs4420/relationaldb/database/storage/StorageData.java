@@ -385,6 +385,12 @@ class StorageData {
 
                     //If this row is cached and meets the where constraints, select it
                     if (filter.rowMeetsConstraints(cachedRow)) {
+                        for (Attribute attr : cachedRow.getRowData().keySet()) {
+                            if (attr.getType() == null) {
+                                attr.setType(description.getAttribute(attr.getName()).getType());
+                            }
+                        }
+
                         blockRows.add(cachedRow);
                     }
                 }
@@ -394,6 +400,12 @@ class StorageData {
             List<Row> importedRows = fileManager.importTableBlockWithConstraint(tableId, blockId, description, whereConstraint, cachedPrimaryKeys);
 
             for (Row row : importedRows) {
+
+                for (Attribute attr : row.getRowData().keySet()) {
+                    if (attr.getType() == null) {
+                        attr.setType(description.getAttribute(attr.getName()).getType());
+                    }
+                }
 
                 try {
                     addRow(tableId, row);
@@ -405,7 +417,6 @@ class StorageData {
             blockRows.addAll(importedRows);
 
             rows.addAll(blockRows);
-
         }
 
         // Sort the rows depending on the order by clause
@@ -433,7 +444,6 @@ class StorageData {
             throw new ValidationException("Data types for join constraints must be the same");
         }
 
-        //TODO support more than just inner join
         JoinConstraint.JoinType joinType = joinConstraint.getJoinType();
 
         Constraint leftWhereConstraint = removeIrrelevantConstraints(whereConstraint, leftTableId);
