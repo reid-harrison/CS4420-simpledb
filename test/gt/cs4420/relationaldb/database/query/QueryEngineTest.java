@@ -43,7 +43,24 @@ public class QueryEngineTest {
     }
 
     @Test
-    public void testExecuteQuery_CreateTable() throws ValidationException {
+    public void testExecuteQuery_dropTable() throws ValidationException {
+        Tree dropNode = mock(Tree.class);
+        when(dropNode.getType()).thenReturn(SQLParser.DROP_TABLE);
+
+        Tree tableNameNode = mock(Tree.class);
+        when(tableNameNode.getText()).thenReturn("myTable");
+
+        CommonTree queryTree = mock(CommonTree.class);
+        when(queryTree.getChild(0)).thenReturn(dropNode);
+        when(queryTree.getChild(1)).thenReturn(tableNameNode);
+
+        queryEngine.executeQuery(queryTree);
+
+        verify(storageManager).dropTable("myTable");
+    }
+
+    @Test
+    public void testExecuteQuery_createTable() throws ValidationException {
         //setup
         Tree primaryKeyNode = mock(Tree.class);
 
@@ -80,6 +97,7 @@ public class QueryEngineTest {
         //verify
         verify(storageManager).createTable(eq(expectedTable));
     }
+
 
 
 }

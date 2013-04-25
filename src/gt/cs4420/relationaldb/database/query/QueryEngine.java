@@ -22,18 +22,23 @@ public class QueryEngine {
     }
 
     public boolean executeQuery(CommonTree queryTree) throws ValidationException {
-        if(queryTree.getType() == SQLParser.CREATE_TABLE);
+        if(queryTree.getChild(0).getType() == SQLParser.CREATE_TABLE){
             createTable(queryTree);
-        return false;
+        } else if(queryTree.getChild(0).getType() == SQLParser.DROP_TABLE) {
+            dropTable(queryTree);
+        } else {
+            return false;
+        }
+        return true;
     }
 
-    public void createTable(CommonTree createTableNode) throws ValidationException {
+    public void createTable(CommonTree createTableTree) throws ValidationException {
 
         //extract this node's relevant data
-        String name = createTableNode.getChild(1).getText();
+        String name = createTableTree.getChild(1).getText();
 
         List<Attribute> tableAttributes = new ArrayList<>();
-        Tree currentNode = createTableNode.getChild(2);
+        Tree currentNode = createTableTree.getChild(2);
         Description description = new Description();
 
         int child = 2;
@@ -52,7 +57,7 @@ public class QueryEngine {
                  primaryKeyAttribute = attribute;
             }
 
-            currentNode = createTableNode.getChild(child++);
+            currentNode = createTableTree.getChild(child++);
         }
 
         description.setAttributes(tableAttributes.toArray(new Attribute[tableAttributes.size()]));
@@ -62,8 +67,9 @@ public class QueryEngine {
         storageManager.createTable(table);
     }
 
-    public void dropTable(Tree dropTableNode) {
-
+    public void dropTable(Tree dropTableTree) throws ValidationException {
+        String tableName = dropTableTree.getChild(1).getText();
+        storageManager.dropTable(tableName);
     }
 
     public void insertIntoTable(Tree insertIntoTableNode) {
