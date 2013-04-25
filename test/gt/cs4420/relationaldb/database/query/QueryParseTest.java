@@ -32,16 +32,19 @@ public class QueryParseTest {
 	public static void main(String[] args) throws RecognitionException {
         QueryParseTest test = new QueryParseTest();
 
-        try {
-            test.runTest(3);
+        int x = 0;
+        while(x < 5) {
+            try {
+                test.runTest(x);
 
-           /* for (int i = 0; i < 3; i++) {
-                test.runTest(i);
-            } */
-        } catch (final TestFailedException tfe) {
-            System.out.println(tfe.getMessage());
+               /* for (int i = 0; i < 3; i++) {
+                    test.runTest(i);
+                } */
+            } catch (final TestFailedException tfe) {
+                System.out.println(tfe.getMessage());
+            }
+            x++;
         }
-
 	}
 
     private void runTest(int choice) {
