@@ -385,12 +385,6 @@ class StorageData {
 
                     //If this row is cached and meets the where constraints, select it
                     if (filter.rowMeetsConstraints(cachedRow)) {
-                        for (Attribute attr : cachedRow.getRowData().keySet()) {
-                            if (attr.getType() == null) {
-                                attr.setType(description.getAttribute(attr.getName()).getType());
-                            }
-                        }
-
                         blockRows.add(cachedRow);
                     }
                 }
@@ -400,12 +394,6 @@ class StorageData {
             List<Row> importedRows = fileManager.importTableBlockWithConstraint(tableId, blockId, description, whereConstraint, cachedPrimaryKeys);
 
             for (Row row : importedRows) {
-
-                for (Attribute attr : row.getRowData().keySet()) {
-                    if (attr.getType() == null) {
-                        attr.setType(description.getAttribute(attr.getName()).getType());
-                    }
-                }
 
                 try {
                     addRow(tableId, row);
@@ -424,6 +412,12 @@ class StorageData {
             OrderConstraint primaryKeyOrder = new OrderConstraint(description.getPrimaryKeyAttribute(), OrderConstraint.Direction.ASCENDING);
             sortRows(rows, primaryKeyOrder);
         } else {
+            Attribute attr = orderConstraint.getAttribute();
+
+            if (attr.getType() == null) {
+                attr.setType(description.getAttribute(attr.getName()).getType());
+            }
+
             sortRows(rows, orderConstraint);
         }
 
