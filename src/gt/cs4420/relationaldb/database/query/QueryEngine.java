@@ -39,7 +39,7 @@ public class QueryEngine {
         return false;
     }
 
-    public List<JoinedRow> selectFromTable(QueryParser parser)
+    public List<JoinedRow> selectFromJoinedTables(QueryParser parser)
     {
     	Tree selectFromTableNode = parser.getQueryTree();
     	Tree selectNode = null;
@@ -127,12 +127,65 @@ public class QueryEngine {
         //extra this node's relevant data
         String name = createTableNode.getChild(0).getText();
         //move down CREATE TABLE tree
+        
 
 
         Description description = new Description();
 
 
         Table table = new Table(name, description);
+    }
+    
+    public List<Row> selectFromTable(QueryParser parser)
+    {
+    	Tree selectFromTableNode = parser.getQueryTree();
+    	Tree selectNode = null;
+    	Tree fromNode = null;
+    	Tree whereNode = null;
+    	Tree orderByNode = null;
+    	List<String> selectColumns = Lists.newArrayList();
+    	String table = "";
+    	OrderConstraint orderConstraint = null;
+    	Constraint whereConstraint = null;
+
+    	for(int i = 0; i < selectFromTableNode.getChildCount(); i++)
+		{
+    		if(selectFromTableNode.getChild(i).getText().equalsIgnoreCase("SELECT"))
+    			selectNode = selectFromTableNode.getChild(i);
+    		if(selectFromTableNode.getChild(i).getText().equalsIgnoreCase("FROM"))
+    			fromNode = selectFromTableNode.getChild(i);
+    		if(selectFromTableNode.getChild(i).getText().equalsIgnoreCase("ON")) {
+			}
+    		if(selectFromTableNode.getChild(i).getText().equalsIgnoreCase("WHERE"))
+    			whereNode = selectFromTableNode.getChild(i);
+    		if(selectFromTableNode.getChild(i).getText().equalsIgnoreCase("ORDER BY"))
+    			orderByNode = selectFromTableNode.getChild(i);
+		}   	
+    	
+    	if(selectNode != null)
+    	{
+    		for(int i = 0; i < selectNode.getChildCount()-1; i++)
+    		{	
+    			selectColumns.add(selectNode.getChild(i).getText());
+    		}
+    	}
+    	
+    	if(fromNode != null)
+    	{
+    		table = fromNode.getChild(0).getText();
+    	}
+    	
+    	if(whereNode != null)
+    	{
+    		parser.parseConstraint(selectFromTableNode);	
+    	}
+    	
+    	if(orderByNode != null)
+    	{
+    		orderConstraint = new OrderConstraint(new Attribute(orderByNode.getChild(0).getText()),Direction.getByStringRepresenations(orderByNode.getChild(1).getText()));
+    	}
+    	
+    	return storageManager.select(table, whereConstraint, orderConstraint);
     }
 
     public void dropTable(Tree dropTableNode) {

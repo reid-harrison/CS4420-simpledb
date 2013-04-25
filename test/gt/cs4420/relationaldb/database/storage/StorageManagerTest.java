@@ -33,7 +33,7 @@ public class StorageManagerTest {
         String query = "";
         
         //for(int i = 0; i < 5; i++){
-            int choice = 0;
+            int choice = 5;
 
             switch(choice)
             {
@@ -84,6 +84,15 @@ public class StorageManagerTest {
                 case 4:
                     query = "DROP TABLE users;";
                     break;
+                    
+                case 5:
+                	query = "SELECT userId, email, username, password " +
+                            "FROM users " +
+                            "WHERE username = 'reid' OR " +
+                            "username='phil' OR " +
+                            "email='poliver@gatech.edu' " +
+                            "ORDER BY username ASC;";
+                	break;
                 default:
                     break;
             }
@@ -97,7 +106,7 @@ public class StorageManagerTest {
             }
             QueryEngine qe = new QueryEngine(new StorageManager());
             
-            List<JoinedRow> results = qe.selectFromTable(parser);
+            List<Row> results = qe.selectFromTable(parser);
             
             System.out.println(results.get(0));
             
