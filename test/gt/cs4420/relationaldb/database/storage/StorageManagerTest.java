@@ -12,6 +12,8 @@ import gt.cs4420.relationaldb.test.TestFailedException;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+
 import java.util.Set;
 
 import org.antlr.runtime.RecognitionException;
@@ -33,7 +35,7 @@ public class StorageManagerTest {
         String query = "";
         
         //for(int i = 0; i < 5; i++){
-            int choice = 5;
+            int choice = 0;
 
             switch(choice)
             {
@@ -106,9 +108,15 @@ public class StorageManagerTest {
             }
             QueryEngine qe = new QueryEngine(new StorageManager());
             
-            List<Row> results = qe.selectFromTable(parser);
+            List<JoinedRow> results = qe.selectFromJoinedTables(parser);
             
-            System.out.println(results.get(0));
+            for(int i = 1; i < results.size(); i++)
+            {
+            	for(Entry entry : results.get(i).getLeftRow().getRowData().entrySet())
+            	{
+            		System.out.println(entry.getValue());
+            	}
+            }
             
             
             DOTTreeGenerator gen = new DOTTreeGenerator();
@@ -116,7 +124,7 @@ public class StorageManagerTest {
             StringTemplate st = gen.toDOT(queryTree);
 
             // This prints out a DOT Tree declaration for the query tree. Use GraphViz to view it.
-            System.out.println(st);
+            //System.out.println(st);
 
         //}
 
