@@ -1,6 +1,7 @@
 package gt.cs4420.relationaldb.database.query;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import gt.cs4420.relationaldb.database.storage.StorageManager;
 import gt.cs4420.relationaldb.domain.*;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
@@ -40,7 +41,7 @@ public class QueryEngine {
         return true;
     }
 
-    public List<JoinedRow> selectFromJoinedTables(QueryParser parser)
+    public List<JoinedRow> selectFromJoinedTables(QueryParser parser) throws ValidationException
     {
         Tree selectFromTableNode = parser.getQueryTree();
         Tree selectNode = null;
@@ -50,6 +51,7 @@ public class QueryEngine {
         Tree orderByNode = null;
         Tree joinNode = null;
         List<String> selectColumns = Lists.newArrayList();
+        List<Attribute> selectAttributes = Lists.newArrayList();
         List<String> joinTables = Lists.newArrayList();
         JoinConstraint joinConstraint = null;
         OrderConstraint orderConstraint = null;
@@ -77,7 +79,9 @@ public class QueryEngine {
         {
             for(int i = 0; i < selectNode.getChildCount()-1; i++)
             {
-                selectColumns.add(selectNode.getChild(i).getText());
+                String attrName = selectNode.getChild(i).getText();
+                selectColumns.add(attrName);
+                selectAttributes.add(new Attribute(attrName));
             }
         }
 
@@ -113,13 +117,26 @@ public class QueryEngine {
 
         if(isJoin)
         {
-            try {
-                return storageManager.selectJoin(joinTables.get(0), joinTables.get(1), joinConstraint, whereConstraint, orderConstraint);
-            } catch (ValidationException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            List<JoinedRow> joinedRows = storageManager.selectJoin(joinTables.get(0), joinTables.get(1), joinConstraint, whereConstraint, orderConstraint);
+            List<JoinedRow> relevantJoinedRows = Lists.newArrayList();
+
+            for (JoinedRow joinedRow : joinedRows) {
+                Row leftRow = joinedRow.getLeftRow();
+                Row rightRow = joinedRow.getRightRow();
+
+                Row relevantLeftRow = getRelevantRowData(leftRow, selectAttributes);
+                Row relevantRightRow = getRelevantRowData(rightRow, selectAttributes);
+
+                JoinedRow relevantJoinedRow = new JoinedRow();
+                relevantJoinedRow.setLeftRow(relevantLeftRow);
+                relevantJoinedRow.setRightRow(relevantRightRow);
+
+                relevantJoinedRows.add(relevantJoinedRow);
             }
+
+            return relevantJoinedRows;
         }
+
         return null;
     }
 
@@ -131,6 +148,8 @@ public class QueryEngine {
         Tree whereNode = null;
         Tree orderByNode = null;
         List<String> selectColumns = Lists.newArrayList();
+        List<Attribute> selectAttributes = Lists.newArrayList();
+
         String table = "";
         OrderConstraint orderConstraint = null;
         Constraint whereConstraint = null;
@@ -153,7 +172,9 @@ public class QueryEngine {
         {
             for(int i = 0; i < selectNode.getChildCount()-1; i++)
             {
-                selectColumns.add(selectNode.getChild(i).getText());
+                String attrName = selectNode.getChild(i).getText();
+                selectColumns.add(attrName);
+                selectAttributes.add(new Attribute(attrName));
             }
         }
 
@@ -172,7 +193,14 @@ public class QueryEngine {
             orderConstraint = new OrderConstraint(new Attribute(orderByNode.getChild(0).getText()),Direction.getByStringRepresenations(orderByNode.getChild(1).getText()));
         }
 
-        return storageManager.select(table, whereConstraint, orderConstraint);
+        List<Row> selectedRows = storageManager.select(table, whereConstraint, orderConstraint);
+        List<Row> relevantSelectedRows = Lists.newArrayList();
+
+        for (Row row : selectedRows) {
+            relevantSelectedRows.add(getRelevantRowData(row, selectAttributes));
+        }
+
+        return relevantSelectedRows;
     }
 
     public void createTable(CommonTree createTableTree) throws ValidationException {
@@ -264,5 +292,19 @@ public class QueryEngine {
             default :
                 return value;
         }
+    }
+    private Row getRelevantRowData(final Row row, final List<Attribute> relevantAttributes) {
+        Map<Attribute, Object> rowData = row.getRowData();
+        Map<Attribute, Object> relevantData = Maps.newHashMap();
+
+        for (Attribute attr : relevantAttributes) {
+            relevantData.put(attr, rowData.get(attr));
+        }
+
+        Row relevantRow = new Row();
+        relevantRow.setPrimaryKey(row.getPrimaryKey());
+        relevantRow.setRowData(relevantData);
+
+        return relevantRow;
     }
 }
