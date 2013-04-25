@@ -3,6 +3,7 @@ package gt.cs4420.relationaldb.database.query;
 import com.google.common.base.Strings;
 import gt.cs4420.relationaldb.database.query.SQLParser.statement_return;
 import gt.cs4420.relationaldb.domain.Attribute;
+import gt.cs4420.relationaldb.domain.exception.ValidationException;
 import gt.cs4420.relationaldb.domain.query.*;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
@@ -18,7 +19,7 @@ public class QueryParser {
 
     private Constraint whereConstraint;
 
-	public QueryParser(final String query) throws RecognitionException {
+	public QueryParser(final String query) throws RecognitionException, ValidationException {
 		CharStream charStream = new ANTLRStringStream(query);
 		SQLLexer lexer = new SQLLexer(charStream);
 		CommonTokenStream tokenStream = new CommonTokenStream(lexer);

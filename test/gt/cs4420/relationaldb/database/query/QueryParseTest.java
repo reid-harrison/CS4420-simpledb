@@ -1,6 +1,7 @@
 package gt.cs4420.relationaldb.database.query;
 
 import gt.cs4420.relationaldb.domain.Attribute;
+import gt.cs4420.relationaldb.domain.exception.ValidationException;
 import gt.cs4420.relationaldb.domain.query.*;
 import gt.cs4420.relationaldb.test.TestFailedException;
 import org.antlr.runtime.RecognitionException;
@@ -12,7 +13,7 @@ import org.junit.Test;
 public class QueryParseTest {
 
     @Test
-    public void testQueryParse_creationQuery() {
+    public void testQueryParse_creationQuery() throws ValidationException {
         String query = "CREATE TABLE persons (id int, name varchar(100));";
         QueryParser parser;
 
@@ -29,7 +30,7 @@ public class QueryParseTest {
         System.out.println(st);
     }
 
-	public static void main(String[] args) throws RecognitionException {
+	public static void main(String[] args) throws RecognitionException, ValidationException {
         QueryParseTest test = new QueryParseTest();
 
         int x = 0;
@@ -47,7 +48,7 @@ public class QueryParseTest {
         }
 	}
 
-    private void runTest(int choice) {
+    private void runTest(int choice) throws ValidationException {
         String query = "";
         Constraint expectedConstraint = null;
 

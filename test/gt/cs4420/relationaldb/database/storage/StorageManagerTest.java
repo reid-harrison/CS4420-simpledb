@@ -29,7 +29,7 @@ public class StorageManagerTest {
 
     private final String DB_ROOT_DIRECTORY = "database/test/";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ValidationException {
         StorageManagerTest test = new StorageManagerTest();
         test.run();
         String query = "";

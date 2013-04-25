@@ -3,6 +3,8 @@ package gt.cs4420.relationaldb.run;
 import gt.cs4420.relationaldb.database.query.QueryEngine;
 import gt.cs4420.relationaldb.database.query.QueryParser;
 import gt.cs4420.relationaldb.database.storage.StorageManager;
+import gt.cs4420.relationaldb.domain.exception.ValidationException;
+
 import org.antlr.runtime.RecognitionException;
 
 import java.util.Scanner;
@@ -54,13 +56,17 @@ public class DatabaseRunner {
             } catch (final RecognitionException re) {
                 System.out.println(re.getMessage());
                 continue;
-            }
+            } catch (ValidationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            
 
             //TODO Run query and display results
         }
     }
 
-    private void parseQuery(final String query) throws RecognitionException {
+    private void parseQuery(final String query) throws RecognitionException, ValidationException {
         parser = new QueryParser(query);
     }
 }

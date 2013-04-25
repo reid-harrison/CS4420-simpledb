@@ -202,8 +202,8 @@ insertColumn
 			attrValidator.validate(new Attribute[]{table1.getDescription().getAttribute($IDENT.text)}, table1);
 			numCols++;
 		}
-	;catch[ValidationException e]{e.printStackTrace();}
-	 catch[NullPointerException e]{System.out.println("Error in INSERT clause."); e.printStackTrace();}
+	;
+	 catch[NullPointerException e]{throw new ValidationException("Error in INSERT clause.");}
 	
 table
 	:	IDENT
@@ -215,7 +215,7 @@ table
 			tables.add(table1);
 			tableNames.add($IDENT.text);
 		}
-	;catch[ValidationException e]{e.printStackTrace();}
+	;
 	
 // Requires different logic than table
 onTable
@@ -226,7 +226,7 @@ onTable
 				throw new ValidationException("'" + $IDENT.text + "' is not a table from which items are being queried.");
 			}
 		}
-	;catch[ValidationException e]{e.printStackTrace();}
+	;
 	
 createTable
 	:	IDENT LPAREN! columnConstraints RPAREN!
@@ -237,7 +237,7 @@ createTable
 				throw new ValidationException("Table with name '" + $IDENT.text + "' already exists.");
 			}
 		}
-	;catch[ValidationException e]{e.printStackTrace();}
+	;
 	
 columnConstraints
 	:	columnConstraint (COMMA! columnConstraint)*
@@ -251,7 +251,7 @@ columnConstraint
 				throw new ValidationException("Only one primary key permitted in CREATE.");
 			}
 		}
-	;catch[ValidationException e]{e.printStackTrace();}
+	;
 	
 dataType
 	:	'int'
@@ -309,7 +309,7 @@ values
 			
 			validateAttrVals(table1);
 		}
-	;catch[ValidationException e]{e.printStackTrace();}
+	;
 	
 order
 	:	ASC
@@ -353,7 +353,7 @@ assignment
 				throw new ValidationException("Validation error SET clause.");
 			}
 		}
-	;catch[ValidationException e]{e.printStackTrace();}
+	;
 	
 // WHERE clause conditions
 searchConditions
@@ -393,7 +393,7 @@ searchCondition
 				throw new ValidationException("Validation error WHERE clause.");
 			}
 		}
-	;catch[ValidationException e]{e.printStackTrace();}
+	;
 	
 // ON clause conditions when performing a JOIN
 onSearchConditions
@@ -410,8 +410,8 @@ onOperand
 			
 				attrValidator.validate(new Attribute[]{storageManager.getTable($onTable.text).getDescription().getAttribute($onColumn.text)}, storageManager.getTable($onTable.text));
 		}
-	;catch[ValidationException e]{e.printStackTrace();}
-	 catch[NullPointerException e]{System.out.println("Error in ON clause."); e.printStackTrace();}
+	;
+	 catch[NullPointerException e]{throw new ValidationException("Error in ON clause.");}
 
 onColumn
 	:	IDENT
