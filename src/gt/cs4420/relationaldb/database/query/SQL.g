@@ -229,7 +229,7 @@ onTable
 	;catch[ValidationException e]{e.printStackTrace();}
 	
 createTable
-	:	IDENT^ LPAREN! columnConstraints RPAREN!
+	:	IDENT LPAREN! columnConstraints RPAREN!
 		{
 			table1 = storageManager.getTable($IDENT.text);
 			if(table1 != null)
