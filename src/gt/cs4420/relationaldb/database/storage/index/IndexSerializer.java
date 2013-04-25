@@ -25,7 +25,7 @@ public class IndexSerializer implements JsonSerializer<Index> {
 
     @Override
     public Index deserialize(JSONObject json) {
-        Index index = new HashIndex();
+        Index index = new TreeIndex();
 
         if (json.get("index") == null) {
             throw new IllegalArgumentException("Index JSON object must have a root key 'index'");
