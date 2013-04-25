@@ -36,11 +36,11 @@ public class QueryEngine {
     }
 
     public boolean executeQuery(CommonTree queryTree) throws ValidationException {
-        if(queryTree.getChild(0).getText().equals("CREATE_TABLE")){
+        if(queryTree.getChild(0).getText().equals("CREATE TABLE")){
             createTable(queryTree);
-        } else if(queryTree.getChild(0).getText().equals("DROP_TABLE")) {
+        } else if(queryTree.getChild(0).getText().equals("DROP TABLE")) {
             dropTable(queryTree);
-        } else if(queryTree.getChild(0).getType() == SQLParser.INSERT_INTO) {
+        } else if(queryTree.getChild(0).getText().equals("INSERT INTO")) {
             insertIntoTable(queryTree);
         } else {
             return false;
@@ -208,7 +208,7 @@ public class QueryEngine {
                  primaryKeyAttribute = attribute;
             }
 
-            currentNode = createTableTree.getChild(child++);
+            currentNode = createTableTree.getChild(++child);
         }
 
         description.setAttributes(tableAttributes.toArray(new Attribute[tableAttributes.size()]));
@@ -226,7 +226,7 @@ public class QueryEngine {
     public void insertIntoTable(Tree insertIntoTableNode) throws ValidationException {
         //set relevant nodes
         Tree insertIntoNode = insertIntoTableNode.getChild(0);
-        Tree valuesNode = insertIntoTableNode.getChild(0);
+        Tree valuesNode = insertIntoTableNode.getChild(1);
         Tree attributesRootNode = insertIntoNode.getChild(0);
         Tree currentAttributeNode = attributesRootNode.getChild(0);
         Tree currentValueNode = valuesNode.getChild(0);
@@ -243,13 +243,17 @@ public class QueryEngine {
             String attributeName = currentAttributeNode.getText();
             Attribute attribute = new Attribute(attributeName);
             String value = currentValueNode.getText();
-            Object newValue = parseValue(value, tabelMetaData.getDescription().getAttribute(attributeName).getType());
+            DataType type = tabelMetaData.getDescription().getAttribute(attributeName).getType();
+            attribute.setType(type);
+            Object newValue = parseValue(value, type);
             rowData.put(attribute, newValue);
 
             childIndex++;
             currentAttributeNode = attributesRootNode.getChild(childIndex);
+            currentValueNode = valuesNode.getChild(childIndex);
         }
 
+        rowToInsert.setRowData(rowData);
         storageManager.insert(tableName, rowToInsert);
     }
 
@@ -264,10 +268,9 @@ public class QueryEngine {
     public static Object parseValue(String value, DataType type){
         switch(type.getTypeString()) {
             case "INT" :
-                return Integer.getInteger(value);
-            case "STRING" :
+                return Integer.parseInt(value);
+            default :
                 return value;
         }
-        return null;
     }
 }

@@ -1,8 +1,10 @@
 package gt.cs4420.relationaldb.database.query;
 
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import gt.cs4420.relationaldb.database.storage.StorageManager;
 import gt.cs4420.relationaldb.domain.*;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
+import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.Tree;
 import org.junit.Before;
@@ -13,6 +15,8 @@ import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.*;
 
 public class QueryEngineTest {
@@ -22,6 +26,8 @@ public class QueryEngineTest {
     public static final String FIRST_ATTRIBUTE_NAME = "primaryKeyAttribute";
     public static final String SECOND_ATTRIBUTE_NAME = "secondAttribute";
     public static final int PRIMARY_KEY = 10;
+    public static final String INSERT_INTO_QUERY = "INSERT INTO users (userid, username, email, password) " +
+            "VALUES (1, 12, 5, 10);";
     private QueryEngine queryEngine;
     private StorageManager storageManager;
 
@@ -48,7 +54,7 @@ public class QueryEngineTest {
     @Test
     public void testExecuteQuery_dropTable() throws ValidationException {
         Tree dropNode = mock(Tree.class);
-        when(dropNode.getType()).thenReturn(SQLParser.DROP_TABLE);
+        when(dropNode.getText()).thenReturn("DROP TABLE");
 
         Tree tableNameNode = mock(Tree.class);
         when(tableNameNode.getText()).thenReturn("myTable");
@@ -133,7 +139,18 @@ public class QueryEngineTest {
 
         CommonTree queryTree = mock(CommonTree.class);
         when(queryTree.getChild(0)).thenReturn(insertIntoNode);
-        when(queryTree.getChild(2)).thenReturn(valuesNode);
+        when(queryTree.getChild(1)).thenReturn(valuesNode);
+
+        Table table = mock(Table.class);
+        Description description = mock(Description.class);
+        Attribute attribute = mock(Attribute.class);
+        Attribute secondAttribute = mock(Attribute.class);
+        when(storageManager.getTable(MY_TABLE)).thenReturn(table);
+        when(table.getDescription()).thenReturn(description);
+        when(description.getAttribute(FIRST_ATTRIBUTE_NAME)).thenReturn(attribute);
+        when(description.getAttribute(SECOND_ATTRIBUTE_NAME)).thenReturn(secondAttribute);
+        when(attribute.getType()).thenReturn(DataType.INT);
+        when(secondAttribute.getType()).thenReturn(DataType.STRING);
 
         //setup expected value
         Map<Attribute, Object> rowData = new HashMap<>();
@@ -151,4 +168,25 @@ public class QueryEngineTest {
         verify(storageManager).insert(eq(expectedTableName), eq(expectedRow));
     }
 
+    @Test
+    public void testExecuteQuery_FunctionalTest() throws RecognitionException, ValidationException {
+        queryEngine = new QueryEngine(new StorageManager(System.getProperty("user.dir")+"/dbTest"));
+
+        QueryParser create = new QueryParser("CREATE TABLE users (userid int PRIMARY KEY, username int, email int, password int);");
+        queryEngine.executeQuery(create.getQueryTree());
+
+        QueryParser insert = new QueryParser(INSERT_INTO_QUERY);
+        queryEngine.executeQuery(insert.getQueryTree());
+
+        QueryParser drop = new QueryParser("DROP TABLE users;");
+        queryEngine.executeQuery(drop.getQueryTree());
+
+        try{
+            QueryParser insertAgain = new QueryParser(INSERT_INTO_QUERY);
+            queryEngine.executeQuery(insertAgain.getQueryTree());
+            fail();
+        } catch (Exception e) {
+            assertThat(e, is(notNullValue()));
+        }
+    }
 }
