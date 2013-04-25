@@ -22,10 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * TODO:
- * -Lots of file access stuff
- */
 public class FileManager {
 
     private final String DB_ROOT_DIRECTORY;

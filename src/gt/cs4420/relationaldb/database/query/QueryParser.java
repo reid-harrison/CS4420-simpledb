@@ -39,7 +39,7 @@ public class QueryParser {
         return whereConstraint;
     }
 
-    private Constraint parseConstraint(final Tree queryRoot) {
+    public Constraint parseConstraint(final Tree queryRoot) {
         String text = queryRoot.getText();
 
         if (Strings.isNullOrEmpty(text)) {

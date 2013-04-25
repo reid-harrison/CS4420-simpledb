@@ -51,7 +51,6 @@ public class Description {
                     primaryKeyAttribute.setType(attr.getType());
                 }
 
-                //TODO Support primary key data types other than INTs?
                 if (!primaryKeyAttribute.getType().equals(DataType.INT)) {
                     throw new IllegalArgumentException("Primary Key attributes must be of data type INT");
                 }

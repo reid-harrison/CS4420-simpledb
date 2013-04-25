@@ -14,8 +14,8 @@ public class HashIndex extends AbstractIndex {
     private Map<Integer, Integer> blockIndex;
 
     public HashIndex() {
-        index = Maps.newHashMap();
-        blockIndex = Maps.newHashMap();
+        index = Maps.newHashMapWithExpectedSize(1000);
+        blockIndex = Maps.newHashMapWithExpectedSize(1000);
     }
 
     @Override

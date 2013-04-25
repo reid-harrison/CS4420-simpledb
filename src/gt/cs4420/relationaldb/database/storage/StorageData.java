@@ -405,7 +405,6 @@ class StorageData {
             blockRows.addAll(importedRows);
 
             rows.addAll(blockRows);
-
         }
 
         // Sort the rows depending on the order by clause
@@ -413,6 +412,12 @@ class StorageData {
             OrderConstraint primaryKeyOrder = new OrderConstraint(description.getPrimaryKeyAttribute(), OrderConstraint.Direction.ASCENDING);
             sortRows(rows, primaryKeyOrder);
         } else {
+            Attribute attr = orderConstraint.getAttribute();
+
+            if (attr.getType() == null) {
+                attr.setType(description.getAttribute(attr.getName()).getType());
+            }
+
             sortRows(rows, orderConstraint);
         }
 
@@ -433,7 +438,6 @@ class StorageData {
             throw new ValidationException("Data types for join constraints must be the same");
         }
 
-        //TODO support more than just inner join
         JoinConstraint.JoinType joinType = joinConstraint.getJoinType();
 
         Constraint leftWhereConstraint = removeIrrelevantConstraints(whereConstraint, leftTableId);

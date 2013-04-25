@@ -11,7 +11,7 @@ public class TreeIndex extends AbstractIndex {
 	private IndexNode root;
 	private int size;
 	
-	public TreeIndex(){
+	public TreeIndex() {
 		this.root = null;
 		this.size = 0;
 	}
@@ -76,7 +76,6 @@ public class TreeIndex extends AbstractIndex {
 	}
 
 	private IndexNode put(IndexNode in, Integer indexID, Integer blockID, Integer blockIndex) {
-		// TODO Auto-generated method stub
 		if(in == null){
 			++size;
 			return new IndexNode(indexID, blockID, blockIndex);
@@ -104,7 +103,6 @@ public class TreeIndex extends AbstractIndex {
 	}
 
 	private IndexNode delete(IndexNode in, Integer indexID) {
-		// TODO Auto-generated method stub
 		if(in == null)
 			return null;
 		int cmp = in.getIndexId().compareTo(indexID);
@@ -126,7 +124,6 @@ public class TreeIndex extends AbstractIndex {
 	}
 
 	private IndexNode deleteMin(IndexNode in) {
-		// TODO Auto-generated method stub
 		if(in.getLeft() == null)
 			return in.getRight();			
 		in.setLeft(deleteMin(in.getLeft()));
@@ -134,7 +131,6 @@ public class TreeIndex extends AbstractIndex {
 	}
 
 	private IndexNode min(IndexNode in) {
-		// TODO Auto-generated method stub
 		if(isEmpty())
 			return null;
 		while(in.getLeft() != null){
@@ -160,13 +156,11 @@ public class TreeIndex extends AbstractIndex {
 
 	@Override
     public Integer getBlockId(Integer primaryKey) {
-        //TODO Implement getBlockId
         return get(primaryKey);
     }
 
     @Override
     public void addIndexEntry(Integer primaryKey, Integer blockId, Integer blockIndex) {
-        //TODO Implement addIndexEntry
     	put(primaryKey, blockId, blockIndex);
         super.addIndexEntry(primaryKey, blockId, blockIndex);
     }
@@ -175,18 +169,15 @@ public class TreeIndex extends AbstractIndex {
     public void removeIndexEntry(Integer primaryKey) {
         super.removeIndexEntry(primaryKey);
     	delete(primaryKey);
-        //TODO Implement removeIndexEntry
     }
 
     @Override
     public int getBlockIndex(Integer primaryKey) {
-        //TODO Implement getBlockIndex
         return getIndex(primaryKey);
     }
 
     @Override
     public boolean primaryKeyExists(Integer primaryKey) {
-        //TODO Implement primaryKeyExists
         return contains(primaryKey);
     }
 }

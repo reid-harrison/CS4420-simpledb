@@ -7,10 +7,6 @@ import java.util.List;
 public class Block {
 
     //Currently the number of attribute it holds
-	/**
-	 * TODO: We need to double check and make sure that the block size can be correctly updated 
-	 * as we insert rows into the block...if necessary
-	 */
     private Integer blockSize;
     private Integer blockId;
     private List<Row> rowData;

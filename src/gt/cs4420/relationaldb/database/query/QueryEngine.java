@@ -1,14 +1,29 @@
 package gt.cs4420.relationaldb.database.query;
 
+import java.util.List;
+
 import gt.cs4420.relationaldb.database.storage.StorageManager;
-import gt.cs4420.relationaldb.domain.*;
+import gt.cs4420.relationaldb.domain.Attribute;
+import gt.cs4420.relationaldb.domain.Description;
+import gt.cs4420.relationaldb.domain.JoinedRow;
+import gt.cs4420.relationaldb.domain.Row;
+import gt.cs4420.relationaldb.domain.Table;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
+import gt.cs4420.relationaldb.domain.query.Constraint;
+import gt.cs4420.relationaldb.domain.query.OrderConstraint;
+import gt.cs4420.relationaldb.domain.query.JoinConstraint;
+import gt.cs4420.relationaldb.domain.query.JoinConstraint.JoinType;
+import gt.cs4420.relationaldb.domain.query.OrderConstraint.Direction;
+import gt.cs4420.relationaldb.domain.query.ValueOperator;
+
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.Tree;
+import com.google.common.collect.Lists;
+
+import gt.cs4420.relationaldb.domain.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class QueryEngine {
@@ -31,6 +46,141 @@ public class QueryEngine {
             return false;
         }
         return true;
+    }
+
+    public List<JoinedRow> selectFromJoinedTables(QueryParser parser)
+    {
+        Tree selectFromTableNode = parser.getQueryTree();
+        Tree selectNode = null;
+        Tree fromNode = null;
+        Tree onNode = null;
+        Tree whereNode = null;
+        Tree orderByNode = null;
+        Tree joinNode = null;
+        List<String> selectColumns = Lists.newArrayList();
+        List<String> joinTables = Lists.newArrayList();
+        JoinConstraint joinConstraint = null;
+        OrderConstraint orderConstraint = null;
+
+
+        Constraint whereConstraint = null;
+        boolean isJoin = false;
+
+        for(int i = 0; i < selectFromTableNode.getChildCount(); i++)
+        {
+            if(selectFromTableNode.getChild(i).getText().equalsIgnoreCase("SELECT"))
+                selectNode = selectFromTableNode.getChild(i);
+            if(selectFromTableNode.getChild(i).getText().equalsIgnoreCase("FROM"))
+                fromNode = selectFromTableNode.getChild(i);
+            if(selectFromTableNode.getChild(i).getText().equalsIgnoreCase("ON"))
+                onNode = selectFromTableNode.getChild(i);
+            if(selectFromTableNode.getChild(i).getText().equalsIgnoreCase("WHERE"))
+                whereNode = selectFromTableNode.getChild(i);
+            if(selectFromTableNode.getChild(i).getText().equalsIgnoreCase("ORDER BY"))
+                orderByNode = selectFromTableNode.getChild(i);
+        }
+
+
+        if(selectNode != null)
+        {
+            for(int i = 0; i < selectNode.getChildCount()-1; i++)
+            {
+                selectColumns.add(selectNode.getChild(i).getText());
+            }
+        }
+
+        if(fromNode != null)
+        {
+            if(fromNode.getChild(0).getText().toUpperCase().contains("JOIN") && onNode != null)
+            {
+                joinNode = fromNode.getChild(0);
+
+                for(int i = 0; i < joinNode.getChildCount(); i++)
+                {
+                    joinTables.add(joinNode.getChild(i).getText());
+                }
+
+                joinConstraint = new JoinConstraint(JoinType.INNER, ValueOperator.getByStringRepresentation(onNode.getChild(0).getText()), new Attribute(onNode.getChild(0).getChild(0).getChild(0).getText()), new Attribute(onNode.getChild(0).getChild(1).getChild(0).getText()));
+                isJoin = true;
+            }
+            else
+                joinTables.add(fromNode.getChild(0).getText());
+        }
+
+        if(whereNode != null)
+        {
+            parser.parseConstraint(selectFromTableNode);
+
+        }
+
+        if(orderByNode != null)
+        {
+            orderConstraint = new OrderConstraint(new Attribute(orderByNode.getChild(0).getText()),Direction.getByStringRepresenations(orderByNode.getChild(1).getText()));
+        }
+
+
+        if(isJoin)
+        {
+            try {
+                return storageManager.selectJoin(joinTables.get(0), joinTables.get(1), joinConstraint, whereConstraint, orderConstraint);
+            } catch (ValidationException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public List<Row> selectFromTable(QueryParser parser)
+    {
+        Tree selectFromTableNode = parser.getQueryTree();
+        Tree selectNode = null;
+        Tree fromNode = null;
+        Tree whereNode = null;
+        Tree orderByNode = null;
+        List<String> selectColumns = Lists.newArrayList();
+        String table = "";
+        OrderConstraint orderConstraint = null;
+        Constraint whereConstraint = null;
+
+        for(int i = 0; i < selectFromTableNode.getChildCount(); i++)
+        {
+            if(selectFromTableNode.getChild(i).getText().equalsIgnoreCase("SELECT"))
+                selectNode = selectFromTableNode.getChild(i);
+            if(selectFromTableNode.getChild(i).getText().equalsIgnoreCase("FROM"))
+                fromNode = selectFromTableNode.getChild(i);
+            if(selectFromTableNode.getChild(i).getText().equalsIgnoreCase("ON")) {
+            }
+            if(selectFromTableNode.getChild(i).getText().equalsIgnoreCase("WHERE"))
+                whereNode = selectFromTableNode.getChild(i);
+            if(selectFromTableNode.getChild(i).getText().equalsIgnoreCase("ORDER BY"))
+                orderByNode = selectFromTableNode.getChild(i);
+        }
+
+        if(selectNode != null)
+        {
+            for(int i = 0; i < selectNode.getChildCount()-1; i++)
+            {
+                selectColumns.add(selectNode.getChild(i).getText());
+            }
+        }
+
+        if(fromNode != null)
+        {
+            table = fromNode.getChild(0).getText();
+        }
+
+        if(whereNode != null)
+        {
+            parser.parseConstraint(selectFromTableNode);
+        }
+
+        if(orderByNode != null)
+        {
+            orderConstraint = new OrderConstraint(new Attribute(orderByNode.getChild(0).getText()),Direction.getByStringRepresenations(orderByNode.getChild(1).getText()));
+        }
+
+        return storageManager.select(table, whereConstraint, orderConstraint);
     }
 
     public void createTable(CommonTree createTableTree) throws ValidationException {

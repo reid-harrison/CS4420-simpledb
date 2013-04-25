@@ -52,7 +52,6 @@ public class DescriptionValidator implements Validator<Description> {
             errors.add("A primary key attribute is required");
         }
 
-        //TODO Support primary key data types other than INTs?
         if (!primaryKeyAttribute.getType().equals(DataType.INT)) {
             throw new IllegalArgumentException("Primary Key attributes must be of data type INT");
         }

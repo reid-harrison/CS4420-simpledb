@@ -162,8 +162,6 @@ public class StorageManager {
         Integer primaryKey = (Integer) row.getRowData().get(primaryKeyAttr);
         row.setPrimaryKey(primaryKey);
 
-        //TODO Implement more insert validation?
-
         storageData.insert(tableId, row);
     }
 
@@ -181,8 +179,6 @@ public class StorageManager {
 
         //Validate the the row data is populated with valid data
         rowValidator.validate(updateDataRow, storageData.getTable(tableId));
-
-        //TODO Implement more update validation?
 
         storageData.update(tableId, updateDataRow, whereConstraint);
     }
