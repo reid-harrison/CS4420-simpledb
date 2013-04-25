@@ -1,29 +1,21 @@
 package gt.cs4420.relationaldb.database.query;
 
-import java.util.List;
-
+import com.google.common.collect.Lists;
 import gt.cs4420.relationaldb.database.storage.StorageManager;
-import gt.cs4420.relationaldb.domain.Attribute;
-import gt.cs4420.relationaldb.domain.Description;
-import gt.cs4420.relationaldb.domain.JoinedRow;
-import gt.cs4420.relationaldb.domain.Row;
-import gt.cs4420.relationaldb.domain.Table;
+import gt.cs4420.relationaldb.domain.*;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
 import gt.cs4420.relationaldb.domain.query.Constraint;
-import gt.cs4420.relationaldb.domain.query.OrderConstraint;
 import gt.cs4420.relationaldb.domain.query.JoinConstraint;
 import gt.cs4420.relationaldb.domain.query.JoinConstraint.JoinType;
+import gt.cs4420.relationaldb.domain.query.OrderConstraint;
 import gt.cs4420.relationaldb.domain.query.OrderConstraint.Direction;
 import gt.cs4420.relationaldb.domain.query.ValueOperator;
-
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.Tree;
-import com.google.common.collect.Lists;
-
-import gt.cs4420.relationaldb.domain.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class QueryEngine {
