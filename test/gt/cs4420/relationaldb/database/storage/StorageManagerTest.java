@@ -13,6 +13,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.antlr.runtime.RecognitionException;
+import org.antlr.runtime.tree.CommonTree;
+import org.antlr.runtime.tree.DOTTreeGenerator;
+import org.antlr.stringtemplate.StringTemplate;
 
 /**
  * A basic class to test the functionality of the StorageManager. For now, the tests will just be run through the main
@@ -27,7 +30,7 @@ public class StorageManagerTest {
         test.run();
         String query = "";
         
-        int choice = 4;
+        int choice = 3;
         
         switch(choice)
         {
@@ -83,10 +86,21 @@ public class StorageManagerTest {
         
         try {
 			QueryParser parser = new QueryParser(query);
+			
+			DOTTreeGenerator gen = new DOTTreeGenerator();
+	        CommonTree queryTree = parser.getQueryTree();
+	        StringTemplate st = gen.toDOT(queryTree);
+
+	        // This prints out a DOT Tree declaration for the query tree. Use GraphViz to view it.
+	        System.out.println(st);
+
 		} catch (RecognitionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+        
+        
+    
     }
 
     private final StorageManager manager;
