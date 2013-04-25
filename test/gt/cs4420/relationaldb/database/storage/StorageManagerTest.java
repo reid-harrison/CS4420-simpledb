@@ -3,12 +3,16 @@ package gt.cs4420.relationaldb.database.storage;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+
+import gt.cs4420.relationaldb.database.query.QueryParser;
 import gt.cs4420.relationaldb.domain.*;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
 import gt.cs4420.relationaldb.test.TestFailedException;
 
 import java.util.Map;
 import java.util.Set;
+
+import org.antlr.runtime.RecognitionException;
 
 /**
  * A basic class to test the functionality of the StorageManager. For now, the tests will just be run through the main
@@ -21,6 +25,68 @@ public class StorageManagerTest {
     public static void main(String[] args) {
         StorageManagerTest test = new StorageManagerTest();
         test.run();
+        String query = "";
+        
+        int choice = 4;
+        
+        switch(choice)
+        {
+        	case 0:
+        		query = "SELECT userId, email, username, password " +
+        				"FROM users " +
+        				"INNER JOIN posts " +
+        				"ON users.userId=posts.userId " +
+        				"WHERE username = 'reid' " +
+        				"ORDER BY username ASC;";
+        		break;
+        	
+        	case 1:
+        		query = "INSERT INTO users " +
+        				"(" +
+        				"	userId, " +
+        				"	username, " +
+        				"	email, " +
+        				"	password" +
+        				") " +
+        				"VALUES " +
+        				"(" +
+        				"	60, " +
+        				"	'phil', " +
+        				"	'poliver@gatech.edu', " +
+        				"	'unicorns' " +
+        				");";
+        		break;
+        	
+        	case 2:
+        		query = "UPDATE users " +
+        				"SET " +
+        				"username = 'phil', " +
+        				"email = 'poliver@gatech.edu' " +
+        				"WHERE userId = 1;";
+        		break;
+        		
+        	case 3:
+        		query = "CREATE TABLE pimps " +
+        				"(" +
+        				"	nameID int FOREIGN KEY, " +
+        				"	name varchar(10000)" +
+        				");";
+        		break;
+        		
+        	case 4:
+        		query = "DROP TABLE users;";
+        		break;
+        	default:
+        		break;
+        }
+        
+        
+        try {
+			QueryParser parser = new QueryParser(query);
+		} catch (RecognitionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     private final StorageManager manager;
