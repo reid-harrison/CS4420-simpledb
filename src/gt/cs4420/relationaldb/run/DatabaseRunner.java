@@ -1,8 +1,11 @@
 package gt.cs4420.relationaldb.run;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import gt.cs4420.relationaldb.database.query.QueryEngine;
 import gt.cs4420.relationaldb.database.query.QueryParser;
 import gt.cs4420.relationaldb.database.storage.StorageManager;
+import gt.cs4420.relationaldb.domain.Attribute;
 import gt.cs4420.relationaldb.domain.JoinedRow;
 import gt.cs4420.relationaldb.domain.Row;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
@@ -13,6 +16,7 @@ import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.Tree;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class DatabaseRunner {
@@ -84,7 +88,7 @@ public class DatabaseRunner {
                 }
             } else {
                 boolean success = false;
-                
+
                 try {
                     success = queryEngine.executeQuery(queryTree);
 
@@ -128,10 +132,45 @@ public class DatabaseRunner {
     }
 
     private void printJoinedRows(final List<JoinedRow> rows) {
+        List<Row> mergedDataRows = Lists.newArrayList();
 
+        for (final JoinedRow row : rows) {
+            Row leftRow = row.getLeftRow();
+            Row rightRow = row.getRightRow();
+
+            Row joined = new Row();
+
+            Map<Attribute, Object> joinedData = Maps.newHashMap();
+            joinedData.putAll(leftRow.getRowData());
+            joinedData.putAll(rightRow.getRowData());
+            joined.setRowData(joinedData);
+
+            mergedDataRows.add(joined);
+        }
+
+        printRows(mergedDataRows);
     }
 
     private void printRows(final List<Row> rows) {
+        int i = 0;
 
+        for (Row row : rows) {
+            Map<Attribute, Object> rowData = row.getRowData();
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("(" + i + ") ");
+
+            for (Attribute attr : rowData.keySet()) {
+                Object val = rowData.get(attr);
+
+                sb.append(attr.getName());
+                sb.append(": ");
+                sb.append(val.toString());
+            }
+
+            System.out.println(sb.toString());
+
+            i++;
+        }
     }
 }
