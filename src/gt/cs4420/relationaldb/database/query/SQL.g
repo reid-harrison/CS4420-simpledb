@@ -123,7 +123,7 @@ dropTable
 	
 /* Query clauses */
 createClause
-	:	CREATE_TABLE^ createTable
+	:	CREATE_TABLE createTable
 	;
 
 selectClause

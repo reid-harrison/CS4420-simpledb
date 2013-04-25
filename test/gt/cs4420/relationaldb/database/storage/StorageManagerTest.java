@@ -30,8 +30,8 @@ public class StorageManagerTest {
         test.run();
         String query = "";
         
-        for(int i = 0; i < 5; i++){
-            int choice = i;
+        //for(int i = 0; i < 5; i++){
+            int choice = 3;
 
             switch(choice)
             {
@@ -40,7 +40,9 @@ public class StorageManagerTest {
                             "FROM users " +
                             "INNER JOIN posts " +
                             "ON users.userId=posts.userId " +
-                            "WHERE username = 'reid' " +
+                            "WHERE username = 'reid' OR " +
+                            "username='phil' OR " +
+                            "email='poliver@gatech.edu' " +
                             "ORDER BY username ASC;";
                     break;
 
@@ -72,7 +74,7 @@ public class StorageManagerTest {
                 case 3:
                     query = "CREATE TABLE pimps " +
                             "(" +
-                            "	nameID int FOREIGN KEY, " +
+                            "	nameID int PRIMARY KEY, " +
                             "	name varchar(10000)" +
                             ");";
                     break;
@@ -89,7 +91,6 @@ public class StorageManagerTest {
             try {
                  parser = new QueryParser(query);
             } catch (RecognitionException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
 
@@ -100,7 +101,7 @@ public class StorageManagerTest {
             // This prints out a DOT Tree declaration for the query tree. Use GraphViz to view it.
             System.out.println(st);
 
-        }
+        //}
 
     }
 
