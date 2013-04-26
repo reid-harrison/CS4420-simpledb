@@ -449,7 +449,7 @@ class StorageData {
         JoinConstraint.JoinType joinType = joinConstraint.getJoinType();
 
         Constraint leftWhereConstraint = removeIrrelevantConstraints(whereConstraint, leftTableId);
-        Constraint rightWhereConstraint = removeIrrelevantConstraints(whereConstraint, leftTableId);
+        Constraint rightWhereConstraint = removeIrrelevantConstraints(whereConstraint, rightTableId);
 
         List<Row> leftRows = select(leftTableId, leftWhereConstraint, orderConstraint);
         List<Row> rightRows = select(rightTableId, rightWhereConstraint, orderConstraint);
@@ -475,6 +475,13 @@ class StorageData {
         }
 
         return rows;
+    }
+
+    protected void flushDirtyRows() {
+        boolean oldForceFlush = forceFlush;
+        forceFlush = true;
+        dirtyCheck();
+        forceFlush = oldForceFlush;
     }
 
     protected void clearDatabase() {

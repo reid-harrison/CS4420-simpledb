@@ -9,9 +9,7 @@ import gt.cs4420.relationaldb.domain.Attribute;
 import gt.cs4420.relationaldb.domain.JoinedRow;
 import gt.cs4420.relationaldb.domain.Row;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
-
 import org.antlr.runtime.RecognitionException;
-import org.antlr.runtime.tree.BaseTree;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.Tree;
 
@@ -43,6 +41,9 @@ public class DatabaseRunner {
         System.out.println("Enter a query to begin...");
 
         while (true) {
+            System.out.println();
+            System.out.println("----");
+            System.out.println();
             String query = "";
 
             while (!scanner.hasNext()) {
@@ -63,11 +64,24 @@ public class DatabaseRunner {
                 }
             }
 
-            if (query.toLowerCase().contains("cleardb")) {
+            query = query.trim();
+
+            String lowerCaseQuery = query.toLowerCase();
+
+            if (lowerCaseQuery.startsWith("cleardb")) {
                 storageManager.clearDatabase();
                 System.out.println("Database cleared");
                 continue;
             }
+
+            if (lowerCaseQuery.startsWith("exit") || lowerCaseQuery.startsWith("quit")) {
+                System.out.println("Exiting DBMS...");
+                storageManager.flushDirtyRows();
+                break;
+            }
+
+            query = query.replaceAll("’", "'");
+            query = query.replaceAll("‘", "'");
 
             try {
                 parseQuery(query);
@@ -130,7 +144,13 @@ public class DatabaseRunner {
     }
 
     private boolean isSelect(final CommonTree query) {
-        if("SELECT".equals(query.getChild(0).getText())) {
+        Tree selectRoot = query.getChild(0);
+
+        if (selectRoot == null) {
+            return false;
+        }
+
+        if("SELECT".equalsIgnoreCase(query.getChild(0).getText())) {
             return true;
         }
 
@@ -140,7 +160,19 @@ public class DatabaseRunner {
     private boolean isJoin(final CommonTree query) {
         Tree fromRoot = query.getChild(1);
 
-        if ("JOIN".equals(fromRoot.getChild(0))) {
+        if (fromRoot == null) {
+            return false;
+        }
+
+        Tree joinRoot = fromRoot.getChild(0);
+
+        if (joinRoot == null) {
+            return false;
+        }
+
+        String joinText = fromRoot.getChild(0).getText();
+
+        if (joinText != null && joinText.toLowerCase().contains("join")) {
             return true;
         }
 
@@ -183,13 +215,20 @@ public class DatabaseRunner {
             StringBuilder sb = new StringBuilder();
             sb.append("(" + i + ") ");
 
+            boolean first = true;
+
             for (Attribute attr : rowData.keySet()) {
                 Object val = rowData.get(attr);
+
+                if (!first) {
+                    sb.append(" | ");
+                } else {
+                    first = false;
+                }
 
                 sb.append(attr.getName());
                 sb.append(": ");
                 sb.append(val.toString());
-                sb.append(" | ");
             }
 
             System.out.println(sb.toString());

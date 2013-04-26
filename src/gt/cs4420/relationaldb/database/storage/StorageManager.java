@@ -215,4 +215,8 @@ public class StorageManager {
         storageData.clearDatabase();
     }
 
+    public void flushDirtyRows() {
+        storageData.flushDirtyRows();
+    }
+
 }

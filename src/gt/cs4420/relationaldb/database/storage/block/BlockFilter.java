@@ -52,7 +52,7 @@ public class BlockFilter {
 
         if (constraint instanceof ValueConstraint) {
             ValueConstraint vc = (ValueConstraint) constraint;
-            return  rowMeetsValueConstraint(row, vc);
+            return rowMeetsValueConstraint(row, vc);
         }
 
         throw new IllegalStateException("Filter constraint could not be casted to an appropriate type, this shouldn't happen.");

@@ -109,9 +109,23 @@ public class QueryEngine {
 
         }
 
-        if(orderByNode != null)
-        {
-            orderConstraint = new OrderConstraint(new Attribute(orderByNode.getChild(0).getText()),Direction.getByStringRepresenations(orderByNode.getChild(1).getText()));
+        if(orderByNode != null) {
+            Tree attributeRoot = orderByNode.getChild(0);
+            String attributeText = attributeRoot.getText();
+            Attribute attribute = new Attribute(attributeText);
+
+            Tree orderByDirectionRoot = orderByNode.getChild(1);
+
+            Direction orderDirection;
+
+            if (orderByDirectionRoot != null)  {
+                String directionText = orderByDirectionRoot.getText();
+                orderDirection = Direction.getByStringRepresenations(directionText);
+            } else {
+                orderDirection = Direction.ASCENDING;
+            }
+
+            orderConstraint = new OrderConstraint(attribute, orderDirection);
         }
 
 
@@ -170,7 +184,7 @@ public class QueryEngine {
 
         if(selectNode != null)
         {
-            for(int i = 0; i < selectNode.getChildCount()-1; i++)
+            for(int i = 0; i < selectNode.getChildCount(); i++)
             {
                 String attrName = selectNode.getChild(i).getText();
                 selectColumns.add(attrName);
