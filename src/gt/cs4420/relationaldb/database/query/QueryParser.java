@@ -55,7 +55,7 @@ public class QueryParser {
             return parseWhereConstraint(queryRoot);
         }
 
-        throw new IllegalArgumentException("The root of the query tree or the root of the where clause is required to parse the constraints");
+        return null;
     }
 
     private Constraint parseWhereConstraint(final Tree whereRoot) {

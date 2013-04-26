@@ -59,7 +59,7 @@ class StorageData {
     //Control flags for exporting data to file that are useful for testing
     protected static boolean ignoreDirty = false;
     protected static boolean exportDisabled = false;
-    protected static boolean forceFlush = false;
+    protected static boolean forceFlush = true;
 
     //Table name -> Table ID
     private Map<String, Integer> tableNames;
@@ -298,6 +298,12 @@ class StorageData {
         }
 
         Map<Integer, Row> data = tableData.get(tableId);
+
+        if (data == null) {
+            data = Maps.newHashMap();
+            tableData.put(tableId, data);
+        }
+
         data.put(row.getPrimaryKey(), row);
 
         Map<Attribute, Object> rowData = row.getRowData();

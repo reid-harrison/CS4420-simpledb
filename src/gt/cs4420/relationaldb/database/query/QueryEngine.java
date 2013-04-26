@@ -57,7 +57,7 @@ public class QueryEngine {
         OrderConstraint orderConstraint = null;
 
 
-        Constraint whereConstraint = null;
+        Constraint whereConstraint = parser.parseConstraint(selectFromTableNode);
         boolean isJoin = false;
 
         for(int i = 0; i < selectFromTableNode.getChildCount(); i++)
@@ -152,7 +152,7 @@ public class QueryEngine {
 
         String table = "";
         OrderConstraint orderConstraint = null;
-        Constraint whereConstraint = null;
+        Constraint whereConstraint = parser.parseConstraint(selectFromTableNode);
 
         for(int i = 0; i < selectFromTableNode.getChildCount(); i++)
         {
@@ -190,11 +190,21 @@ public class QueryEngine {
 
         if(orderByNode != null)
         {
-            orderConstraint = new OrderConstraint(new Attribute(orderByNode.getChild(0).getText()),Direction.getByStringRepresenations(orderByNode.getChild(1).getText()));
+            Tree orderTree = orderByNode.getChild(0);
+            String orderByText = orderTree.getText();
+            Direction dir = Direction.getByStringRepresenations(orderByText);
+
+            Attribute attr = new Attribute(orderByText);
+
+            orderConstraint = new OrderConstraint(attr, dir);
         }
 
         List<Row> selectedRows = storageManager.select(table, whereConstraint, orderConstraint);
         List<Row> relevantSelectedRows = Lists.newArrayList();
+
+        if (selectedRows == null) {
+            return Lists.newArrayList();
+        }
 
         for (Row row : selectedRows) {
             relevantSelectedRows.add(getRelevantRowData(row, selectAttributes));

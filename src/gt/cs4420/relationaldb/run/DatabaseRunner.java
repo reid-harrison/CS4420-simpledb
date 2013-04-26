@@ -28,11 +28,13 @@ public class DatabaseRunner {
 
     private Scanner scanner;
 
+    private StorageManager storageManager;
     private QueryParser parser;
     private QueryEngine queryEngine;
 
     private DatabaseRunner() {
         scanner = new Scanner(System.in);
+        storageManager = new StorageManager();
         queryEngine = new QueryEngine(new StorageManager());
     }
 
@@ -61,10 +63,16 @@ public class DatabaseRunner {
                 }
             }
 
+            if (query.toLowerCase().contains("cleardb")) {
+                storageManager.clearDatabase();
+                System.out.println("Database cleared");
+                continue;
+            }
+
             try {
                 parseQuery(query);
             } catch (final RecognitionException re) {
-                System.out.println(re.getMessage());
+                System.out.println("Invalid syntax for entered query");
                 continue;
             } catch (ValidationException e) {
                 for (String msg : e.getMessages()) {
@@ -78,8 +86,16 @@ public class DatabaseRunner {
 
             if (isSelect(queryTree)) {
                 if (isJoin(queryTree)) {
-                    List<JoinedRow> returnedRows = queryEngine.selectFromJoinedTables(parser);
-                    printJoinedRows(returnedRows);
+                    try {
+                        List<JoinedRow> returnedRows = queryEngine.selectFromJoinedTables(parser);
+                        printJoinedRows(returnedRows);
+                    } catch (final ValidationException ve) {
+                        for (String msg : ve.getMessages()) {
+                            System.out.println(msg);
+                        }
+                        continue;
+                    }
+
                     continue;
                 } else {
                     List<Row> returnedRows = queryEngine.selectFromTable(parser);
@@ -154,6 +170,13 @@ public class DatabaseRunner {
     private void printRows(final List<Row> rows) {
         int i = 0;
 
+        if (rows == null || rows.isEmpty()) {
+            System.out.println("0 rows selected");
+            return;
+        }
+
+        System.out.println(rows.size() + " rows selected");
+
         for (Row row : rows) {
             Map<Attribute, Object> rowData = row.getRowData();
 
@@ -166,6 +189,7 @@ public class DatabaseRunner {
                 sb.append(attr.getName());
                 sb.append(": ");
                 sb.append(val.toString());
+                sb.append(" | ");
             }
 
             System.out.println(sb.toString());
