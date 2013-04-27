@@ -82,7 +82,7 @@ public class QueryParser {
         //Value constraint
         if (valueOperator != null) {
             Attribute attribute = new Attribute(operatorNode.getChild(0).getText());
-            Object value = operatorNode.getChild(1).getText();
+            String value = operatorNode.getChild(1).getText();
 
             return new ValueConstraint(attribute, value, (ValueOperator) valueOperator);
         }

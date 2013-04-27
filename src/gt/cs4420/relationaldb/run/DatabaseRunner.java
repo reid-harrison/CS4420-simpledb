@@ -140,7 +140,11 @@ public class DatabaseRunner {
     }
 
     private void parseQuery(final String query) throws RecognitionException, ValidationException {
-        parser = new QueryParser(query);
+        try {
+            parser = new QueryParser(query);
+        } catch (final Exception e) {
+            throw new ValidationException(e.getMessage());
+        }
     }
 
     private boolean isSelect(final CommonTree query) {

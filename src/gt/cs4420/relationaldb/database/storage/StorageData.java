@@ -188,10 +188,6 @@ class StorageData {
         return index.getPrimaryKeySet().size();
     }
 
-    protected Description getTableDescription(final String tableName) {
-        return getTable(tableNames.get(tableName)).getDescription();
-    }
-
     protected void addTable(final Table table) {
         tables.put(table.getId(), table);
         tableNames.put(table.getName(), table.getId());

@@ -131,7 +131,9 @@ public class QueryEngine {
 
         if(isJoin)
         {
-            List<JoinedRow> joinedRows = storageManager.selectJoin(joinTables.get(0), joinTables.get(1), joinConstraint, whereConstraint, orderConstraint);
+            String leftTableName = joinTables.get(0);
+            String rightTableName = joinTables.get(1);
+            List<JoinedRow> joinedRows = storageManager.selectJoin(leftTableName, rightTableName, joinConstraint, whereConstraint, orderConstraint);
             List<JoinedRow> relevantJoinedRows = Lists.newArrayList();
 
             for (JoinedRow joinedRow : joinedRows) {
@@ -322,7 +324,9 @@ public class QueryEngine {
         Map<Attribute, Object> relevantData = Maps.newHashMap();
 
         for (Attribute attr : relevantAttributes) {
-            relevantData.put(attr, rowData.get(attr));
+            if (rowData.get(attr) != null) {
+                relevantData.put(attr, rowData.get(attr));
+            }
         }
 
         Row relevantRow = new Row();

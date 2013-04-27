@@ -1,9 +1,6 @@
 package gt.cs4420.relationaldb.database.storage;
 
-import gt.cs4420.relationaldb.domain.Attribute;
-import gt.cs4420.relationaldb.domain.JoinedRow;
-import gt.cs4420.relationaldb.domain.Row;
-import gt.cs4420.relationaldb.domain.Table;
+import gt.cs4420.relationaldb.domain.*;
 import gt.cs4420.relationaldb.domain.exception.ValidationException;
 import gt.cs4420.relationaldb.domain.query.Constraint;
 import gt.cs4420.relationaldb.domain.query.JoinConstraint;
@@ -13,6 +10,7 @@ import gt.cs4420.relationaldb.domain.validator.RowValidator;
 import gt.cs4420.relationaldb.domain.validator.TableValidator;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * The point of interaction for the Storage Engine. Use the provided methods to perform database operations.
@@ -154,11 +152,21 @@ public class StorageManager {
         Integer tableId = storageData.getTableId(tableName);
         validateTableExists(tableId);
 
+        Description description = storageData.getTable(tableId).getDescription();
+        Map<Attribute, Object> rowData = row.getRowData();
+
+        for (Attribute attr : rowData.keySet()) {
+            String attrString = rowData.get(attr).toString();
+            if (attrString.startsWith("'") && attrString.endsWith("'")) {
+                rowData.put(attr, attrString.substring(1, attrString.length() - 1));
+            }
+        }
+
         //Validate the the row data is populated with valid data
         rowValidator.validate(row, storageData.getTable(tableId));
 
         //Resolve primary key
-        Attribute primaryKeyAttr = storageData.getTable(tableId).getDescription().getPrimaryKeyAttribute();
+        Attribute primaryKeyAttr = description.getPrimaryKeyAttribute();
         Integer primaryKey = (Integer) row.getRowData().get(primaryKeyAttr);
         row.setPrimaryKey(primaryKey);
 
