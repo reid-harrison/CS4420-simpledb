@@ -66,7 +66,7 @@ public class DatabaseRunner {
 
                 query += line;
 
-                if (line.endsWith(";")) {
+                if (line.trim().endsWith(";")) {
                     break;
                 }
             }

@@ -21,7 +21,6 @@ import java.util.Map;
 
 public class QueryEngine {
 
-    public static final String CREATE_TABLE = "CREATE TABLE";
     private StorageManager storageManager;
 
     public QueryEngine(StorageManager storageManager) {
@@ -29,14 +28,14 @@ public class QueryEngine {
     }
 
     public boolean executeQuery(CommonTree queryTree) throws ValidationException {
-        if(queryTree.getChild(0).getText().equals("CREATE TABLE")){
+        if(queryTree.getChild(0).getText().equalsIgnoreCase("CREATE TABLE")){
             createTable(queryTree);
-        } else if(queryTree.getChild(0).getText().equals("DROP TABLE")) {
+        } else if(queryTree.getChild(0).getText().equalsIgnoreCase("DROP TABLE")) {
             dropTable(queryTree);
-        } else if(queryTree.getChild(0).getText().equals("INSERT INTO")) {
+        } else if(queryTree.getChild(0).getText().equalsIgnoreCase("INSERT INTO")) {
             insertIntoTable(queryTree);
-        } else {
-            return false;
+        } else if (queryTree.getChild(0).getText().equalsIgnoreCase("UPDATE")) {
+            updateTable(queryTree);
         }
         return true;
     }
@@ -309,6 +308,40 @@ public class QueryEngine {
 
         rowToInsert.setRowData(rowData);
         storageManager.insert(tableName, rowToInsert);
+    }
+
+    public void updateTable(CommonTree updateRoot) throws ValidationException {
+        int x = 0;
+        String tableName = updateRoot.getChild(0).getChild(0).getText();
+        Tree setRoot = updateRoot.getChild(1);
+
+        Row updateDataRow = new Row();
+        Map<Attribute, Object> rowData = Maps.newHashMap();
+        updateDataRow.setRowData(rowData);
+
+        for (int i = 0; i < setRoot.getChildCount(); i++) {
+            Tree equalsRoot = setRoot.getChild(i);
+            Attribute attribute = new Attribute(equalsRoot.getChild(0).getText());
+            Object value = equalsRoot.getChild(1).getText();
+
+            String toString = value.toString();
+
+            if (toString.startsWith("'") && toString.endsWith("'")) {
+                value = toString.substring(1, toString.length() - 1);
+                attribute.setType(DataType.STRING);
+            } else {
+                attribute.setType(DataType.INT);
+            }
+
+            rowData.put(attribute, value);
+        }
+
+        Tree whereRoot = updateRoot.getChild(2);
+
+
+        Constraint whereConstraint = QueryParser.parseConstraint(whereRoot);
+
+        storageManager.update(tableName, updateDataRow, whereConstraint);
     }
 
     public static DataType matchToDataType(String type) {

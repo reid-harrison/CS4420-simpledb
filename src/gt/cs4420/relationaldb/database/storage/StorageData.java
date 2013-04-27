@@ -260,11 +260,12 @@ class StorageData {
 
         Map<Attribute, Object> updateData = updateDataRow.getRowData();
 
+        Map<Integer, Row> rowData = tableData.get(tableId);
+
         for (Row affectedRow : affectedRows) {
             Integer affectedPrimaryKey = affectedRow.getPrimaryKey();
             Integer affectedBlockId = tableIndex.getBlockId(affectedPrimaryKey);
 
-            Map<Integer, Row> rowData = tableData.get(tableId);
             Row affectedRowData = rowData.get(affectedPrimaryKey);
             affectedRowData.getRowData().putAll(updateData);
             tableIndex.addDirtyPrimaryKey(affectedBlockId, affectedPrimaryKey);

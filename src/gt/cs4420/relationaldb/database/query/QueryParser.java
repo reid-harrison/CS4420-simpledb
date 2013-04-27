@@ -40,7 +40,7 @@ public class QueryParser {
         return whereConstraint;
     }
 
-    public Constraint parseConstraint(final Tree queryRoot) {
+    public static Constraint parseConstraint(final Tree queryRoot) {
         String text = queryRoot.getText();
 
         if (Strings.isNullOrEmpty(text)) {
@@ -58,7 +58,7 @@ public class QueryParser {
         return null;
     }
 
-    private Constraint parseWhereConstraint(final Tree whereRoot) {
+    private static Constraint parseWhereConstraint(final Tree whereRoot) {
         Tree operatorNode = whereRoot;
 
         //If passed the WHERE node, step down to the first operator
