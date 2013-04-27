@@ -35,7 +35,7 @@ public class StorageManagerTest {
         String query = "";
         
         //for(int i = 0; i < 5; i++){
-            int choice = 0;
+            int choice = 3;
 
             switch(choice)
             {

@@ -461,7 +461,7 @@ UPDATE : ('u' | 'U')('p' | 'P')('d' | 'D')('a' | 'A')('t' | 'T')('e' | 'E') ;
 SET : ('s' | 'S')('e' | 'E')('t' | 'T') ;
 ASC : ('a' | 'A')('s' | 'S')('c' | 'C') ;
 PRIMARY_KEY : ('p' | 'P')('r' | 'R')('i' | 'I')('m' | 'M')('a' | 'A')('r' | 'R')('y' | 'Y')' '('k' | 'K')('e' | 'E')('y' | 'Y') ;	
-DESC: ('d' | 'D')('e' | 'E')('s' | 'S')('c' | 'S') ;
+DESC: ('d' | 'D')('e' | 'E')('s' | 'S')('c' | 'C') ;
 fragment JOIN : ('j' | 'J')('o' | 'O')('i' | 'I')('n' | 'N') ;
 INNER_JOIN: ('i' | 'I')('n' | 'N')('n' | 'N')('e' | 'E')('r' | 'R')(' ')JOIN ;
 OUTER_JOIN: ('o' | 'O')('u' | 'U')('t' | 'T')('e' | 'E')('r' | 'R')(' ')JOIN ;

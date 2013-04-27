@@ -1,4 +1,4 @@
-// $ANTLR 3.5 C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g 2013-04-25 12:18:42
+// $ANTLR 3.5 C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g 2013-04-26 22:13:42
 
 ///////////////////////////////////////////////////////////////////
 //                                                               //
@@ -1056,8 +1056,8 @@ public class SQLLexer extends Lexer {
 		try {
 			int _type = DESC;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:464:5: ( ( 'd' | 'D' ) ( 'e' | 'E' ) ( 's' | 'S' ) ( 'c' | 'S' ) )
-			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:464:7: ( 'd' | 'D' ) ( 'e' | 'E' ) ( 's' | 'S' ) ( 'c' | 'S' )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:464:5: ( ( 'd' | 'D' ) ( 'e' | 'E' ) ( 's' | 'S' ) ( 'c' | 'C' ) )
+			// C:\\Users\\Phil\\Documents\\GitHub\\CS4420\\src\\gt\\cs4420\\relationaldb\\database\\query\\SQL.g:464:7: ( 'd' | 'D' ) ( 'e' | 'E' ) ( 's' | 'S' ) ( 'c' | 'C' )
 			{
 			if ( input.LA(1)=='D'||input.LA(1)=='d' ) {
 				input.consume();
@@ -1083,7 +1083,7 @@ public class SQLLexer extends Lexer {
 				recover(mse);
 				throw mse;
 			}
-			if ( input.LA(1)=='S'||input.LA(1)=='c' ) {
+			if ( input.LA(1)=='C'||input.LA(1)=='c' ) {
 				input.consume();
 			}
 			else {
@@ -2291,7 +2291,7 @@ public class SQLLexer extends Lexer {
 		"\1\11\1\116\1\101\1\122\2\105\1\122\1\110\2\116\1\101\1\116\1\120\1\122"+
 		"\1\105\1\111\7\uffff\2\75\5\uffff\2\116\2\114\1\105\1\117\1\123\1\114"+
 		"\1\117\1\105\1\60\1\124\1\60\1\104\1\103\1\104\1\111\1\106\1\107\4\uffff"+
-		"\1\60\2\105\1\143\1\125\1\101\1\120\1\123\1\105\1\60\1\115\1\122\1\105"+
+		"\1\60\2\105\1\143\1\125\1\101\1\120\1\103\1\105\1\60\1\115\1\122\1\105"+
 		"\1\uffff\1\105\1\uffff\2\60\1\101\1\115\1\124\1\110\1\uffff\2\122\1\150"+
 		"\1\105\1\124\1\40\1\60\1\103\1\uffff\1\60\1\105\2\122\2\uffff\1\124\1"+
 		"\101\1\40\2\124\1\40\1\141\1\123\1\105\2\uffff\1\124\1\uffff\1\60\2\40"+
@@ -2381,7 +2381,7 @@ public class SQLLexer extends Lexer {
 			"\1\117\37\uffff\1\117",
 			"\1\120\37\uffff\1\120",
 			"\1\121\37\uffff\1\121",
-			"\1\122\17\uffff\1\122",
+			"\1\122\37\uffff\1\122",
 			"\1\123\37\uffff\1\123",
 			"\12\31\7\uffff\32\31\6\uffff\32\31",
 			"\1\125\37\uffff\1\125",
