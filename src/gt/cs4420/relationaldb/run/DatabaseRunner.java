@@ -21,7 +21,14 @@ public class DatabaseRunner {
 
     public static void main(String[] args) {
         DatabaseRunner runner = new DatabaseRunner();
-        runner.run();
+
+        try {
+            runner.run();
+        } catch (final Exception e) {
+            System.out.println("An unexpected error has occurred!");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private Scanner scanner;
@@ -193,8 +200,15 @@ public class DatabaseRunner {
             Row joined = new Row();
 
             Map<Attribute, Object> joinedData = Maps.newHashMap();
-            joinedData.putAll(leftRow.getRowData());
-            joinedData.putAll(rightRow.getRowData());
+
+            if (leftRow != null) {
+                joinedData.putAll(leftRow.getRowData());
+            }
+
+            if (rightRow != null) {
+                joinedData.putAll(rightRow.getRowData());
+            }
+
             joined.setRowData(joinedData);
 
             mergedDataRows.add(joined);

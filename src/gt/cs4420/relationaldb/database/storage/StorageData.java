@@ -451,6 +451,7 @@ class StorageData {
         List<Row> rightRows = select(rightTableId, rightWhereConstraint, orderConstraint);
 
         for (Row leftRow : leftRows) {
+            boolean joined = false;
             Object leftValue = leftRow.getRowData().get(leftAttribute);
 
             for (Row rightRow : rightRows) {
@@ -466,7 +467,15 @@ class StorageData {
                     joinedRow.setRightRow(rightRow);
 
                     rows.add(joinedRow);
+                    joined = true;
                 }
+            }
+
+            if (!joined) {
+                JoinedRow joinedRow = new JoinedRow();
+                joinedRow.setLeftRow(leftRow);
+                joinedRow.setLeftPrimaryKey(leftRow.getPrimaryKey());
+                rows.add(joinedRow);
             }
         }
 

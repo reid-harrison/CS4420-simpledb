@@ -45,7 +45,7 @@ public class QueryParser {
 
         if (Strings.isNullOrEmpty(text)) {
             for (int i = 0; i < queryRoot.getChildCount(); i++) {
-                if ("WHERE".equals(queryRoot.getChild(i).getText())) {
+                if ("WHERE".equalsIgnoreCase(queryRoot.getChild(i).getText())) {
                     return parseWhereConstraint(queryRoot.getChild(i));
                 }
             }

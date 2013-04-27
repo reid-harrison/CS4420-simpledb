@@ -140,10 +140,18 @@ public class QueryEngine {
                 Row leftRow = joinedRow.getLeftRow();
                 Row rightRow = joinedRow.getRightRow();
 
-                Row relevantLeftRow = getRelevantRowData(leftRow, selectAttributes);
-                Row relevantRightRow = getRelevantRowData(rightRow, selectAttributes);
-
                 JoinedRow relevantJoinedRow = new JoinedRow();
+                Row relevantLeftRow = null;
+                Row relevantRightRow = null;
+
+                if (leftRow != null) {
+                    relevantLeftRow = getRelevantRowData(leftRow, selectAttributes);
+                }
+
+                if (rightRow != null) {
+                    relevantRightRow = getRelevantRowData(rightRow, selectAttributes);
+                }
+
                 relevantJoinedRow.setLeftRow(relevantLeftRow);
                 relevantJoinedRow.setRightRow(relevantRightRow);
 
